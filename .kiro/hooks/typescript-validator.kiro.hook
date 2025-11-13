@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "TypeScript Validator",
+  "description": "Validates TypeScript files on save to ensure type safety, check for compilation errors, verify imports, and confirm all TypeScript details are up to date with proper typing",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": []
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A TypeScript file has been saved. Please validate it thoroughly:\n\n1. Run getDiagnostics to check for TypeScript compilation errors, type errors, and linting issues\n2. Verify all imports are correct and up to date\n3. Check that all types are properly defined (no implicit 'any' types)\n4. Ensure interfaces and type definitions are current\n5. Validate that function signatures match their implementations\n6. Check for unused imports or variables\n7. Verify proper use of TypeScript features (generics, type guards, etc.)\n\nIf any issues are found, provide clear explanations and suggest fixes. If everything is valid, confirm the file passes all TypeScript checks."
+  }
+}

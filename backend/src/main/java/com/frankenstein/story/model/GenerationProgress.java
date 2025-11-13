@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GenerationProgress {
 
-    private String storyId;
-    private StoryStatus status;
-    private int progressPercentage; // 0-100
-    private String stage; // Human-readable stage description
-    private String message; // Detailed message
+   private String storyId;
+   private StoryStatus status;
+   private int progressPercentage; // 0-100
+   private String stage; // Human-readable stage description
+   private String message; // Detailed message
 }

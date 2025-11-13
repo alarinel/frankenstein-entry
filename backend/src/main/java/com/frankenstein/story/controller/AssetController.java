@@ -18,72 +18,60 @@ import java.io.IOException;
 @RequestMapping("/api/stories/{storyId}/assets")
 public class AssetController {
 
-    private final FileStorageService fileStorageService;
+   private final FileStorageService fileStorageService;
 
-    public AssetController(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
-    }
+   public AssetController(final FileStorageService fileStorageService) {
+      this.fileStorageService = fileStorageService;
+   }
 
-    @GetMapping("/images/page-{pageNumber}.png")
-    public ResponseEntity<byte[]> getImage(
-            @PathVariable String storyId,
-            @PathVariable int pageNumber) {
-        try {
-            log.debug("Serving image for story {} page {}", storyId, pageNumber);
-            byte[] imageData = fileStorageService.loadAsset(storyId, "images/page-" + pageNumber + ".png");
+   @GetMapping("/images/page-{pageNumber}.png")
+   public ResponseEntity<byte[]> getImage(@PathVariable final String storyId, @PathVariable final int pageNumber) {
+      try {
+         log.debug("Serving image for story {} page {}", storyId, pageNumber);
+         final byte[] imageData = fileStorageService.loadAsset(storyId, "images/page-" + pageNumber + ".png");
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setCacheControl("max-age=3600");
+         final HttpHeaders headers = new HttpHeaders();
+         headers.setContentType(MediaType.IMAGE_PNG);
+         headers.setCacheControl("max-age=3600");
 
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(imageData);
-        } catch (IOException e) {
-            log.error("Failed to load image", e);
-            return ResponseEntity.notFound().build();
-        }
-    }
+         return ResponseEntity.ok().headers(headers).body(imageData);
+      } catch (final IOException e) {
+         log.error("Failed to load image", e);
+         return ResponseEntity.notFound().build();
+      }
+   }
 
-    @GetMapping("/audio/narration/page-{pageNumber}.mp3")
-    public ResponseEntity<byte[]> getNarration(
-            @PathVariable String storyId,
-            @PathVariable int pageNumber) {
-        try {
-            log.debug("Serving narration for story {} page {}", storyId, pageNumber);
-            byte[] audioData = fileStorageService.loadAsset(storyId, "audio/narration/page-" + pageNumber + ".mp3");
+   @GetMapping("/audio/narration/page-{pageNumber}.mp3")
+   public ResponseEntity<byte[]> getNarration(@PathVariable final String storyId, @PathVariable final int pageNumber) {
+      try {
+         log.debug("Serving narration for story {} page {}", storyId, pageNumber);
+         final byte[] audioData = fileStorageService.loadAsset(storyId, "audio/narration/page-" + pageNumber + ".mp3");
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
-            headers.setCacheControl("max-age=3600");
+         final HttpHeaders headers = new HttpHeaders();
+         headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
+         headers.setCacheControl("max-age=3600");
 
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(audioData);
-        } catch (IOException e) {
-            log.error("Failed to load narration", e);
-            return ResponseEntity.notFound().build();
-        }
-    }
+         return ResponseEntity.ok().headers(headers).body(audioData);
+      } catch (final IOException e) {
+         log.error("Failed to load narration", e);
+         return ResponseEntity.notFound().build();
+      }
+   }
 
-    @GetMapping("/audio/effects/{effectName}.mp3")
-    public ResponseEntity<byte[]> getSoundEffect(
-            @PathVariable String storyId,
-            @PathVariable String effectName) {
-        try {
-            log.debug("Serving sound effect {} for story {}", effectName, storyId);
-            byte[] audioData = fileStorageService.loadAsset(storyId, "audio/effects/" + effectName + ".mp3");
+   @GetMapping("/audio/effects/{effectName}.mp3")
+   public ResponseEntity<byte[]> getSoundEffect(@PathVariable final String storyId, @PathVariable final String effectName) {
+      try {
+         log.debug("Serving sound effect {} for story {}", effectName, storyId);
+         final byte[] audioData = fileStorageService.loadAsset(storyId, "audio/effects/" + effectName + ".mp3");
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
-            headers.setCacheControl("max-age=3600");
+         final HttpHeaders headers = new HttpHeaders();
+         headers.setContentType(MediaType.parseMediaType("audio/mpeg"));
+         headers.setCacheControl("max-age=3600");
 
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(audioData);
-        } catch (IOException e) {
-            log.error("Failed to load sound effect", e);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-    }
+         return ResponseEntity.ok().headers(headers).body(audioData);
+      } catch (final IOException e) {
+         log.error("Failed to load sound effect", e);
+         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+      }
+   }
 }

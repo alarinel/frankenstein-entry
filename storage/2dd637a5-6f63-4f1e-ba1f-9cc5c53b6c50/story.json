@@ -1,0 +1,105 @@
+{
+  "id" : "2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50",
+  "title" : "Mira and the Singing Sword",
+  "input" : {
+    "characterName" : "Mira",
+    "setting" : "a mysterious enchanted forest",
+    "villain" : "the Ice Queen",
+    "specialItem" : "a singing sword",
+    "characterTrait" : "bold and creative",
+    "goal" : "save the kingdom from eternal darkness",
+    "timePeriod" : "the magical renaissance",
+    "mood" : "dark and delightfully spooky"
+  },
+  "pages" : [ {
+    "pageNumber" : 1,
+    "text" : "In the magical renaissance, when castles touched the clouds and inventors dreamed grand dreams, a young girl named Mira lived in a kingdom threatened by eternal darkness. The Ice Queen had stolen the Sun Crystal, plunging the land into shadows, and only someone bold and creative could save them.",
+    "imagePrompt" : "Fantasy art illustration of a brave young girl named Mira with long dark braided hair, wearing a Renaissance-style tunic and boots, standing at the edge of a mysterious enchanted forest, dark twisted trees with glowing mushrooms, misty atmosphere, purple and blue twilight sky, castle silhouette in background, cinematic lighting, detailed digital painting",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-1.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-1.mp3",
+    "soundEffects" : [ "ominous_wind", "distant_thunder", "forest_whispers" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ominous_wind.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/distant_thunder.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/forest_whispers.mp3" ],
+    "mood" : "mysterious and foreboding",
+    "duration" : 19.6
+  }, {
+    "pageNumber" : 2,
+    "text" : "Mira ventured deep into the enchanted forest where shadows danced between ancient trees. Suddenly, she heard a beautiful melody coming from a hollow oak, and inside she discovered a magnificent sword that sang with a voice like silver bells.",
+    "imagePrompt" : "Fantasy art of Mira reaching into a glowing hollow of a massive twisted oak tree, magical singing sword with musical notes floating around it, ethereal blue and gold light emanating from the blade, enchanted forest with twisted branches overhead, fireflies and glowing moss, dark atmospheric lighting, detailed digital painting, child-friendly style",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-2.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-2.mp3",
+    "soundEffects" : [ "magical_chime", "sword_singing", "mystical_hum" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/magical_chime.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/sword_singing.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/mystical_hum.mp3" ],
+    "mood" : "magical and wondrous",
+    "duration" : 15.6
+  }, {
+    "pageNumber" : 3,
+    "text" : "The singing sword told Mira it could guide her to the Ice Queen's palace, but the journey would be dangerous. With her creative mind spinning with ideas and her bold heart beating strong, Mira gripped the sword and pressed deeper into the spooky forest.",
+    "imagePrompt" : "Fantasy digital painting of Mira holding the glowing singing sword aloft, walking through a dark enchanted forest path with gnarled trees forming archways, glowing eyes peering from shadows, purple mist swirling at her feet, determined expression on her face, moonlight filtering through twisted branches, atmospheric and slightly spooky but child-appropriate",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-3.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-3.mp3",
+    "soundEffects" : [ "footsteps_crunch", "owl_hoot", "sword_hum" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/footsteps_crunch.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/owl_hoot.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/sword_hum.mp3" ],
+    "mood" : "adventurous and slightly spooky",
+    "duration" : 17.6
+  }, {
+    "pageNumber" : 4,
+    "text" : "Suddenly, ice began to coat the trees and frost crept across the ground. Mira could see the Ice Queen's palace ahead, a towering fortress of frozen spikes and shimmering icicles that glowed with an eerie blue light.",
+    "imagePrompt" : "Fantasy art illustration of an imposing ice palace with sharp crystalline towers and frozen spires, surrounded by frost-covered trees, Mira viewed from behind in the foreground holding her singing sword, eerie blue and white color palette, snowflakes falling, Northern Lights in dark sky, dramatic lighting, detailed digital painting, delightfully spooky atmosphere",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-4.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-4.mp3",
+    "soundEffects" : [ "ice_crackle", "cold_wind", "ominous_drone" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ice_crackle.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/cold_wind.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ominous_drone.mp3" ],
+    "mood" : "dark and foreboding",
+    "duration" : 14.8
+  }, {
+    "pageNumber" : 5,
+    "text" : "Inside the throne room, the Ice Queen sat upon a chair of frozen lightning, the stolen Sun Crystal clutched in her icy fingers. She laughed coldly when she saw Mira, but the brave girl stood firm, her singing sword humming with courage.",
+    "imagePrompt" : "Fantasy digital painting of the Ice Queen, tall and regal with a crown of icicles, pale blue skin, flowing white gown, sitting on an ornate frozen throne holding a glowing golden Sun Crystal, Mira standing bravely before her with singing sword, ice palace interior with frozen columns and blue crystalline walls, dramatic lighting from above, child-friendly villain design, atmospheric",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-5.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-5.mp3",
+    "soundEffects" : [ "evil_laugh", "ice_crackle", "sword_resonance" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/evil_laugh.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ice_crackle.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/sword_resonance.mp3" ],
+    "mood" : "tense and dramatic",
+    "duration" : 16.8
+  }, {
+    "pageNumber" : 6,
+    "text" : "Mira's creative mind sparked with an idea! She asked the singing sword to perform its most beautiful song, and the magical melody filled the frozen palace. The Ice Queen, who had never heard such beauty, began to weep frozen tears.",
+    "imagePrompt" : "Fantasy art of Mira holding the singing sword high, golden musical notes and light swirling through the air, the Ice Queen covering her face with crystalline tears falling, ice palace interior beginning to glow warmly, magical energy radiating from the sword, dynamic composition, beautiful lighting transition from blue to gold, detailed digital painting, emotional scene",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-6.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-6.mp3",
+    "soundEffects" : [ "magical_song", "crystalline_chimes", "ice_melting" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/magical_song.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/crystalline_chimes.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ice_melting.mp3" ],
+    "mood" : "magical and emotional",
+    "duration" : 16.0
+  }, {
+    "pageNumber" : 7,
+    "text" : "The Ice Queen's frozen heart began to melt, and she realized her loneliness had made her cruel. She handed Mira the Sun Crystal, and as the brave girl held it high, warm light burst forth, banishing the darkness from the kingdom forever.",
+    "imagePrompt" : "Fantasy digital painting of Mira triumphantly holding the glowing golden Sun Crystal above her head, brilliant warm light radiating outward, ice melting into sparkling water droplets, the Ice Queen smiling gently in the background, ice palace transforming with golden light breaking through, magical particles filling the air, hopeful and bright atmosphere, detailed illustration",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-7.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-7.mp3",
+    "soundEffects" : [ "triumphant_fanfare", "light_burst", "ice_shattering" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/triumphant_fanfare.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/light_burst.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/ice_shattering.mp3" ],
+    "mood" : "triumphant and hopeful",
+    "duration" : 16.8
+  }, {
+    "pageNumber" : 8,
+    "text" : "Mira returned home a hero, with the singing sword at her side and a new friend in the Ice Queen, who promised to use her powers for good. The kingdom celebrated under sunny skies, and everyone agreed that bold creativity could overcome even the darkest magic.",
+    "imagePrompt" : "Fantasy art illustration of Mira walking back through the now-bright enchanted forest, sunlight streaming through green leaves, colorful flowers blooming, the castle visible in the distance with celebration banners, singing sword on her back, butterflies and birds around her, the Ice Queen visible in the background waving goodbye near her transformed crystal palace, warm cheerful colors, happy ending scene, detailed digital painting",
+    "imageUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/images/page-8.png",
+    "narrationUrl" : "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/narration/page-8.mp3",
+    "soundEffects" : [ "celebration_music", "birds_chirping", "joyful_laughter" ],
+    "soundEffectUrls" : [ "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/celebration_music.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/birds_chirping.mp3", "/api/stories/2dd637a5-6f63-4f1e-ba1f-9cc5c53b6c50/assets/audio/effects/joyful_laughter.mp3" ],
+    "mood" : "joyful and satisfying",
+    "duration" : 18.4
+  } ],
+  "metadata" : {
+    "imageSeed" : 7704,
+    "totalDuration" : 135.6,
+    "pageCount" : 8,
+    "estimatedReadTime" : "2:15"
+  },
+  "status" : "COMPLETED",
+  "createdAt" : [ 2025, 11, 14, 15, 58, 23, 361764100 ],
+  "completedAt" : [ 2025, 11, 14, 15, 59, 24, 142674700 ],
+  "errorMessage" : null
+}

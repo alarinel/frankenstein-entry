@@ -17,22 +17,22 @@ import java.util.List;
 @AllArgsConstructor
 public class StoryStructure {
 
-    private String title;
+   private String title;
 
-    @JsonProperty("imageSeed")
-    private int imageSeed;
+   @JsonProperty("imageSeed")
+   private int imageSeed;
 
-    private List<PageStructure> pages;
+   private List<PageStructure> pages;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PageStructure {
-        private int pageNumber;
-        private String text;
-        private String imagePrompt;
-        private List<String> soundEffects;
-        private String mood;
-    }
+   @Data
+   @Builder
+   @NoArgsConstructor
+   @AllArgsConstructor
+   public static class PageStructure {
+      private int pageNumber;
+      private String text;
+      private String imagePrompt;
+      private List<String> soundEffects;
+      private String mood;
+   }
 }

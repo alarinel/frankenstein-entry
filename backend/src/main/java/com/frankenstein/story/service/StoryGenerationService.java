@@ -9,143 +9,194 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.anthropic.AnthropicChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.security.SecureRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Service for generating story structure using Claude (Anthropic)
+ *
+ * @author alarinel@gmail.com
  */
 @Slf4j
 @Service
 public class StoryGenerationService {
 
-    private final AnthropicChatModel chatModel;
-    private final ObjectMapper objectMapper;
-    private final int defaultPages;
-    private final Random random = new Random();
+   private static final int SEED_MIN = 1000;
+   private static final int SEED_MAX = 9999;
+   private static final int MAX_INPUT_LENGTH = 500;
+   private static final Pattern JSON_CODE_BLOCK_PATTERN = Pattern.compile("```(?:json)?\\s*([\\s\\S]*?)```");
 
-    public StoryGenerationService(
-            AnthropicChatModel chatModel,
-            ObjectMapper objectMapper,
-            @Value("${generation.default-pages}") int defaultPages) {
-        this.chatModel = chatModel;
-        this.objectMapper = objectMapper;
-        this.defaultPages = defaultPages;
-    }
+   private final AnthropicChatModel chatModel;
+   private final ObjectMapper objectMapper;
+   private final int defaultPages;
+   private final SecureRandom random;
 
-    public StoryStructure generateStory(StoryInput input) {
-        log.info("Generating story for character: {}", input.getCharacterName());
+   public StoryGenerationService(final AnthropicChatModel chatModel, final ObjectMapper objectMapper,
+                                 @Value("${generation.default-pages}") final int defaultPages) {
+      this.chatModel = chatModel;
+      this.objectMapper = objectMapper;
+      this.defaultPages = defaultPages;
+      this.random = new SecureRandom();
+   }
 
-        try {
-            String prompt = buildPrompt(input);
-            ChatResponse response = chatModel.call(new Prompt(prompt));
-            String content = response.getResult().getOutput().getContent();
+   public StoryStructure generateStory(final StoryInput input) {
+      log.info("Generating story for character: {}", input.getCharacterName());
 
-            log.debug("Claude response: {}", content);
+      validateInput(input);
 
-            // Extract JSON from the response (Claude might wrap it in markdown)
-            String jsonContent = extractJson(content);
+      try {
+         final String prompt = buildPrompt(input);
+         final ChatResponse response = chatModel.call(new Prompt(prompt));
+         final String content = response.getResult().getOutput().getContent();
 
-            StoryStructure structure = objectMapper.readValue(jsonContent, StoryStructure.class);
-            log.info("Successfully generated story: {} with {} pages",
-                    structure.getTitle(), structure.getPages().size());
+         log.debug("Claude response: {}", content);
 
-            return structure;
-        } catch (JsonProcessingException e) {
-            log.error("Failed to parse story structure", e);
-            throw new StoryGenerationException("Failed to parse AI response", e);
-        } catch (Exception e) {
-            log.error("Story generation failed", e);
-            throw new StoryGenerationException("Story generation failed", e);
-        }
-    }
+         final String jsonContent = extractJson(content);
+         final StoryStructure structure = objectMapper.readValue(jsonContent, StoryStructure.class);
 
-    private String buildPrompt(StoryInput input) {
-        String template = """
-                You are a creative children's story writer. Generate an engaging, age-appropriate children's story with the following elements:
+         log.info("Successfully generated story: {} with {} pages", structure.getTitle(), structure.getPages().size());
 
-                Story Elements:
-                - Main Character: {characterName}
-                - Setting: {setting}
-                - Villain/Antagonist: {villain}
-                - Special Item: {specialItem}
-                - Character Trait: {characterTrait}
-                - Adventure Goal: {goal}
-                - Time Period: {timePeriod}
-                - Overall Mood: {mood}
+         return structure;
+      } catch (final JsonProcessingException e) {
+         log.error("Failed to parse story structure from Claude response", e);
+         throw new StoryGenerationException("Failed to parse AI response into story structure", e);
+      } catch (final IllegalArgumentException e) {
+         log.error("Invalid input provided: {}", e.getMessage());
+         throw new StoryGenerationException("Invalid story input: " + e.getMessage(), e);
+      } catch (final Exception e) {
+         log.error("Unexpected error during story generation", e);
+         throw new StoryGenerationException("Story generation failed: " + e.getMessage(), e);
+      }
+   }
 
-                Requirements:
-                1. Create exactly {pageCount} pages
-                2. Each page should have 2-3 sentences of story text (child-friendly, engaging)
-                3. For each page, provide a detailed image prompt optimized for Stability AI's SDXL model
-                4. For each page, list 1-3 sound effects that would enhance that scene
-                5. Specify the mood/atmosphere for each page
-                6. Make the story have a clear beginning, middle, and satisfying ending
-                7. Keep language appropriate for children ages 5-10
+   private void validateInput(final StoryInput input) {
+      validateField(input.getCharacterName(), "Character name");
+      validateField(input.getSetting(), "Setting");
+      validateField(input.getVillain(), "Villain");
+      validateField(input.getSpecialItem(), "Special item");
+      validateField(input.getCharacterTrait(), "Character trait");
+      validateField(input.getGoal(), "Goal");
+      validateField(input.getTimePeriod(), "Time period");
+      validateField(input.getMood(), "Mood");
+   }
 
-                Image Prompt Guidelines:
-                - Be very specific and detailed
-                - Include art style (e.g., "fantasy art", "watercolor", "digital painting")
-                - Describe lighting, colors, composition
-                - Mention the character by name and appearance
-                - Keep prompts focused and coherent
+   private void validateField(final String value, final String fieldName) {
+      if (value == null || value.isBlank()) {
+         throw new IllegalArgumentException(fieldName + " cannot be empty");
+      }
+      if (value.length() > MAX_INPUT_LENGTH) {
+         throw new IllegalArgumentException(fieldName + " exceeds maximum length of " + MAX_INPUT_LENGTH);
+      }
+   }
 
-                Sound Effect Guidelines:
-                - Use simple, descriptive names (e.g., "thunder_rumble", "door_creak", "magic_sparkle")
-                - Choose effects that match the scene's action
+   private String buildPrompt(final StoryInput input) {
+      final int randomSeed = SEED_MIN + random.nextInt(SEED_MAX - SEED_MIN + 1);
 
-                Return your response as a JSON object with this EXACT structure:
-                ```json
-                {
-                  "title": "The Story Title",
-                  "imageSeed": {randomSeed},
-                  "pages": [
-                    {
-                      "pageNumber": 1,
-                      "text": "The story text for this page...",
-                      "imagePrompt": "Detailed prompt for Stability AI...",
-                      "soundEffects": ["effect1", "effect2"],
-                      "mood": "mysterious"
-                    }
-                  ]
-                }
-                ```
+      return String.format(PROMPT_TEMPLATE,
+            sanitizeInput(input.getCharacterName()),
+            sanitizeInput(input.getSetting()),
+            sanitizeInput(input.getVillain()),
+            sanitizeInput(input.getSpecialItem()),
+            sanitizeInput(input.getCharacterTrait()),
+            sanitizeInput(input.getGoal()),
+            sanitizeInput(input.getTimePeriod()),
+            sanitizeInput(input.getMood()),
+            defaultPages,
+            randomSeed);
+   }
 
-                IMPORTANT: Return ONLY the JSON object, no additional text before or after.
-                """;
+   private String sanitizeInput(final String input) {
+      // Remove potential prompt injection attempts and normalize whitespace
+      return input.replaceAll("[\\r\\n]+", " ").trim();
+   }
 
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("characterName", input.getCharacterName());
-        variables.put("setting", input.getSetting());
-        variables.put("villain", input.getVillain());
-        variables.put("specialItem", input.getSpecialItem());
-        variables.put("characterTrait", input.getCharacterTrait());
-        variables.put("goal", input.getGoal());
-        variables.put("timePeriod", input.getTimePeriod());
-        variables.put("mood", input.getMood());
-        variables.put("pageCount", defaultPages);
-        variables.put("randomSeed", 1000 + random.nextInt(9000)); // 1000-9999
+   private static final String PROMPT_TEMPLATE = """
+                                                 You are a master children's story writer in the tradition of classic fairy tales. Create a rich, engaging story with the following elements:
+                                                 
+                                                 Story Elements:
+                                                 - Main Character: %s
+                                                 - Setting: %s
+                                                 - Villain/Antagonist: %s
+                                                 - Special Item: %s
+                                                 - Character Trait: %s
+                                                 - Adventure Goal: %s
+                                                 - Time Period: %s
+                                                 - Overall Mood: %s
+                                                 
+                                                 Story Structure (Classic Fairy Tale Format):
+                                                 Follow this proven narrative arc across exactly %d pages:
+                                                 
+                                                 1. INTRODUCTION (Pages 1-2): Establish the character, their world, and what makes them special. Use phrases like "Once upon a time" or "Long ago." Show their ordinary life and relationships. Introduce the special item naturally.
+                                                 
+                                                 2. CALL TO ADVENTURE (Page 3): Present the goal/quest and why it matters. Show what's at stake. The character decides to embark on their journey.
+                                                 
+                                                 3. JOURNEY & CHALLENGES (Pages 4-5): The character travels through the setting, encounters obstacles, and meets the villain. Show how their special trait helps them. Build tension and suspense.
+                                                 
+                                                 4. CLIMAX (Page 6): The confrontation with the villain. The character uses their trait and special item cleverly. The most exciting moment of the story.
+                                                 
+                                                 5. RESOLUTION (Page 7): The immediate aftermath. The villain is defeated, the goal is achieved. Show the character's growth.
+                                                 
+                                                 6. HAPPY ENDING (Page 8): Return home or new beginning. Lessons learned. End with "happily ever after" or similar closure. Show how the character has changed.
+                                                 
+                                                 Writing Guidelines:
+                                                 - Use rich, descriptive language with sensory details (sights, sounds, feelings)
+                                                 - Include dialogue to bring characters to life
+                                                 - Each page should have 3-5 sentences (not just 2-3) to allow proper storytelling
+                                                 - Use varied sentence structure and pacing
+                                                 - Show emotions and reactions, not just actions
+                                                 - Create memorable, quotable moments
+                                                 - Build atmosphere and mood through description
+                                                 - Make the villain interesting and the hero relatable
+                                                 - Age-appropriate for children 5-10, but don't talk down to them
+                                                 
+                                                 Image Prompt Guidelines:
+                                                 - Highly detailed and specific for Stability AI SDXL
+                                                 - Include: art style (storybook illustration, watercolor, digital painting), lighting (warm sunset, moonlight, bright morning), colors, composition, character appearance and expression
+                                                 - Describe the scene's emotional tone visually
+                                                 - Maintain visual consistency across pages (same character appearance, art style)
+                                                 - Example: "Storybook watercolor illustration of [character name], a brave young [description], standing in [setting] with [lighting]. [Character] wears [clothing] and holds [item]. [Mood] atmosphere with [colors]. Fantasy art style, detailed, child-friendly."
+                                                 
+                                                 Sound Effect Guidelines:
+                                                 - 1-3 effects per page that enhance immersion
+                                                 - Use descriptive names: "thunder_rumble", "door_creak", "magic_sparkle", "footsteps_forest", "wind_howling"
+                                                 - Match the scene's action and mood
+                                                 
+                                                 Return your response as a JSON object with this EXACT structure:
+                                                 {
+                                                   "title": "The Story Title",
+                                                   "imageSeed": %d,
+                                                   "pages": [
+                                                     {
+                                                       "pageNumber": 1,
+                                                       "text": "The story text for this page (3-5 sentences with rich detail)...",
+                                                       "imagePrompt": "Highly detailed prompt for Stability AI SDXL...",
+                                                       "soundEffects": ["effect1", "effect2"],
+                                                       "mood": "mysterious"
+                                                     }
+                                                   ]
+                                                 }
+                                                 
+                                                 IMPORTANT: Return ONLY the JSON object, no additional text before or after.
+                                                 """;
 
-        PromptTemplate promptTemplate = new PromptTemplate(template);
-        return promptTemplate.create(variables).getContents();
-    }
+   private String extractJson(String content) {
+      if (content == null || content.isBlank()) {
+         throw new StoryGenerationException("Received empty response from Claude");
+      }
 
-    private String extractJson(String content) {
-        // Remove markdown code blocks if present
-        content = content.trim();
-        if (content.startsWith("```json")) {
-            content = content.substring(7);
-        } else if (content.startsWith("```")) {
-            content = content.substring(3);
-        }
-        if (content.endsWith("```")) {
-            content = content.substring(0, content.length() - 3);
-        }
-        return content.trim();
-    }
+      content = content.trim();
+
+      // Try to extract JSON from markdown code blocks using regex
+      final Matcher matcher = JSON_CODE_BLOCK_PATTERN.matcher(content);
+      if (matcher.find()) {
+         return matcher.group(1).trim();
+      }
+
+      // If no code blocks found, assume the entire content is JSON
+      return content;
+   }
 }

@@ -17,9 +17,7 @@ Thumbs.db
 .env.local
 .env.production
 
-# Storage
-storage/
-
 # Temporary files
 *.tmp
 *.swp
+!/.qodo/

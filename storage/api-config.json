@@ -1,0 +1,10 @@
+{
+  "anthropicInputCostPerMillionTokens" : 3.0,
+  "anthropicOutputCostPerMillionTokens" : 15.0,
+  "stabilityImageCostPerImage" : 0.04,
+  "elevenlabsCostPerCharacter" : 3.0E-5,
+  "elevenlabsRateLimitPerMinute" : 10,
+  "elevenlabsDelayBetweenCallsMs" : 6000,
+  "maxStoriesPerDay" : 100,
+  "enableCostTracking" : true
+}

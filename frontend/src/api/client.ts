@@ -37,6 +37,10 @@ export const storyApi = {
   },
 
   getAssetUrl: (url: string): string => {
+    // If URL already starts with /api, don't prepend base URL
+    if (url.startsWith('/api')) {
+      return url;
+    }
     return `${API_BASE_URL}${url}`;
   },
 };
