@@ -1,0 +1,51 @@
+# Example configuration file
+# Copy this to application-local.yml and fill in your API keys
+
+spring:
+  application:
+    name: frankenstein-story-generator
+
+  ai:
+    anthropic:
+      api-key: your-anthropic-api-key-here
+      chat:
+        options:
+          model: claude-sonnet-4.5-20250929
+          temperature: 0.8
+          max-tokens: 4096
+
+server:
+  port: 8080
+
+storage:
+  root: ./storage
+  max-file-size: 10MB
+  max-story-count: 100
+
+api:
+  stability:
+    key: your-stability-api-key-here
+    url: https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image
+    image-width: 1024
+    image-height: 768
+    style-preset: fantasy-art
+
+  elevenlabs:
+    key: your-elevenlabs-api-key-here
+    url: https://api.elevenlabs.io/v1
+    voice-id: 21m00Tcm4TlvDq8ikWAM
+    stability: 0.5
+    similarity-boost: 0.75
+
+generation:
+  max-pages: 10
+  min-pages: 5
+  default-pages: 8
+  timeout-minutes: 5
+  parallel-workers: 4
+
+logging:
+  level:
+    com.frankenstein: DEBUG
+    org.springframework.ai: DEBUG
+    org.springframework.web: INFO
