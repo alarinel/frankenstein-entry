@@ -38,9 +38,12 @@ export const ReadingPage = () => {
   useEffect(() => {
     loadStory();
     return () => {
-      // Cleanup audio on unmount
+      // Cleanup all audio on unmount
+      allAudioRef.current.forEach((howl) => {
+        howl.unload();
+      });
+      allAudioRef.current.clear();
       if (audioRef.current) {
-        audioRef.current.unload();
         audioRef.current = null;
       }
       cleanup();
@@ -48,20 +51,17 @@ export const ReadingPage = () => {
   }, [storyId]);
 
   useEffect(() => {
-    if (currentStory && currentStory.pages.length > 0 && currentStory.pages[currentPage]) {
-      loadPageAudio(currentPage);
+    if (currentStory && currentStory.pages.length > 0) {
+      // Preload all audio
+      preloadAllAudio();
     }
-    
-    // Cleanup function to stop audio when page changes
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.stop();
-        audioRef.current.unload();
-      }
-      setHighlightedWords([]);
-      setIsPlaying(false);
-    };
-  }, [currentPage, currentStory?.id]); // Only depend on currentPage and story ID, not entire story object
+  }, [currentStory?.id]);
+
+  useEffect(() => {
+    if (currentStory && currentStory.pages.length > 0 && currentStory.pages[currentPage]) {
+      switchToPage(currentPage);
+    }
+  }, [currentPage]);
 
   const loadStory = async () => {
     if (!storyId) {
