@@ -127,10 +127,39 @@ export const InputPage = () => {
     }
   };
 
+  const handleSuggestionClick = (value: string) => {
+    setValue(currentField.name, value, { shouldValidate: true });
+    // Auto-advance to next step after setValue completes
+    setTimeout(() => {
+      if (isLastStep) {
+        handleSubmit(onSubmit)();
+      } else {
+        setCurrentStep((prev) => prev + 1);
+      }
+    }, 300);
+  };
+
+  const jumpToStep = (stepIndex: number) => {
+    setCurrentStep(stepIndex);
+  };
+
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep((prev) => prev - 1);
     }
+  };
+
+  const handleRandomize = () => {
+    // Fill all fields with random suggestions
+    formFields.forEach((field) => {
+      const randomIndex = Math.floor(Math.random() * field.suggestions.length);
+      const randomValue = field.suggestions[randomIndex].value;
+      setValue(field.name, randomValue, { shouldValidate: true });
+    });
+    
+    // Jump to last step to show completion
+    setCurrentStep(formFields.length - 1);
+    toast.success('🎲 Random story created! Ready to generate!');
   };
 
   const onSubmit = async (data: StoryFormData) => {
@@ -148,7 +177,7 @@ export const InputPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center p-4 overflow-hidden relative">
       <ParticleBackground />
-      <FloatingBats count={6} />
+      <FloatingBats count={12} />
       <GhostCluster />
 
       {/* Decorative corner elements */}
@@ -216,22 +245,41 @@ export const InputPage = () => {
             </motion.div>
           </div>
 
-          {/* Step indicators */}
+          {/* Step indicators - clickable breadcrumbs */}
           <div className="flex justify-between mt-3">
-            {formFields.map((field, index) => (
-              <motion.div
-                key={index}
-                className={`text-2xl transition-all ${
-                  index <= currentStep ? 'opacity-100 scale-110' : 'opacity-30'
-                }`}
-                animate={{
-                  scale: index === currentStep ? [1, 1.2, 1] : 1,
-                }}
-                transition={{ duration: 0.5, repeat: index === currentStep ? Infinity : 0 }}
-              >
-                {field.emoji}
-              </motion.div>
-            ))}
+            {formFields.map((field, index) => {
+              const fieldValue = watch(field.name);
+              const isCompleted = fieldValue && fieldValue.trim();
+              
+              return (
+                <motion.button
+                  key={index}
+                  type="button"
+                  onClick={() => jumpToStep(index)}
+                  disabled={!isCompleted && index > currentStep}
+                  className={`text-2xl transition-all relative group ${
+                    index <= currentStep ? 'opacity-100 scale-110' : 'opacity-30'
+                  } ${isCompleted ? 'cursor-pointer' : index > currentStep ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                  animate={{
+                    scale: index === currentStep ? [1, 1.2, 1] : 1,
+                  }}
+                  transition={{ duration: 0.5, repeat: index === currentStep ? Infinity : 0 }}
+                  whileHover={isCompleted || index <= currentStep ? { scale: 1.3 } : {}}
+                  whileTap={isCompleted || index <= currentStep ? { scale: 0.9 } : {}}
+                >
+                  {field.emoji}
+                  {isCompleted && (
+                    <span className="absolute -top-1 -right-1 text-xs">✓</span>
+                  )}
+                  {/* Tooltip */}
+                  {isCompleted && (
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-dark-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                      {fieldValue}
+                    </span>
+                  )}
+                </motion.button>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -298,7 +346,7 @@ export const InputPage = () => {
                     <motion.button
                       key={suggestion.value}
                       type="button"
-                      onClick={() => setValue(currentField.name, suggestion.value)}
+                      onClick={() => handleSuggestionClick(suggestion.value)}
                       className="px-4 py-2 bg-gradient-to-r from-spooky-purple-800/60 to-spooky-purple-700/60 hover:from-spooky-purple-700 hover:to-spooky-purple-600 border-2 border-spooky-purple-600/40 hover:border-spooky-purple-500 rounded-full text-sm text-spooky-purple-200 transition-all font-fun font-medium backdrop-blur-sm"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -315,9 +363,27 @@ export const InputPage = () => {
           </motion.div>
         </AnimatePresence>
 
+        {/* Randomizer Button */}
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <SpookyButton
+            onClick={handleRandomize}
+            variant="ghost"
+            className="w-full"
+          >
+            <span>🎲</span>
+            <span>Surprise Me! (Random Story)</span>
+            <span>✨</span>
+          </SpookyButton>
+        </motion.div>
+
         {/* Navigation Buttons */}
         <motion.div
-          className="flex justify-between mt-8 gap-4"
+          className="flex justify-between mt-4 gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -351,7 +417,7 @@ export const InputPage = () => {
         >
           <p className="flex items-center justify-center gap-2">
             <span className="animate-pulse">👻</span>
-            Creating magical stories since 2024
+            Creating magical stories since 2025
             <span className="animate-pulse">🎃</span>
           </p>
         </motion.div>

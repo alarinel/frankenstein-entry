@@ -1,21 +1,44 @@
 spring:
   application:
     name: frankenstein-story-generator
-
+  http:
+    client:
+      connect-timeout: 300s
+      read-timeout: 600s
+      factory: http_components
   ai:
     anthropic:
       api-key: ${ANTHROPIC_API_KEY}
       chat:
         options:
-          model: claude-sonnet-4.5-20250929
+          model: claude-sonnet-4-5-20250929
           temperature: 0.8
           max-tokens: 4096
+      base-url: https://api.anthropic.com/v1
+    
+    stabilityai:
+      api-key: ${STABILITY_API_KEY}
+      image:
+        options:
+          model: stable-diffusion-xl-1024-v1-0
+          height: 768
+          width: 1024
+          cfg-scale: 7.0
+          steps: 30
+          style-preset: fantasy-art
+
 
 server:
-  port: 8080
+  port: 8083
   error:
     include-message: always
     include-stacktrace: never
+
+http:
+  client:
+    connect-timeout: 30s
+    read-timeout: 3m
+    write-timeout: 30s
 
 storage:
   root: ${STORAGE_ROOT:./storage}

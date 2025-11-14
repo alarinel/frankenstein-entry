@@ -4,9 +4,9 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-dark-800;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-dark-950 text-gray-100;
   }
 }

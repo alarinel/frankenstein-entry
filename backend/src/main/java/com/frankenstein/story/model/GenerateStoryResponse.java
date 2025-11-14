@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GenerateStoryResponse {
 
-    private String storyId;
-    private StoryStatus status;
-    private String message;
+   private String storyId;
+   private StoryStatus status;
+   private String message;
 }

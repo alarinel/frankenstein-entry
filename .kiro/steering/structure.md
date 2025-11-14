@@ -16,7 +16,8 @@ backend/src/main/java/com/frankenstein/story/
 ├── FrankensteinApplication.java          # Main Spring Boot entry point
 ├── config/                               # Spring configuration
 │   ├── AsyncConfig.java                  # Async executor setup
-│   ├── HttpClientConfig.java             # HTTP client beans
+│   ├── DotenvConfig.java                 # .env file loader (ApplicationContextInitializer)
+│   ├── HttpClientConfig.java             # HTTP client beans (OkHttp + RestClient with configurable timeouts)
 │   ├── WebConfig.java                    # CORS, MVC config
 │   └── WebSocketConfig.java              # WebSocket/STOMP config
 ├── controller/                           # REST endpoints
@@ -24,8 +25,8 @@ backend/src/main/java/com/frankenstein/story/
 │   └── AssetController.java              # Static asset serving
 ├── service/                              # Business logic
 │   ├── StoryOrchestrationService.java    # Main coordinator
-│   ├── StoryGenerationService.java       # Claude integration
-│   ├── ImageGenerationService.java       # Stability AI integration
+│   ├── StoryGenerationService.java       # Claude integration via Spring AI
+│   ├── ImageGenerationService.java       # Stability AI integration via Spring AI
 │   ├── AudioGenerationService.java       # ElevenLabs integration
 │   ├── FileStorageService.java           # File I/O operations
 │   └── ProgressNotificationService.java  # WebSocket updates
@@ -41,6 +42,9 @@ backend/src/main/java/com/frankenstein/story/
 └── exception/                            # Error handling
     ├── GlobalExceptionHandler.java       # @ControllerAdvice
     ├── StoryGenerationException.java
+    ├── ImageGenerationException.java
+    ├── AudioGenerationException.java
+    ├── FileStorageException.java
     ├── StoryNotFoundException.java
     ├── ResourceNotFoundException.java
     └── ErrorResponse.java
@@ -49,6 +53,7 @@ backend/src/main/java/com/frankenstein/story/
 **Resources**:
 - `application.yml` - Configuration
 - `application-example.yml` - Config template
+- `META-INF/spring.factories` - Spring Boot auto-configuration (registers DotenvConfig)
 
 **Tests**: Mirror main structure under `src/test/java/`
 
@@ -159,3 +164,69 @@ storage/
             ├── thunder.mp3
             └── ...
 ```
+
+## Data Models
+
+### Story Input
+```typescript
+interface StoryInput {
+  characterName: string;
+  setting: string;
+  villain: string;
+  specialItem: string;
+  characterTrait: string;
+  goal: string;
+  timePeriod: string;
+  mood: string;
+}
+```
+
+### Story Page
+```typescript
+interface StoryPage {
+  pageNumber: number;
+  text: string;
+  imageUrl: string;
+  narrationUrl: string;
+  soundEffects: string[];
+  duration: number;
+  mood: string;
+}
+```
+
+### Story
+```typescript
+interface Story {
+  id: string;
+  title: string;
+  input: StoryInput;
+  pages: StoryPage[];
+  metadata: {
+    createdAt: string;
+    duration: number;
+    imageSeed: number;
+  };
+}
+```
+
+## API Endpoints
+
+### POST /api/stories/generate
+- **Request**: StoryInput
+- **Response**: { storyId: string, status: string }
+- **Description**: Initiates story generation
+
+### GET /api/stories/{storyId}/status
+- **Response**: { status: string, progress: number, stage: string }
+- **Description**: Checks generation status
+
+### GET /api/stories/{storyId}
+- **Response**: Story
+- **Description**: Retrieves complete story with assets
+
+### GET /api/stories
+- **Response**: Story[]
+- **Description**: Lists all saved stories
+
+### WS /ws/story-progress
+- **Purpose**: Real-time progress updates

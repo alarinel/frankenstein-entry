@@ -14,13 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Story {
 
-    private String id;
-    private String title;
-    private StoryInput input;
-    private List<StoryPage> pages;
-    private StoryMetadata metadata;
-    private StoryStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime completedAt;
-    private String errorMessage;
+   private String id;
+   private String title;
+   private StoryInput input;
+   private List<StoryPage> pages;
+   private StoryMetadata metadata;
+   private StoryStatus status;
+   private LocalDateTime createdAt;
+   private LocalDateTime completedAt;
+   private String errorMessage;
 }

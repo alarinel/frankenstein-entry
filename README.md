@@ -17,17 +17,21 @@ Frankenstein brings together seemingly incompatible elements to build something 
 ### User Journey
 
 1. **Mad-Lib Input** - Spooky-themed sequential form with suggestions
+   - Step-by-step guided input for 8 story elements
+   - Quick suggestion chips for each field
+   - "Surprise Me!" button to instantly generate random story inputs
 2. **Real-time Generation** - Watch as AI crafts your story with live progress updates
 3. **Cinematic Playback** - Experience the story like a movie with:
    - 3D page-turning animations
    - Synchronized narration and text highlighting
    - Dynamic sound effects
    - Atmospheric particle effects
+4. **Completion** - Story summary with options to replay or create new stories
 
 ### Technical Highlights
 
-- **AI Story Generation** - Claude (Sonnet 4.5) creates engaging narratives
-- **Image Generation** - Stability AI with consistent seeds for thematic coherence
+- **AI Story Generation** - Claude (Sonnet 4.5) via Spring AI creates engaging narratives
+- **Image Generation** - Stability AI via Spring AI with consistent seeds for thematic coherence
 - **Audio Generation** - ElevenLabs for realistic narration and sound effects
 - **Real-time Updates** - WebSocket for live progress tracking
 - **Responsive Design** - Beautiful dark theme optimized for all devices
@@ -58,11 +62,15 @@ Frankenstein brings together seemingly incompatible elements to build something 
 ## 🛠️ Tech Stack
 
 ### Backend (Spring Boot)
-- **Framework**: Spring Boot 3.x, Spring AI, Maven
-- **AI Integration**: Claude (Sonnet 4.5), Stability AI, ElevenLabs
+- **Framework**: Spring Boot 3.5.0, Spring AI 1.0.0-M4, Maven
+- **AI Integration**: 
+  - Claude (Sonnet 4.5) via Spring AI Anthropic
+  - Stability AI (SDXL 1024) via Spring AI Stability
+  - ElevenLabs (direct API integration)
 - **Communication**: REST API, WebSocket (STOMP)
+- **HTTP Clients**: OkHttp + RestClient with 3-minute read timeout for AI APIs
 - **Storage**: File-based (local filesystem)
-- **Utilities**: OkHttp, Jackson, Lombok
+- **Utilities**: Jackson, Lombok
 
 ### Frontend (React + TypeScript)
 - **Core**: React 18, TypeScript, Vite, Tailwind CSS
@@ -71,10 +79,7 @@ Frankenstein brings together seemingly incompatible elements to build something 
 - **Audio**: Howler.js
 - **State**: Zustand, React Router
 - **Forms**: React Hook Form, Zod
-- **UI**: Radix UI, tsParticles, React Hot Toast
-
-### Third-Party Tools (40+)
-See [THIRD_PARTY_TOOLS.md](THIRD_PARTY_TOOLS.md) for complete list.
+- **UI**: Radix UI, Aceternity UI, tsParticles, React Hot Toast
 
 ## 🚀 Quick Start
 
@@ -89,20 +94,35 @@ See [THIRD_PARTY_TOOLS.md](THIRD_PARTY_TOOLS.md) for complete list.
 ```bash
 cd backend
 
-# Configure API keys
+# Configure API keys (Option 1: Using .env file - Recommended)
+cp .env.example .env
+# Edit .env with your API keys
+
+# OR (Option 2: Using application-local.yml)
 cp src/main/resources/application-example.yml src/main/resources/application-local.yml
 # Edit application-local.yml with your API keys
 
+# Install dependencies (first time only)
+mvn clean install
+
 # Run the backend
-mvn spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run
 ```
 
-Backend will start on http://localhost:8080
+Backend will start on http://localhost:8083
+
+**Note**: The backend automatically loads `.env` files using a custom `DotenvConfig` initializer, making it easier to manage environment variables without creating profile-specific YAML files. The configuration gracefully falls back to system environment variables if no `.env` file is found.
+
+The Vite dev server is configured to proxy API requests to the backend and includes a fix for sockjs-client WebSocket compatibility by defining `global` as `globalThis`.
 
 ### Frontend Setup
 
 ```bash
 cd frontend
+
+# Configure environment
+cp .env.example .env
+# Edit .env if you need to change API URLs
 
 # Install dependencies
 npm install
@@ -115,7 +135,18 @@ Frontend will start on http://localhost:3000
 
 ### Environment Variables
 
-**Backend** (`application-local.yml`):
+**Backend** (`.env` or `application-local.yml`):
+
+Using `.env` file (Recommended):
+```env
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
+STABILITY_API_KEY=your-stability-api-key-here
+ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
+ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM  # Optional
+STORAGE_ROOT=./storage  # Optional, defaults to ./storage
+```
+
+Or using `application-local.yml`:
 ```yaml
 spring:
   ai:
@@ -127,22 +158,19 @@ api:
     key: your-stability-key
   elevenlabs:
     key: your-elevenlabs-key
+    voice-id: 21m00Tcm4TlvDq8ikWAM  # Optional, has default
+
+storage:
+  root: ./storage  # Optional
 ```
+
+The backend uses a custom `DotenvConfig` class (implementing `ApplicationContextInitializer`) to automatically load `.env` files into Spring's environment. This provides better logging and error handling compared to third-party libraries.
 
 **Frontend** (`.env`):
 ```env
-VITE_API_BASE_URL=http://localhost:8080/api
-VITE_WS_URL=http://localhost:8080/ws/story-progress
+VITE_API_BASE_URL=http://localhost:8083/api
+VITE_WS_URL=http://localhost:8083/ws/story-progress
 ```
-
-## 📚 Documentation
-
-- [PROJECT_PLAN.md](PROJECT_PLAN.md) - Comprehensive project overview
-- [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture details
-- [ROADMAP.md](ROADMAP.md) - Development phases and timeline
-- [THIRD_PARTY_TOOLS.md](THIRD_PARTY_TOOLS.md) - Complete tools catalog
-- [backend/README.md](backend/README.md) - Backend documentation
-- [frontend/README.md](frontend/README.md) - Frontend documentation
 
 ## 🎯 API Endpoints
 
@@ -170,7 +198,7 @@ GET /api/stories/{storyId}
 
 ### WebSocket Progress
 ```
-Connect: /ws/story-progress
+Connect: ws://localhost:8083/ws/story-progress
 Subscribe: /topic/story-progress/{storyId}
 ```
 
@@ -185,32 +213,6 @@ Subscribe: /topic/story-progress/{storyId}
 4. **Frontend receives complete story** with all assets
 5. **Cinematic playback** with synchronized audio/text
 6. **Completion screen** with replay/new story options
-
-## 🎬 User Experience Highlights
-
-### Input Interface
-- Sequential field-by-field input
-- Suggestion chips for each field
-- Spooky dark theme with particle effects
-- Form validation with helpful error messages
-
-### Loading Screen
-- Animated books assembling
-- Real-time status updates
-- Progress bar with shimmer effect
-- Stage indicators (Story → Images → Audio → Assembly)
-
-### Reading Interface
-- 3D book with realistic page flips
-- Images on left page, text on right
-- Word-by-word highlighting synced with narration
-- Auto-advance after each page
-- Navigation controls
-
-### Completion Screen
-- Book closing animation
-- Story metadata summary
-- Options to replay or create new story
 
 ## 🔧 Development
 
@@ -274,6 +276,77 @@ npm run build
 - Deploy to: Vercel, Netlify, or any CDN
 - Configure API proxy
 
+### Docker Deployment
+
+**Backend Dockerfile**:
+```dockerfile
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/target/story-generator-1.0.0-SNAPSHOT.jar app.jar
+
+ENV ANTHROPIC_API_KEY=""
+ENV STABILITY_API_KEY=""
+ENV ELEVENLABS_API_KEY=""
+ENV STORAGE_ROOT="/app/storage"
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+**Build and run**:
+```bash
+docker build -t frankenstein-backend .
+docker run -p 8080:8080 \
+  -e ANTHROPIC_API_KEY=your-key \
+  -e STABILITY_API_KEY=your-key \
+  -e ELEVENLABS_API_KEY=your-key \
+  -v $(pwd)/storage:/app/storage \
+  frankenstein-backend
+```
+
+## 📈 Cost Estimates
+
+### AI API Costs (per story)
+- **Claude**: ~$0.015 (4K tokens)
+- **Stability AI**: ~$0.08 (8 images)
+- **ElevenLabs**: ~$0.30 (narration)
+- **Total per story**: ~$0.40
+
+### Cloud Hosting (monthly)
+- **Backend**: $20-50 (small instance)
+- **Storage**: $1-10 (first 1000 stories)
+- **Frontend**: $0 (static hosting)
+- **Total**: ~$25-70/month
+
+## 🎓 Project Structure
+
+```
+frankenstein/
+├── backend/                    # Spring Boot application
+│   ├── src/main/java/         # Java source code
+│   ├── src/main/resources/    # Configuration files
+│   └── src/test/java/         # Unit tests
+├── frontend/                   # React TypeScript application
+│   ├── src/                   # Source code
+│   │   ├── pages/            # Route components
+│   │   ├── components/       # Reusable components
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── store/            # State management
+│   │   ├── api/              # Backend communication
+│   │   └── utils/            # Helper functions
+│   └── public/               # Static assets
+├── .kiro/                     # Kiro AI configuration
+│   ├── hooks/                # Agent hooks
+│   └── steering/             # Development guidelines
+└── README.md                  # This file
+```
+
 ## 🤝 Contributing
 
 This is a competition entry project. For bugs or suggestions, please open an issue.
@@ -304,9 +377,11 @@ Built for the "Frankenstein: Stitch together a chimera of technologies" ideation
 
 ## 📞 Support
 
-- Backend Issues: See [backend/README.md](backend/README.md)
-- Frontend Issues: See [frontend/README.md](frontend/README.md)
-- Architecture Questions: See [ARCHITECTURE.md](ARCHITECTURE.md)
+For detailed information:
+- **Backend**: See `backend/README.md`
+- **Frontend**: See `frontend/README.md`
+- **Development Guidelines**: See `.kiro/steering/guidelines.md`
+- **Architecture**: See `.kiro/steering/structure.md`
 
 ---
 

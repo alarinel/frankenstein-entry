@@ -58,9 +58,11 @@ React + TypeScript + Vite frontend for the AI-powered children's story generator
 
    Create `.env`:
    ```env
-   VITE_API_BASE_URL=http://localhost:8080/api
-   VITE_WS_URL=http://localhost:8080/ws/story-progress
+   VITE_API_BASE_URL=http://localhost:8083/api
+   VITE_WS_URL=http://localhost:8083/ws/story-progress
    ```
+
+   **Note**: The Vite config includes proxy settings for `/api` and `/ws` endpoints, so you can also use relative URLs. The config also includes a fix for sockjs-client compatibility by defining `global` as `globalThis`.
 
 3. **Start development server**
    ```bash
@@ -106,7 +108,9 @@ src/
 ### 1. Input Flow (`InputPage.tsx`)
 - Step-by-step form with 8 fields
 - Suggestion chips for each field
-- Progress bar
+- "Surprise Me!" randomizer button - instantly fills all fields with random suggestions
+- Clickable breadcrumb navigation between completed steps
+- Progress bar with completion percentage
 - Form validation with Zod
 - Spooky themed design
 
@@ -224,22 +228,37 @@ The `dist` folder contains production-ready files. Deploy to:
 - GitHub Pages
 - Any static hosting
 
+## Configuration Details
+
+### Vite Proxy Setup
+The `vite.config.ts` includes:
+- Proxy for `/api` requests to `http://localhost:8083`
+- WebSocket proxy for `/ws` to `http://localhost:8083`
+- Global variable fix for sockjs-client: `global: 'globalThis'`
+
+This allows the frontend to communicate with the backend without CORS issues during development.
+
 ## Troubleshooting
 
 ### Audio not playing
 - Check browser console for CORS errors
-- Ensure backend is running
+- Ensure backend is running on port 8083
 - Verify audio files were generated
 
 ### WebSocket connection failed
 - Check backend WebSocket configuration
 - Verify CORS settings
-- Ensure backend is accessible
+- Ensure backend is accessible at `http://localhost:8083`
+- Check that Vite proxy is working (should see `/ws` requests in Network tab)
 
 ### Images not loading
 - Check network tab for 404 errors
 - Verify image generation completed
-- Check API proxy configuration
+- Check API proxy configuration in `vite.config.ts`
+
+### "global is not defined" error
+- This should be fixed by the `define: { global: 'globalThis' }` in vite.config.ts
+- If you still see this error, clear your browser cache and restart the dev server
 
 ## License
 

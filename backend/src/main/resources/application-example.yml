@@ -10,12 +10,23 @@ spring:
       api-key: your-anthropic-api-key-here
       chat:
         options:
-          model: claude-sonnet-4.5-20250929
+          model: claude-sonnet-4-5-20250929
           temperature: 0.8
           max-tokens: 4096
+    
+    stabilityai:
+      api-key: your-stability-api-key-here
+      image:
+        options:
+          model: stable-diffusion-xl-1024-v1-0
+          height: 768
+          width: 1024
+          cfg-scale: 7.0
+          steps: 30
+          style-preset: fantasy-art
 
 server:
-  port: 8080
+  port: 8083
 
 storage:
   root: ./storage
@@ -23,6 +34,8 @@ storage:
   max-story-count: 100
 
 api:
+  # Legacy Stability AI configuration (kept for reference, not used by ImageGenerationService)
+  # ImageGenerationService now uses Spring AI Stability configuration above
   stability:
     key: your-stability-api-key-here
     url: https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image

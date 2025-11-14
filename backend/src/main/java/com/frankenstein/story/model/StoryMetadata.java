@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StoryMetadata {
 
-    private int imageSeed;
-    private double totalDuration; // in seconds
-    private int pageCount;
-    private String estimatedReadTime; // e.g., "3:45"
+   private int imageSeed;
+   private double totalDuration; // in seconds
+   private int pageCount;
+   private String estimatedReadTime; // e.g., "3:45"
 }

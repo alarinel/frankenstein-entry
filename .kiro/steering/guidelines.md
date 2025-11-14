@@ -112,3 +112,40 @@ This approach prevents:
 - Deprecated method warnings
 - Incompatibility issues
 - Wasted time debugging outdated code patterns
+
+## Testing Strategy
+
+### Backend Testing
+- Unit tests for all services
+- Integration tests for API endpoints
+- Mock external API calls (Claude, Stability AI, ElevenLabs)
+- Test both success and failure paths
+- Edge case coverage
+
+### Frontend Testing
+- Component tests with React Testing Library
+- E2E tests with Playwright
+- Visual regression tests
+- Accessibility testing
+
+### Test Coverage Goals
+- Backend: 90%+ coverage on services and controllers
+- Frontend: 80%+ coverage on components and hooks
+- Critical paths: 100% coverage
+
+## Performance Considerations
+
+1. **Parallel Processing**: Generate images and audio simultaneously
+2. **Streaming**: Stream assets as they're generated
+3. **Caching**: Cache generated stories
+4. **Lazy Loading**: Load assets on-demand in frontend
+5. **Optimization**: Compress images and audio appropriately
+
+## Security Best Practices
+
+1. **API Keys**: Store in environment variables, never commit
+2. **Rate Limiting**: Prevent abuse of generation endpoint
+3. **Input Validation**: Sanitize all user inputs
+4. **File Storage**: Implement size limits
+5. **CORS**: Configure properly for frontend origin
+6. **Error Handling**: Never expose internal errors to frontend
