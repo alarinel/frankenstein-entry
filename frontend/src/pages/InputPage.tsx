@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -99,7 +99,12 @@ const formFields = [
 export const InputPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
-  const { setCurrentInput } = useStoryStore();
+  const { setCurrentInput, reset } = useStoryStore();
+
+  // Clear any previous errors when component mounts
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   const {
     register,
@@ -157,8 +162,21 @@ export const InputPage = () => {
       setValue(field.name, randomValue, { shouldValidate: true });
     });
     
-    // Jump to last step to show completion
-    setCurrentStep(formFields.length - 1);
+    // Smoothly transition to last step
+    const targetStep = formFields.length - 1;
+    if (currentStep !== targetStep) {
+      // Animate through steps quickly if not already at last step
+      const stepInterval = setInterval(() => {
+        setCurrentStep((prev) => {
+          if (prev >= targetStep - 1) {
+            clearInterval(stepInterval);
+            return targetStep;
+          }
+          return prev + 1;
+        });
+      }, 100);
+    }
+    
     toast.success('🎲 Random story created! Ready to generate!');
   };
 
@@ -175,7 +193,7 @@ export const InputPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center p-4 overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex flex-col items-center justify-center p-4 overflow-hidden relative">
       <ParticleBackground />
       <FloatingBats count={12} />
       <GhostCluster />
@@ -190,32 +208,33 @@ export const InputPage = () => {
         🌙
       </div>
 
+      {/* Header - Outside constrained container */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, type: 'spring' }}
+        className="text-center mb-8 z-10 w-full"
+      >
+        <SpookyTitle className="mb-4">
+          <FloatingEmoji emoji="🧟" className="mr-4" />
+          Frankenstein's Story Lab
+          <FloatingEmoji emoji="📚" className="ml-4" />
+        </SpookyTitle>
+        <motion.p
+          className="text-spooky-orange-400 text-xl font-fun"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          Stitch together your magical tale...
+        </motion.p>
+      </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-2xl w-full z-10"
       >
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, type: 'spring' }}
-          className="text-center mb-12"
-        >
-          <SpookyTitle className="mb-4">
-            <FloatingEmoji emoji="🧟" className="mr-4" />
-            Frankenstein's Story Lab
-            <FloatingEmoji emoji="📚" className="ml-4" />
-          </SpookyTitle>
-          <motion.p
-            className="text-spooky-orange-400 text-xl font-fun"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Stitch together your magical tale...
-          </motion.p>
-        </motion.div>
 
         {/* Progress Bar */}
         <motion.div

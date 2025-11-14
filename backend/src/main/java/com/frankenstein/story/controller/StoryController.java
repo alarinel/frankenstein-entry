@@ -19,45 +19,45 @@ public class StoryController {
 
    private final StoryOrchestrationService orchestrationService;
 
-   public StoryController(StoryOrchestrationService orchestrationService) {
+   public StoryController(final StoryOrchestrationService orchestrationService) {
       this.orchestrationService = orchestrationService;
    }
 
    @PostMapping("/generate")
-   public ResponseEntity<GenerateStoryResponse> generateStory(@Valid @RequestBody StoryInput input) {
+   public ResponseEntity<GenerateStoryResponse> generateStory(@Valid @RequestBody final StoryInput input) {
       log.info("Received story generation request for character: {}", input.getCharacterName());
 
-      String storyId = orchestrationService.initiateStoryGeneration(input);
+      final String storyId = orchestrationService.initiateStoryGeneration(input);
 
       // Start async generation
       orchestrationService.generateStoryAsync(storyId);
 
-      GenerateStoryResponse response = GenerateStoryResponse.builder()
-                                                            .storyId(storyId)
-                                                            .status(StoryStatus.PENDING)
-                                                            .message("Story generation started")
-                                                            .build();
+      final GenerateStoryResponse response = GenerateStoryResponse.builder()
+                                                                  .storyId(storyId)
+                                                                  .status(StoryStatus.PENDING)
+                                                                  .message("Story generation started")
+                                                                  .build();
 
       return ResponseEntity.accepted().body(response);
    }
 
    @GetMapping("/{storyId}")
-   public ResponseEntity<Story> getStory(@PathVariable String storyId) {
+   public ResponseEntity<Story> getStory(@PathVariable final String storyId) {
       log.debug("Fetching story: {}", storyId);
-      Story story = orchestrationService.getStory(storyId);
+      final Story story = orchestrationService.getStory(storyId);
       return ResponseEntity.ok(story);
    }
 
    @GetMapping("/{storyId}/status")
-   public ResponseEntity<StoryStatusResponse> getStoryStatus(@PathVariable String storyId) {
+   public ResponseEntity<StoryStatusResponse> getStoryStatus(@PathVariable final String storyId) {
       log.debug("Fetching story status: {}", storyId);
-      Story story = orchestrationService.getStory(storyId);
+      final Story story = orchestrationService.getStory(storyId);
 
-      StoryStatusResponse response = StoryStatusResponse.builder()
-                                                        .storyId(storyId)
-                                                        .status(story.getStatus())
-                                                        .progress(calculateProgress(story.getStatus()))
-                                                        .build();
+      final StoryStatusResponse response = StoryStatusResponse.builder()
+                                                              .storyId(storyId)
+                                                              .status(story.getStatus())
+                                                              .progress(calculateProgress(story.getStatus()))
+                                                              .build();
 
       return ResponseEntity.ok(response);
    }
@@ -65,11 +65,11 @@ public class StoryController {
    @GetMapping
    public ResponseEntity<List<Story>> getAllStories() {
       log.debug("Fetching all stories");
-      List<Story> stories = orchestrationService.getAllStories();
+      final List<Story> stories = orchestrationService.getAllStories();
       return ResponseEntity.ok(stories);
    }
 
-   private int calculateProgress(StoryStatus status) {
+   private int calculateProgress(final StoryStatus status) {
       return switch (status) {
          case PENDING -> 0;
          case GENERATING_STORY -> 20;

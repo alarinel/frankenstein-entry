@@ -39,18 +39,18 @@ class StoryControllerTest {
    @Test
    void generateStory_WithValidInput_ReturnsAccepted() throws Exception {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("enchanted forest")
-                                   .villain("dark wizard")
-                                   .specialItem("magic wand")
-                                   .characterTrait("brave")
-                                   .goal("save the forest")
-                                   .timePeriod("medieval times")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("enchanted forest")
+                                         .villain("dark wizard")
+                                         .specialItem("magic wand")
+                                         .characterTrait("brave")
+                                         .goal("save the forest")
+                                         .timePeriod("medieval times")
+                                         .mood("adventurous")
+                                         .build();
 
-      Story mockStory = createMockStory("test-story-id", StoryStatus.PENDING);
+      final Story mockStory = createMockStory("test-story-id", StoryStatus.PENDING);
 
       when(orchestrationService.generateCompleteStory(any(StoryInput.class), anyString())).thenAnswer(invocation -> {
          CompletableFuture.runAsync(() -> {
@@ -71,8 +71,8 @@ class StoryControllerTest {
    @Test
    void generateStory_WithInvalidInput_ReturnsBadRequest() throws Exception {
       // Given - Missing required fields
-      StoryInput invalidInput = StoryInput.builder().characterName("") // Empty name
-                                          .build();
+      final StoryInput invalidInput = StoryInput.builder().characterName("") // Empty name
+                                                .build();
 
       // When/Then
       mockMvc.perform(post("/api/stories/generate").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(invalidInput)))
@@ -84,8 +84,8 @@ class StoryControllerTest {
    @Test
    void getStory_WithExistingId_ReturnsStory() throws Exception {
       // Given
-      String storyId = "existing-story-id";
-      Story mockStory = createMockStory(storyId, StoryStatus.COMPLETED);
+      final String storyId = "existing-story-id";
+      final Story mockStory = createMockStory(storyId, StoryStatus.COMPLETED);
 
       when(orchestrationService.getStory(storyId)).thenReturn(mockStory);
 
@@ -102,7 +102,7 @@ class StoryControllerTest {
    @Test
    void getStory_WithNonExistentId_ReturnsNotFound() throws Exception {
       // Given
-      String nonExistentId = "non-existent-id";
+      final String nonExistentId = "non-existent-id";
       when(orchestrationService.getStory(nonExistentId)).thenReturn(null);
 
       // When/Then
@@ -112,8 +112,8 @@ class StoryControllerTest {
    @Test
    void getStoryStatus_WithExistingId_ReturnsStatus() throws Exception {
       // Given
-      String storyId = "test-id";
-      Story mockStory = createMockStory(storyId, StoryStatus.GENERATING_IMAGES);
+      final String storyId = "test-id";
+      final Story mockStory = createMockStory(storyId, StoryStatus.GENERATING_IMAGES);
 
       when(orchestrationService.getStory(storyId)).thenReturn(mockStory);
 
@@ -127,8 +127,8 @@ class StoryControllerTest {
    @Test
    void getStoryStatus_WithFailedStory_ReturnsErrorMessage() throws Exception {
       // Given
-      String storyId = "failed-story-id";
-      Story mockStory = createMockStory(storyId, StoryStatus.FAILED);
+      final String storyId = "failed-story-id";
+      final Story mockStory = createMockStory(storyId, StoryStatus.FAILED);
       mockStory.setErrorMessage("Generation failed due to API error");
 
       when(orchestrationService.getStory(storyId)).thenReturn(mockStory);
@@ -143,16 +143,16 @@ class StoryControllerTest {
    @Test
    void generateStory_WithCharacterNameTooLong_ReturnsBadRequest() throws Exception {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("A".repeat(100)) // Too long
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("A".repeat(100)) // Too long
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
 
       // When/Then
       mockMvc.perform(post("/api/stories/generate").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(input)))
@@ -162,36 +162,36 @@ class StoryControllerTest {
    @Test
    void generateStory_WithNullValues_ReturnsBadRequest() throws Exception {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting(null) // Null setting
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting(null) // Null setting
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
 
       // When/Then
       mockMvc.perform(post("/api/stories/generate").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(input)))
              .andExpect(status().isBadRequest());
    }
 
-   private Story createMockStory(String id, StoryStatus status) {
-      Story story = new Story();
+   private Story createMockStory(final String id, final StoryStatus status) {
+      final Story story = new Story();
       story.setId(id);
       story.setTitle("Test Story");
       story.setStatus(status);
 
-      Story.StoryPage page1 = new Story.StoryPage();
+      final Story.StoryPage page1 = new Story.StoryPage();
       page1.setPageNumber(1);
       page1.setText("Page 1 text");
       page1.setImageUrl("images/page-1.png");
       page1.setNarrationUrl("audio/narration-1.mp3");
       page1.setDuration(5.0);
 
-      Story.StoryPage page2 = new Story.StoryPage();
+      final Story.StoryPage page2 = new Story.StoryPage();
       page2.setPageNumber(2);
       page2.setText("Page 2 text");
       page2.setImageUrl("images/page-2.png");
@@ -200,19 +200,19 @@ class StoryControllerTest {
 
       story.setPages(Arrays.asList(page1, page2));
 
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
       story.setInput(input);
 
-      Story.StoryMetadata metadata = new Story.StoryMetadata();
+      final Story.StoryMetadata metadata = new Story.StoryMetadata();
       metadata.setPageCount(2);
       metadata.setEstimatedReadTime("10 seconds");
       metadata.setGeneratedAt(LocalDateTime.now());

@@ -26,7 +26,7 @@ public class FileStorageService {
    private final Path storageRoot;
    private final ObjectMapper objectMapper;
 
-   public FileStorageService(@Value("${storage.root}") String storageRoot) {
+   public FileStorageService(@Value("${storage.root}") final String storageRoot) {
       this.storageRoot = Paths.get(storageRoot);
       this.objectMapper = new ObjectMapper();
       this.objectMapper.registerModule(new JavaTimeModule());
@@ -37,138 +37,138 @@ public class FileStorageService {
       try {
          Files.createDirectories(storageRoot);
          log.info("Storage initialized at: {}", storageRoot.toAbsolutePath());
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to initialize storage", e);
       }
    }
 
-   public Path getStoryDirectory(String storyId) {
+   public Path getStoryDirectory(final String storyId) {
       return storageRoot.resolve(storyId);
    }
 
-   public Path getImagesDirectory(String storyId) {
+   public Path getImagesDirectory(final String storyId) {
       return getStoryDirectory(storyId).resolve("images");
    }
 
-   public Path getAudioDirectory(String storyId) {
+   public Path getAudioDirectory(final String storyId) {
       return getStoryDirectory(storyId).resolve("audio");
    }
 
-   public Path getNarrationDirectory(String storyId) {
+   public Path getNarrationDirectory(final String storyId) {
       return getAudioDirectory(storyId).resolve("narration");
    }
 
-   public Path getSoundEffectsDirectory(String storyId) {
+   public Path getSoundEffectsDirectory(final String storyId) {
       return getAudioDirectory(storyId).resolve("effects");
    }
 
-   public void createStoryDirectories(String storyId) {
+   public void createStoryDirectories(final String storyId) {
       try {
          Files.createDirectories(getImagesDirectory(storyId));
          Files.createDirectories(getNarrationDirectory(storyId));
          Files.createDirectories(getSoundEffectsDirectory(storyId));
          log.debug("Created directories for story: {}", storyId);
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to create story directories", e);
       }
    }
 
-   public void saveStoryMetadata(Story story) {
+   public void saveStoryMetadata(final Story story) {
       try {
-         Path metadataPath = getStoryDirectory(story.getId()).resolve("story.json");
+         final Path metadataPath = getStoryDirectory(story.getId()).resolve("story.json");
          objectMapper.writerWithDefaultPrettyPrinter().writeValue(metadataPath.toFile(), story);
          log.debug("Saved metadata for story: {}", story.getId());
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to save story metadata", e);
       }
    }
 
-   public Story loadStory(String storyId) {
+   public Story loadStory(final String storyId) {
       try {
-         Path metadataPath = getStoryDirectory(storyId).resolve("story.json");
+         final Path metadataPath = getStoryDirectory(storyId).resolve("story.json");
          if (!Files.exists(metadataPath)) {
             throw new StoryNotFoundException(storyId);
          }
          return objectMapper.readValue(metadataPath.toFile(), Story.class);
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to load story: " + storyId, e);
       }
    }
 
    public List<Story> loadAllStories() {
-      try (Stream<Path> paths = Files.list(storageRoot)) {
+      try (final Stream<Path> paths = Files.list(storageRoot)) {
          return paths.filter(Files::isDirectory).map(dir -> {
             try {
                return loadStory(dir.getFileName().toString());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                log.warn("Failed to load story from: {}", dir, e);
                return null;
             }
          }).filter(story -> story != null).collect(Collectors.toList());
-      } catch (IOException e) {
+      } catch (final IOException e) {
          log.error("Failed to list stories", e);
          return new ArrayList<>();
       }
    }
 
-   public void saveImage(String storyId, int pageNumber, byte[] imageData) {
+   public void saveImage(final String storyId, final int pageNumber, final byte[] imageData) {
       try {
-         Path imagePath = getImagesDirectory(storyId).resolve("page-" + pageNumber + ".png");
+         final Path imagePath = getImagesDirectory(storyId).resolve("page-" + pageNumber + ".png");
          FileUtils.writeByteArrayToFile(imagePath.toFile(), imageData);
          log.debug("Saved image for story {} page {}", storyId, pageNumber);
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to save image", e);
       }
    }
 
-   public void saveNarration(String storyId, int pageNumber, byte[] audioData) {
+   public void saveNarration(final String storyId, final int pageNumber, final byte[] audioData) {
       try {
-         Path audioPath = getNarrationDirectory(storyId).resolve("page-" + pageNumber + ".mp3");
+         final Path audioPath = getNarrationDirectory(storyId).resolve("page-" + pageNumber + ".mp3");
          FileUtils.writeByteArrayToFile(audioPath.toFile(), audioData);
          log.debug("Saved narration for story {} page {}", storyId, pageNumber);
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to save narration", e);
       }
    }
 
-   public void saveSoundEffect(String storyId, String effectName, byte[] audioData) {
+   public void saveSoundEffect(final String storyId, final String effectName, final byte[] audioData) {
       try {
-         Path effectPath = getSoundEffectsDirectory(storyId).resolve(effectName + ".mp3");
+         final Path effectPath = getSoundEffectsDirectory(storyId).resolve(effectName + ".mp3");
          FileUtils.writeByteArrayToFile(effectPath.toFile(), audioData);
          log.debug("Saved sound effect {} for story {}", effectName, storyId);
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to save sound effect", e);
       }
    }
 
-   public String getImageUrl(String storyId, int pageNumber) {
+   public String getImageUrl(final String storyId, final int pageNumber) {
       return String.format("/api/stories/%s/assets/images/page-%d.png", storyId, pageNumber);
    }
 
-   public String getNarrationUrl(String storyId, int pageNumber) {
+   public String getNarrationUrl(final String storyId, final int pageNumber) {
       return String.format("/api/stories/%s/assets/audio/narration/page-%d.mp3", storyId, pageNumber);
    }
 
-   public String getSoundEffectUrl(String storyId, String effectName) {
+   public String getSoundEffectUrl(final String storyId, final String effectName) {
       return String.format("/api/stories/%s/assets/audio/effects/%s.mp3", storyId, effectName);
    }
 
-   public byte[] loadAsset(String storyId, String assetPath) throws IOException {
-      Path fullPath = getStoryDirectory(storyId).resolve(assetPath);
+   public byte[] loadAsset(final String storyId, final String assetPath) throws IOException {
+      final Path fullPath = getStoryDirectory(storyId).resolve(assetPath);
       if (!Files.exists(fullPath)) {
          throw new IOException("Asset not found: " + assetPath);
       }
       return Files.readAllBytes(fullPath);
    }
 
-   public void deleteStory(String storyId) {
+   public void deleteStory(final String storyId) {
       try {
-         Path storyDir = getStoryDirectory(storyId);
+         final Path storyDir = getStoryDirectory(storyId);
          if (Files.exists(storyDir)) {
             FileUtils.deleteDirectory(storyDir.toFile());
             log.info("Deleted story: {}", storyId);
          }
-      } catch (IOException e) {
+      } catch (final IOException e) {
          throw new StoryGenerationException("Failed to delete story", e);
       }
    }

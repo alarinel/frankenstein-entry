@@ -5,7 +5,7 @@ import { Howl } from 'howler';
 import { storyApi } from '@/api/client';
 import { useStoryStore } from '@/store/storyStore';
 import { useAudioStore } from '@/store/audioStore';
-import { Story } from '@/types';
+
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { FloatingCandles } from '@/components/spooky/FloatingCandles';
 import { FloatingBats } from '@/components/spooky/FloatingBats';
@@ -35,15 +35,30 @@ export const ReadingPage = () => {
   useEffect(() => {
     loadStory();
     return () => {
+      // Cleanup audio on unmount
+      if (audioRef.current) {
+        audioRef.current.unload();
+        audioRef.current = null;
+      }
       cleanup();
     };
   }, [storyId]);
 
   useEffect(() => {
-    if (currentStory && currentStory.pages.length > 0) {
+    if (currentStory && currentStory.pages.length > 0 && currentStory.pages[currentPage]) {
       loadPageAudio(currentPage);
     }
-  }, [currentPage, currentStory]);
+    
+    // Cleanup function to stop audio when page changes
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.stop();
+        audioRef.current.unload();
+      }
+      setHighlightedWords([]);
+      setIsPlaying(false);
+    };
+  }, [currentPage, currentStory?.id]); // Only depend on currentPage and story ID, not entire story object
 
   const loadStory = async () => {
     if (!storyId) {
@@ -64,9 +79,11 @@ export const ReadingPage = () => {
   const loadPageAudio = (pageIndex: number) => {
     if (!currentStory || !currentStory.pages[pageIndex]) return;
 
-    // Clean up previous audio
+    // Clean up previous audio completely
     if (audioRef.current) {
+      audioRef.current.stop();
       audioRef.current.unload();
+      audioRef.current = null;
     }
 
     const page = currentStory.pages[pageIndex];
@@ -75,6 +92,7 @@ export const ReadingPage = () => {
     const howl = new Howl({
       src: [audioUrl],
       html5: true,
+      preload: true,
       onplay: () => {
         setIsPlaying(true);
         startTextHighlighting(page.text, page.duration);
@@ -83,12 +101,18 @@ export const ReadingPage = () => {
         setIsPlaying(false);
         setHighlightedWords([]);
 
-        // Auto-advance to next page
-        setTimeout(() => {
-          handleNextPage();
-        }, 2000);
+        // Auto-advance to next page only if not manually navigating
+        if (!isFlipping) {
+          setTimeout(() => {
+            handleNextPage();
+          }, 2000);
+        }
       },
-      onerror: (id, error) => {
+      onloaderror: (_id: number, error: unknown) => {
+        console.error('Audio load error:', error);
+        toast.error('Failed to load audio');
+      },
+      onplayerror: (_id: number, error: unknown) => {
         console.error('Audio playback error:', error);
         toast.error('Audio playback failed');
       },
@@ -97,9 +121,11 @@ export const ReadingPage = () => {
     audioRef.current = howl;
     setCurrentPageAudio(howl);
 
-    // Auto-play
+    // Auto-play after a short delay to ensure audio is loaded
     setTimeout(() => {
-      howl.play();
+      if (audioRef.current === howl) { // Only play if this is still the current audio
+        howl.play();
+      }
     }, 500);
   };
 
@@ -115,16 +141,22 @@ export const ReadingPage = () => {
   };
 
   const handleNextPage = () => {
-    if (!currentStory) return;
+    if (!currentStory || isFlipping) return;
+
+    // Stop current audio
+    if (audioRef.current) {
+      audioRef.current.stop();
+    }
 
     if (currentPage < currentStory.pages.length - 1) {
       setIsFlipping(true);
       setHighlightedWords([]);
+      setIsPlaying(false);
 
       setTimeout(() => {
         setCurrentPage(currentPage + 1);
         setIsFlipping(false);
-      }, 1000);
+      }, 800);
     } else {
       // Story complete
       navigate(`/complete/${storyId}`);
@@ -132,14 +164,32 @@ export const ReadingPage = () => {
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 0) {
+    if (currentPage > 0 && !isFlipping) {
+      // Stop current audio
+      if (audioRef.current) {
+        audioRef.current.stop();
+      }
+
       setIsFlipping(true);
       setHighlightedWords([]);
+      setIsPlaying(false);
 
       setTimeout(() => {
         setCurrentPage(currentPage - 1);
         setIsFlipping(false);
-      }, 1000);
+      }, 800);
+    }
+  };
+
+  const handleTogglePlayPause = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
     }
   };
 
@@ -194,22 +244,47 @@ export const ReadingPage = () => {
           {/* Sparkles during page flip */}
           <MagicSparkles isActive={isFlipping} />
 
-          {/* Book Shadow */}
+          {/* Book Shadow - Multiple layers for depth */}
           <div className="absolute inset-0 bg-gradient-to-br from-spooky-purple-900/40 to-spooky-pink-900/40 rounded-3xl blur-3xl transform translate-y-8" />
+          <div className="absolute inset-0 bg-black/30 rounded-3xl blur-2xl transform translate-y-6 scale-95" />
+          <div className="absolute inset-0 bg-black/20 rounded-3xl blur-xl transform translate-y-4 scale-98" />
 
-          {/* Book Pages */}
+          {/* Book Pages with Concave Effect */}
           <div
-            className="relative grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-1 bg-gradient-to-br from-amber-50 via-amber-100 to-yellow-50 rounded-3xl shadow-2xl overflow-hidden min-h-[600px]"
+            className="relative grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-1 bg-gradient-to-br from-amber-50 via-amber-100 to-yellow-50 rounded-3xl overflow-hidden min-h-[600px]"
             style={{
               transformStyle: 'preserve-3d',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 2px 4px 0 rgba(255, 255, 255, 0.3)',
+              boxShadow: `
+                0 30px 60px -15px rgba(0, 0, 0, 0.6),
+                0 20px 40px -10px rgba(0, 0, 0, 0.4),
+                0 10px 20px -5px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px 0 rgba(0, 0, 0, 0.1)
+              `,
             }}
           >
-            {/* Book Spine */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 transform -translate-x-1/2 hidden md:block shadow-lg z-20" />
+            {/* Book Spine with depth */}
+            <div 
+              className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 transform -translate-x-1/2 hidden md:block z-20"
+              style={{
+                boxShadow: 'inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.3)',
+              }}
+            />
 
-            {/* Left Page - Image */}
-            <div className="relative p-8 md:p-12 flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100">
+            {/* Left Page - Image with concave effect */}
+            <div 
+              className="relative p-8 md:p-12 flex items-center justify-center bg-gradient-to-br from-amber-50 to-amber-100"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: 'perspective(2000px) rotateY(3deg)',
+                boxShadow: `
+                  inset -30px 0 50px -20px rgba(0, 0, 0, 0.25),
+                  inset -10px 0 20px -10px rgba(0, 0, 0, 0.15),
+                  inset 0 10px 20px -10px rgba(0, 0, 0, 0.1),
+                  inset 0 -10px 20px -10px rgba(0, 0, 0, 0.1)
+                `,
+              }}
+            >
               <AnimatePresence mode="wait">
                 <BookPage3D
                   key={`image-${currentPage}`}
@@ -234,8 +309,20 @@ export const ReadingPage = () => {
               </AnimatePresence>
             </div>
 
-            {/* Right Page - Text */}
-            <div className="relative p-8 md:p-12 flex items-center justify-center bg-gradient-to-br from-amber-100 to-yellow-50">
+            {/* Right Page - Text with concave effect */}
+            <div 
+              className="relative p-8 md:p-12 flex items-center justify-center bg-gradient-to-br from-amber-100 to-yellow-50"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: 'perspective(2000px) rotateY(-3deg)',
+                boxShadow: `
+                  inset 30px 0 50px -20px rgba(0, 0, 0, 0.25),
+                  inset 10px 0 20px -10px rgba(0, 0, 0, 0.15),
+                  inset 0 10px 20px -10px rgba(0, 0, 0, 0.1),
+                  inset 0 -10px 20px -10px rgba(0, 0, 0, 0.1)
+                `,
+              }}
+            >
               <AnimatePresence mode="wait">
                 <BookPage3D
                   key={`text-${currentPage}`}
@@ -246,32 +333,24 @@ export const ReadingPage = () => {
                   <div className="flex flex-col justify-between h-full">
                     {/* Text Content */}
                     <div className="flex-1 flex items-center">
-                      <div className="font-serif text-gray-800 text-lg md:text-xl leading-relaxed">
+                      <div className="font-serif text-gray-800 text-lg md:text-xl leading-loose">
                         {words.map((word, index) => (
-                          <motion.span
+                          <span
                             key={index}
-                            className={`inline-block mr-1.5 transition-all duration-300 ${
+                            className={`inline-block mr-2 transition-all duration-300 ${
                               highlightedWords.includes(index)
-                                ? 'text-transparent bg-gradient-to-r from-spooky-purple-600 via-spooky-pink-600 to-spooky-orange-600 bg-clip-text font-bold scale-110'
+                                ? 'text-transparent bg-gradient-to-r from-spooky-purple-600 via-spooky-pink-600 to-spooky-orange-600 bg-clip-text font-bold'
                                 : 'text-gray-700'
                             }`}
                             style={{
                               textShadow: highlightedWords.includes(index)
                                 ? '0 0 20px rgba(168, 85, 247, 0.5)'
                                 : 'none',
+                              transform: highlightedWords.includes(index) ? 'scale(1.05)' : 'scale(1)',
                             }}
-                            animate={
-                              highlightedWords.includes(index)
-                                ? {
-                                    y: [-8, 0],
-                                    scale: [1, 1.15, 1.1],
-                                    transition: { duration: 0.4, type: 'spring' },
-                                  }
-                                : {}
-                            }
                           >
                             {word}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -293,7 +372,7 @@ export const ReadingPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
             <SpookyButton
               onClick={handlePreviousPage}
-              disabled={currentPage === 0}
+              disabled={currentPage === 0 || isFlipping}
               variant="secondary"
               className="w-full md:w-auto"
             >
@@ -301,20 +380,29 @@ export const ReadingPage = () => {
               Previous Page
             </SpookyButton>
 
-            <div className="flex items-center gap-4 text-center">
-              <motion.div
-                className="px-6 py-3 bg-dark-800/80 backdrop-blur-sm rounded-full border-2 border-spooky-purple-600/30 shadow-lg"
-                animate={{ scale: isPlaying ? [1, 1.05, 1] : 1 }}
-                transition={{ duration: 1, repeat: isPlaying ? Infinity : 0 }}
+            <div className="flex items-center gap-4">
+              <SpookyButton
+                onClick={handleTogglePlayPause}
+                variant="ghost"
+                className="w-full md:w-auto"
               >
-                <p className="text-spooky-purple-300 font-fun text-sm">
-                  {isPlaying ? '🎵 Playing...' : '⏸️ Paused'}
-                </p>
-              </motion.div>
+                {isPlaying ? (
+                  <>
+                    <span className="text-xl mr-2">⏸️</span>
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <span className="text-xl mr-2">▶️</span>
+                    Play
+                  </>
+                )}
+              </SpookyButton>
             </div>
 
             <SpookyButton
               onClick={handleNextPage}
+              disabled={isFlipping}
               variant="primary"
               className="w-full md:w-auto"
             >

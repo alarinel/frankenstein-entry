@@ -1,6 +1,9 @@
 package com.frankenstein.story.service;
 
-import com.frankenstein.story.model.*;
+import com.frankenstein.story.model.Story;
+import com.frankenstein.story.model.StoryInput;
+import com.frankenstein.story.model.StoryStatus;
+import com.frankenstein.story.model.StoryStructure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -15,6 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests for StoryOrchestrationService
+ *
+ * @author alarinel@gmail.com
+ */
 @ExtendWith(MockitoExtension.class)
 class StoryOrchestrationServiceTest {
 
@@ -28,231 +37,247 @@ class StoryOrchestrationServiceTest {
    private AudioGenerationService audioGenerationService;
 
    @Mock
-   private ProgressNotificationService progressNotificationService;
+   private FileStorageService fileStorageService;
+
+   @Mock
+   private ProgressNotificationService progressService;
 
    private StoryOrchestrationService service;
 
    @BeforeEach
    void setUp() {
-      service = new StoryOrchestrationService(storyGenerationService, imageGenerationService, audioGenerationService, progressNotificationService);
+      service = new StoryOrchestrationService(storyGenerationService,
+            imageGenerationService,
+            audioGenerationService,
+            fileStorageService,
+            progressService);
    }
 
    @Test
-   void generateCompleteStory_Success() throws Exception {
+   void initiateStoryGeneration_CreatesStoryWithId() {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("enchanted forest")
-                                   .villain("dark wizard")
-                                   .specialItem("magic wand")
-                                   .characterTrait("brave")
-                                   .goal("save the forest")
-                                   .timePeriod("medieval times")
-                                   .mood("adventurous")
-                                   .build();
-
-      StoryStructure.PageStructure page1 = StoryStructure.PageStructure.builder()
-                                                                       .pageNumber(1)
-                                                                       .text("Luna entered the enchanted forest.")
-                                                                       .imagePrompt("A brave girl entering a magical forest")
-                                                                       .soundEffects(Arrays.asList("forest_ambience"))
-                                                                       .mood("mysterious")
-                                                                       .build();
-
-      StoryStructure.PageStructure page2 = StoryStructure.PageStructure.builder()
-                                                                       .pageNumber(2)
-                                                                       .text("She found a magic wand.")
-                                                                       .imagePrompt("A girl discovering a glowing wand")
-                                                                       .soundEffects(Arrays.asList("magic_sparkle"))
-                                                                       .mood("exciting")
-                                                                       .build();
-
-      StoryStructure storyStructure = StoryStructure.builder().title("Luna's Adventure").pages(Arrays.asList(page1, page2)).build();
-
-      when(storyGenerationService.generateStory(input)).thenReturn(storyStructure);
-      when(imageGenerationService.generateImage(anyString(), anyInt(), anyLong())).thenReturn(CompletableFuture.completedFuture("images/page-1.png"))
-                                                                                  .thenReturn(CompletableFuture.completedFuture("images/page-2.png"));
-      when(audioGenerationService.generateNarration(anyString(), anyInt())).thenReturn(CompletableFuture.completedFuture("audio/narration-1.mp3"))
-                                                                           .thenReturn(CompletableFuture.completedFuture("audio/narration-2.mp3"));
-      when(audioGenerationService.generateAllSoundEffects(anyList(), anyInt())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(
-            "audio/effect-1.mp3"))).thenReturn(CompletableFuture.completedFuture(Arrays.asList("audio/effect-2.mp3")));
-      when(audioGenerationService.estimateAudioDuration(anyString())).thenReturn(5.0);
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("enchanted forest")
+                                         .villain("dark wizard")
+                                         .specialItem("magic wand")
+                                         .characterTrait("brave")
+                                         .goal("save the forest")
+                                         .timePeriod("medieval times")
+                                         .mood("adventurous")
+                                         .build();
 
       // When
-      String storyId = "test-story-id";
-      Story result = service.generateCompleteStory(input, storyId);
+      final String storyId = service.initiateStoryGeneration(input);
 
       // Then
-      assertThat(result).isNotNull();
-      assertThat(result.getId()).isEqualTo(storyId);
-      assertThat(result.getTitle()).isEqualTo("Luna's Adventure");
-      assertThat(result.getStatus()).isEqualTo(StoryStatus.COMPLETED);
-      assertThat(result.getPages()).hasSize(2);
+      assertThat(storyId).isNotNull();
+      assertThat(storyId).isNotEmpty();
+      verify(fileStorageService).createStoryDirectories(storyId);
+   }
 
-      // Verify first page
-      Story.StoryPage firstPage = result.getPages().get(0);
-      assertThat(firstPage.getPageNumber()).isEqualTo(1);
-      assertThat(firstPage.getText()).contains("Luna");
-      assertThat(firstPage.getImageUrl()).isEqualTo("images/page-1.png");
-      assertThat(firstPage.getNarrationUrl()).isEqualTo("audio/narration-1.mp3");
+   @Test
+   void generateStoryAsync_Success() throws Exception {
+      // Given
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("enchanted forest")
+                                         .villain("dark wizard")
+                                         .specialItem("magic wand")
+                                         .characterTrait("brave")
+                                         .goal("save the forest")
+                                         .timePeriod("medieval times")
+                                         .mood("adventurous")
+                                         .build();
+
+      final String storyId = service.initiateStoryGeneration(input);
+
+      final StoryStructure.PageStructure page1 = StoryStructure.PageStructure.builder()
+                                                                             .pageNumber(1)
+                                                                             .text("Luna entered the enchanted forest.")
+                                                                             .imagePrompt("A brave girl entering a magical forest")
+                                                                             .soundEffects(List.of("forest_ambience"))
+                                                                             .mood("mysterious")
+                                                                             .build();
+
+      final StoryStructure.PageStructure page2 = StoryStructure.PageStructure.builder()
+                                                                             .pageNumber(2)
+                                                                             .text("She found a magic wand.")
+                                                                             .imagePrompt("A girl discovering a glowing wand")
+                                                                             .soundEffects(List.of("magic_sparkle"))
+                                                                             .mood("exciting")
+                                                                             .build();
+
+      final StoryStructure storyStructure = StoryStructure.builder().title("Luna's Adventure").imageSeed(12345).pages(Arrays.asList(page1, page2)).build();
+
+      final byte[] mockImageData = "mock-image-data".getBytes();
+      final byte[] mockAudioData = "mock-audio-data".getBytes();
+
+      when(storyGenerationService.generateStory(any(StoryInput.class))).thenReturn(storyStructure);
+      when(imageGenerationService.generateImageWithRetry(anyString(),
+            anyInt(),
+            anyInt())).thenReturn(CompletableFuture.completedFuture(mockImageData));
+      when(audioGenerationService.generateNarration(anyString())).thenReturn(CompletableFuture.completedFuture(mockAudioData));
+      when(audioGenerationService.generateSoundEffect(anyString())).thenReturn(CompletableFuture.completedFuture(mockAudioData));
+      when(audioGenerationService.estimateNarrationDuration(anyString())).thenReturn(5.0);
+      when(fileStorageService.getImageUrl(anyString(), anyInt())).thenReturn("http://localhost/images/page-1.png");
+      when(fileStorageService.getNarrationUrl(anyString(), anyInt())).thenReturn("http://localhost/audio/narration-1.mp3");
+      when(fileStorageService.getSoundEffectUrl(anyString(), anyString())).thenReturn("http://localhost/audio/effect.mp3");
+
+      // When
+      final CompletableFuture<Story> result = service.generateStoryAsync(storyId);
+      final Story story = result.get();
+
+      // Then
+      assertThat(story).isNotNull();
+      assertThat(story.getId()).isEqualTo(storyId);
+      assertThat(story.getTitle()).isEqualTo("Luna's Adventure");
+      assertThat(story.getStatus()).isEqualTo(StoryStatus.COMPLETED);
+      assertThat(story.getPages()).hasSize(2);
 
       // Verify services were called
-      verify(storyGenerationService).generateStory(input);
-      verify(imageGenerationService, times(2)).generateImage(anyString(), anyInt(), anyLong());
-      verify(audioGenerationService, times(2)).generateNarration(anyString(), anyInt());
-      verify(audioGenerationService, times(2)).generateAllSoundEffects(anyList(), anyInt());
-      verify(progressNotificationService, atLeastOnce()).sendProgress(eq(storyId), any(GenerationProgress.class));
+      verify(storyGenerationService).generateStory(any(StoryInput.class));
+      verify(imageGenerationService, times(2)).generateImageWithRetry(anyString(), anyInt(), eq(3));
+      verify(audioGenerationService, times(2)).generateNarration(anyString());
+      verify(fileStorageService).saveStoryMetadata(any(Story.class));
+      verify(progressService).sendComplete(storyId);
    }
 
    @Test
-   void generateCompleteStory_SendsProgressUpdates() throws Exception {
+   void generateStoryAsync_SendsProgressUpdates() throws Exception {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
 
-      StoryStructure.PageStructure page = StoryStructure.PageStructure.builder()
-                                                                      .pageNumber(1)
-                                                                      .text("Test text")
-                                                                      .imagePrompt("Test prompt")
-                                                                      .soundEffects(Arrays.asList("test_effect"))
-                                                                      .mood("test")
-                                                                      .build();
+      final String storyId = service.initiateStoryGeneration(input);
 
-      StoryStructure storyStructure = StoryStructure.builder().title("Test Story").pages(Arrays.asList(page)).build();
+      final StoryStructure.PageStructure page = StoryStructure.PageStructure.builder()
+                                                                            .pageNumber(1)
+                                                                            .text("Test text")
+                                                                            .imagePrompt("Test prompt")
+                                                                            .soundEffects(List.of("test_effect"))
+                                                                            .mood("test")
+                                                                            .build();
 
-      when(storyGenerationService.generateStory(input)).thenReturn(storyStructure);
-      when(imageGenerationService.generateImage(anyString(), anyInt(), anyLong())).thenReturn(CompletableFuture.completedFuture("images/test.png"));
-      when(audioGenerationService.generateNarration(anyString(), anyInt())).thenReturn(CompletableFuture.completedFuture("audio/test.mp3"));
-      when(audioGenerationService.generateAllSoundEffects(anyList(), anyInt())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(
-            "audio/effect.mp3")));
-      when(audioGenerationService.estimateAudioDuration(anyString())).thenReturn(5.0);
+      final StoryStructure storyStructure = StoryStructure.builder().title("Test Story").imageSeed(12345).pages(Collections.singletonList(page)).build();
+
+      final byte[] mockData = "mock-data".getBytes();
+
+      when(storyGenerationService.generateStory(any(StoryInput.class))).thenReturn(storyStructure);
+      when(imageGenerationService.generateImageWithRetry(anyString(), anyInt(), anyInt())).thenReturn(CompletableFuture.completedFuture(mockData));
+      when(audioGenerationService.generateNarration(anyString())).thenReturn(CompletableFuture.completedFuture(mockData));
+      when(audioGenerationService.generateSoundEffect(anyString())).thenReturn(CompletableFuture.completedFuture(mockData));
+      when(audioGenerationService.estimateNarrationDuration(anyString())).thenReturn(5.0);
+      when(fileStorageService.getImageUrl(anyString(), anyInt())).thenReturn("http://localhost/images/test.png");
+      when(fileStorageService.getNarrationUrl(anyString(), anyInt())).thenReturn("http://localhost/audio/test.mp3");
+      when(fileStorageService.getSoundEffectUrl(anyString(), anyString())).thenReturn("http://localhost/audio/effect.mp3");
 
       // When
-      service.generateCompleteStory(input, "test-id");
+      service.generateStoryAsync(storyId).get();
 
       // Then - Verify progress updates for each stage
-      verify(progressNotificationService).sendProgress(eq("test-id"), argThat(progress -> progress.getStatus() == StoryStatus.GENERATING_STORY));
-      verify(progressNotificationService).sendProgress(eq("test-id"), argThat(progress -> progress.getStatus() == StoryStatus.GENERATING_IMAGES));
-      verify(progressNotificationService).sendProgress(eq("test-id"), argThat(progress -> progress.getStatus() == StoryStatus.GENERATING_AUDIO));
-      verify(progressNotificationService).sendProgress(eq("test-id"), argThat(progress -> progress.getStatus() == StoryStatus.ASSEMBLING));
-      verify(progressNotificationService).sendProgress(eq("test-id"), argThat(progress -> progress.getStatus() == StoryStatus.COMPLETED));
+      verify(progressService).sendStarted(storyId);
+      verify(progressService).sendGeneratingStory(storyId);
+      verify(progressService).sendStoryComplete(storyId);
+      verify(progressService).sendImagesComplete(storyId);
+      verify(progressService).sendAssembling(storyId);
+      verify(progressService).sendComplete(storyId);
    }
 
    @Test
-   void generateCompleteStory_WithStoryGenerationFailure_SendsFailedStatus() {
+   void generateStoryAsync_WithStoryGenerationFailure_SendsError() throws Exception {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
-
-      when(storyGenerationService.generateStory(input)).thenThrow(new RuntimeException("Story generation failed"));
-
-      // When
-      String storyId = "test-id";
-      Story result = service.generateCompleteStory(input, storyId);
-
-      // Then
-      assertThat(result).isNotNull();
-      assertThat(result.getStatus()).isEqualTo(StoryStatus.FAILED);
-      assertThat(result.getErrorMessage()).isNotNull();
-
-      verify(progressNotificationService).sendProgress(eq(storyId), argThat(progress -> progress.getStatus() == StoryStatus.FAILED));
-   }
-
-   @Test
-   void generateCompleteStory_WithImageGenerationFailure_SendsFailedStatus() throws Exception {
-      // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
-
-      StoryStructure.PageStructure page = StoryStructure.PageStructure.builder()
-                                                                      .pageNumber(1)
-                                                                      .text("Test")
-                                                                      .imagePrompt("Test")
-                                                                      .soundEffects(Arrays.asList("test"))
-                                                                      .mood("test")
-                                                                      .build();
-
-      StoryStructure storyStructure = StoryStructure.builder().title("Test").pages(Arrays.asList(page)).build();
-
-      when(storyGenerationService.generateStory(input)).thenReturn(storyStructure);
-      when(imageGenerationService.generateImage(anyString(), anyInt(), anyLong())).thenReturn(CompletableFuture.failedFuture(new RuntimeException(
-            "Image generation failed")));
-
-      // When
-      String storyId = "test-id";
-      Story result = service.generateCompleteStory(input, storyId);
-
-      // Then
-      assertThat(result.getStatus()).isEqualTo(StoryStatus.FAILED);
-      verify(progressNotificationService).sendProgress(eq(storyId), argThat(progress -> progress.getStatus() == StoryStatus.FAILED));
-   }
-
-   @Test
-   void generateCompleteStory_CalculatesMetadataCorrectly() throws Exception {
-      // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
-
-      List<StoryStructure.PageStructure> pages = Arrays.asList(createTestPage(1), createTestPage(2), createTestPage(3));
-
-      StoryStructure storyStructure = StoryStructure.builder().title("Test Story").pages(pages).build();
-
-      when(storyGenerationService.generateStory(input)).thenReturn(storyStructure);
-      when(imageGenerationService.generateImage(anyString(), anyInt(), anyLong())).thenReturn(CompletableFuture.completedFuture("images/test.png"));
-      when(audioGenerationService.generateNarration(anyString(), anyInt())).thenReturn(CompletableFuture.completedFuture("audio/test.mp3"));
-      when(audioGenerationService.generateAllSoundEffects(anyList(), anyInt())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(
-            "audio/effect.mp3")));
-      when(audioGenerationService.estimateAudioDuration(anyString())).thenReturn(5.0);
-
-      // When
-      Story result = service.generateCompleteStory(input, "test-id");
-
-      // Then
-      assertThat(result.getMetadata()).isNotNull();
-      assertThat(result.getMetadata().getPageCount()).isEqualTo(3);
-      assertThat(result.getMetadata().getEstimatedReadTime()).isNotNull();
-      assertThat(result.getMetadata().getGeneratedAt()).isNotNull();
-   }
-
-   private StoryStructure.PageStructure createTestPage(int pageNumber) {
-      return StoryStructure.PageStructure.builder()
-                                         .pageNumber(pageNumber)
-                                         .text("Page " + pageNumber + " text")
-                                         .imagePrompt("Page " + pageNumber + " image")
-                                         .soundEffects(Arrays.asList("effect_" + pageNumber))
-                                         .mood("test")
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
                                          .build();
+
+      final String storyId = service.initiateStoryGeneration(input);
+
+      when(storyGenerationService.generateStory(any(StoryInput.class))).thenThrow(new RuntimeException("Story generation failed"));
+
+      // When
+      final CompletableFuture<Story> result = service.generateStoryAsync(storyId);
+
+      // Then
+      assertThat(result).isCompletedExceptionally();
+
+      final Story story = service.getStory(storyId);
+      assertThat(story.getStatus()).isEqualTo(StoryStatus.FAILED);
+      assertThat(story.getErrorMessage()).isNotNull();
+
+      verify(progressService).sendError(eq(storyId), anyString());
+   }
+
+   @Test
+   void getStory_ReturnsStoryFromMemory() {
+      // Given
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
+
+      final String storyId = service.initiateStoryGeneration(input);
+
+      // When
+      final Story story = service.getStory(storyId);
+
+      // Then
+      assertThat(story).isNotNull();
+      assertThat(story.getId()).isEqualTo(storyId);
+      assertThat(story.getInput()).isEqualTo(input);
+   }
+
+   @Test
+   void getStory_LoadsFromDiskIfNotInMemory() {
+      // Given
+      final String storyId = "non-existent-id";
+      final Story mockStory = Story.builder().id(storyId).title("Test Story").status(StoryStatus.COMPLETED).build();
+
+      when(fileStorageService.loadStory(storyId)).thenReturn(mockStory);
+
+      // When
+      final Story story = service.getStory(storyId);
+
+      // Then
+      assertThat(story).isNotNull();
+      assertThat(story.getId()).isEqualTo(storyId);
+      verify(fileStorageService).loadStory(storyId);
+   }
+
+   @Test
+   void getAllStories_LoadsFromFileStorage() {
+      // Given
+      final List<Story> mockStories = Arrays.asList(Story.builder().id("story-1").title("Story 1").build(),
+            Story.builder().id("story-2").title("Story 2").build());
+
+      when(fileStorageService.loadAllStories()).thenReturn(mockStories);
+
+      // When
+      final List<Story> stories = service.getAllStories();
+
+      // Then
+      assertThat(stories).hasSize(2);
+      verify(fileStorageService).loadAllStories();
    }
 }

@@ -30,49 +30,49 @@ class FileStorageServiceTest {
    @Test
    void storeImage_Success() {
       // Given
-      byte[] imageData = "fake-image-data".getBytes();
-      String filename = "test-image.png";
+      final byte[] imageData = "fake-image-data".getBytes();
+      final String filename = "test-image.png";
 
       // When
-      String storedPath = service.storeImage(imageData, filename);
+      final String storedPath = service.storeImage(imageData, filename);
 
       // Then
       assertThat(storedPath).isNotNull();
       assertThat(storedPath).contains("images");
       assertThat(storedPath).contains(filename);
 
-      Path imagePath = tempDir.resolve(storedPath);
+      final Path imagePath = tempDir.resolve(storedPath);
       assertThat(Files.exists(imagePath)).isTrue();
    }
 
    @Test
    void storeAudio_Success() {
       // Given
-      byte[] audioData = "fake-audio-data".getBytes();
-      String filename = "test-audio.mp3";
+      final byte[] audioData = "fake-audio-data".getBytes();
+      final String filename = "test-audio.mp3";
 
       // When
-      String storedPath = service.storeAudio(audioData, filename);
+      final String storedPath = service.storeAudio(audioData, filename);
 
       // Then
       assertThat(storedPath).isNotNull();
       assertThat(storedPath).contains("audio");
       assertThat(storedPath).contains(filename);
 
-      Path audioPath = tempDir.resolve(storedPath);
+      final Path audioPath = tempDir.resolve(storedPath);
       assertThat(Files.exists(audioPath)).isTrue();
    }
 
    @Test
    void loadAsBytes_Success() throws IOException {
       // Given
-      byte[] originalData = "test-content".getBytes();
-      Path testFile = tempDir.resolve("images").resolve("test.png");
+      final byte[] originalData = "test-content".getBytes();
+      final Path testFile = tempDir.resolve("images").resolve("test.png");
       Files.createDirectories(testFile.getParent());
       Files.write(testFile, originalData);
 
       // When
-      byte[] loadedData = service.loadAsBytes("images/test.png");
+      final byte[] loadedData = service.loadAsBytes("images/test.png");
 
       // Then
       assertThat(loadedData).isEqualTo(originalData);
@@ -81,7 +81,7 @@ class FileStorageServiceTest {
    @Test
    void loadAsBytes_FileNotFound_ThrowsException() {
       // Given
-      String nonExistentFile = "images/does-not-exist.png";
+      final String nonExistentFile = "images/does-not-exist.png";
 
       // When/Then
       assertThatThrownBy(() -> service.loadAsBytes(nonExistentFile)).isInstanceOf(FileStorageException.class).hasMessageContaining("not found");
@@ -90,8 +90,8 @@ class FileStorageServiceTest {
    @Test
    void storeImage_WithNullData_ThrowsException() {
       // Given
-      byte[] nullData = null;
-      String filename = "test.png";
+      final byte[] nullData = null;
+      final String filename = "test.png";
 
       // When/Then
       assertThatThrownBy(() -> service.storeImage(nullData, filename)).isInstanceOf(NullPointerException.class);
@@ -100,8 +100,8 @@ class FileStorageServiceTest {
    @Test
    void storeAudio_WithNullFilename_ThrowsException() {
       // Given
-      byte[] audioData = "test-data".getBytes();
-      String nullFilename = null;
+      final byte[] audioData = "test-data".getBytes();
+      final String nullFilename = null;
 
       // When/Then
       assertThatThrownBy(() -> service.storeAudio(audioData, nullFilename)).isInstanceOf(NullPointerException.class);
@@ -110,9 +110,9 @@ class FileStorageServiceTest {
    @Test
    void deleteFile_Success() throws IOException {
       // Given
-      byte[] data = "test-data".getBytes();
-      String storedPath = service.storeImage(data, "to-delete.png");
-      Path filePath = tempDir.resolve(storedPath);
+      final byte[] data = "test-data".getBytes();
+      final String storedPath = service.storeImage(data, "to-delete.png");
+      final Path filePath = tempDir.resolve(storedPath);
       assertThat(Files.exists(filePath)).isTrue();
 
       // When
@@ -125,8 +125,8 @@ class FileStorageServiceTest {
    @Test
    void init_CreatesDirectories() {
       // Given
-      Path imagesDir = tempDir.resolve("images");
-      Path audioDir = tempDir.resolve("audio");
+      final Path imagesDir = tempDir.resolve("images");
+      final Path audioDir = tempDir.resolve("audio");
 
       // When - init() is called in @BeforeEach
 
@@ -140,13 +140,13 @@ class FileStorageServiceTest {
    @Test
    void storeImage_GeneratesUniqueFilenames() {
       // Given
-      byte[] data1 = "image1".getBytes();
-      byte[] data2 = "image2".getBytes();
-      String filename = "same-name.png";
+      final byte[] data1 = "image1".getBytes();
+      final byte[] data2 = "image2".getBytes();
+      final String filename = "same-name.png";
 
       // When
-      String path1 = service.storeImage(data1, filename);
-      String path2 = service.storeImage(data2, filename);
+      final String path1 = service.storeImage(data1, filename);
+      final String path2 = service.storeImage(data2, filename);
 
       // Then
       assertThat(path1).isNotEqualTo(path2);

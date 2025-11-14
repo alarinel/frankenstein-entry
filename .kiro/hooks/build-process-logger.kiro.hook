@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "Build Process Logger",
+  "description": "Logs each interaction and change to BUILD_PROCESS.md to document the development journey",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.java",
+      "**/*.yml",
+      "**/*.yaml",
+      "**/*.json",
+      "**/*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file has been edited. Please update BUILD_PROCESS.md with a log entry documenting this change:\n\n1. Read the current BUILD_PROCESS.md file (create it if it doesn't exist)\n2. Analyze what was changed and why based on the file modifications\n3. Append a new entry to BUILD_PROCESS.md with:\n   - Timestamp\n   - Files changed\n   - Brief description of what was done\n   - The problem being solved or feature being added\n   - Any key decisions made\n\nFormat each entry as:\n\n---\n## [Timestamp] - [Brief Title]\n\n**Files Changed:**\n- file1.ext\n- file2.ext\n\n**What Was Done:**\n[Description of changes]\n\n**Why:**\n[Problem being solved or feature being added]\n\n**Key Decisions:**\n- Decision 1\n- Decision 2\n\nKeep entries concise but informative. Focus on the 'why' and 'how' rather than just listing changes."
+  }
+}

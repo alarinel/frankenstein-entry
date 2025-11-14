@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class FrankensteinApplication {
 
-   public static void main(String[] args) {
+   public static void main(final String[] args) {
       // Load .env file if it exists
       try {
          // Try multiple locations for .env file
@@ -24,17 +24,17 @@ public class FrankensteinApplication {
          try {
             dotenv = Dotenv.configure().directory("./").load();
             System.out.println("✓ Loaded .env file from current directory");
-         } catch (Exception e1) {
+         } catch (final Exception e1) {
             // Try backend directory
             try {
                dotenv = Dotenv.configure().directory("./backend").load();
                System.out.println("✓ Loaded .env file from backend directory");
-            } catch (Exception e2) {
+            } catch (final Exception e2) {
                // Try parent directory
                try {
                   dotenv = Dotenv.configure().directory("../").load();
                   System.out.println("✓ Loaded .env file from parent directory");
-               } catch (Exception e3) {
+               } catch (final Exception e3) {
                   System.out.println("⚠ No .env file found in any location, using system environment variables");
                }
             }
@@ -48,7 +48,7 @@ public class FrankensteinApplication {
             });
          }
 
-      } catch (Exception e) {
+      } catch (final Exception e) {
          System.out.println("⚠ Error loading .env file: " + e.getMessage());
       }
 

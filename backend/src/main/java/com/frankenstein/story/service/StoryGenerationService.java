@@ -35,44 +35,45 @@ public class StoryGenerationService {
    private final int defaultPages;
    private final SecureRandom random;
 
-   public StoryGenerationService(AnthropicChatModel chatModel, ObjectMapper objectMapper, @Value("${generation.default-pages}") int defaultPages) {
+   public StoryGenerationService(final AnthropicChatModel chatModel, final ObjectMapper objectMapper, @Value("${generation.default-pages}")
+   final int defaultPages) {
       this.chatModel = chatModel;
       this.objectMapper = objectMapper;
       this.defaultPages = defaultPages;
       this.random = new SecureRandom();
    }
 
-   public StoryStructure generateStory(StoryInput input) {
+   public StoryStructure generateStory(final StoryInput input) {
       log.info("Generating story for character: {}", input.getCharacterName());
 
       validateInput(input);
 
       try {
-         String prompt = buildPrompt(input);
-         ChatResponse response = chatModel.call(new Prompt(prompt));
-         String content = response.getResult().getOutput().getContent();
+         final String prompt = buildPrompt(input);
+         final ChatResponse response = chatModel.call(new Prompt(prompt));
+         final String content = response.getResult().getOutput().getContent();
 
          log.debug("Claude response: {}", content);
 
-         String jsonContent = extractJson(content);
-         StoryStructure structure = objectMapper.readValue(jsonContent, StoryStructure.class);
+         final String jsonContent = extractJson(content);
+         final StoryStructure structure = objectMapper.readValue(jsonContent, StoryStructure.class);
 
          log.info("Successfully generated story: {} with {} pages", structure.getTitle(), structure.getPages().size());
 
          return structure;
-      } catch (JsonProcessingException e) {
+      } catch (final JsonProcessingException e) {
          log.error("Failed to parse story structure from Claude response", e);
          throw new StoryGenerationException("Failed to parse AI response into story structure", e);
-      } catch (IllegalArgumentException e) {
+      } catch (final IllegalArgumentException e) {
          log.error("Invalid input provided: {}", e.getMessage());
          throw new StoryGenerationException("Invalid story input: " + e.getMessage(), e);
-      } catch (Exception e) {
+      } catch (final Exception e) {
          log.error("Unexpected error during story generation", e);
          throw new StoryGenerationException("Story generation failed: " + e.getMessage(), e);
       }
    }
 
-   private void validateInput(StoryInput input) {
+   private void validateInput(final StoryInput input) {
       validateField(input.getCharacterName(), "Character name");
       validateField(input.getSetting(), "Setting");
       validateField(input.getVillain(), "Villain");
@@ -83,7 +84,7 @@ public class StoryGenerationService {
       validateField(input.getMood(), "Mood");
    }
 
-   private void validateField(String value, String fieldName) {
+   private void validateField(final String value, final String fieldName) {
       if (value == null || value.isBlank()) {
          throw new IllegalArgumentException(fieldName + " cannot be empty");
       }
@@ -92,8 +93,8 @@ public class StoryGenerationService {
       }
    }
 
-   private String buildPrompt(StoryInput input) {
-      int randomSeed = SEED_MIN + random.nextInt(SEED_MAX - SEED_MIN + 1);
+   private String buildPrompt(final StoryInput input) {
+      final int randomSeed = SEED_MIN + random.nextInt(SEED_MAX - SEED_MIN + 1);
 
       return String.format(PROMPT_TEMPLATE,
             sanitizeInput(input.getCharacterName()),
@@ -108,7 +109,7 @@ public class StoryGenerationService {
             randomSeed);
    }
 
-   private String sanitizeInput(String input) {
+   private String sanitizeInput(final String input) {
       // Remove potential prompt injection attempts and normalize whitespace
       return input.replaceAll("[\\r\\n]+", " ").trim();
    }
@@ -172,7 +173,7 @@ public class StoryGenerationService {
       content = content.trim();
 
       // Try to extract JSON from markdown code blocks using regex
-      Matcher matcher = JSON_CODE_BLOCK_PATTERN.matcher(content);
+      final Matcher matcher = JSON_CODE_BLOCK_PATTERN.matcher(content);
       if (matcher.find()) {
          return matcher.group(1).trim();
       }

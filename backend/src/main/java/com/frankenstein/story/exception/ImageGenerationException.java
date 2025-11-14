@@ -7,11 +7,11 @@ package com.frankenstein.story.exception;
  */
 public class ImageGenerationException extends RuntimeException {
 
-   public ImageGenerationException(String message) {
+   public ImageGenerationException(final String message) {
       super(message);
    }
 
-   public ImageGenerationException(String message, Throwable cause) {
+   public ImageGenerationException(final String message, final Throwable cause) {
       super(message, cause);
    }
 }

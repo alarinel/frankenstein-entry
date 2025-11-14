@@ -347,6 +347,105 @@ frankenstein/
 └── README.md                  # This file
 ```
 
+## 🔄 Development Journey: How This Project Came Together
+
+This project was built through an iterative, conversational development process with an AI coding assistant. Here's how the back-and-forth creation unfolded:
+
+### Phase 1: Foundation & Architecture
+**Initial Request**: "Create a children's story generator with AI"
+- Set up Spring Boot backend with Spring AI integration
+- Configured Claude for story generation
+- Built React frontend with TypeScript and Vite
+- Established project structure and naming conventions
+
+**Refinements**:
+- "Use constructor injection, never @Autowired" → Refactored all services to use `@RequiredArgsConstructor`
+- "Add author attribution to all classes" → Added JavaDoc with `@author alarinel@gmail.com`
+- "The .env file isn't loading" → Created custom `DotenvConfig` ApplicationContextInitializer
+
+### Phase 2: Service Integration & Simplification
+**Request**: "Simplify the image generation to use Spring AI instead of custom code"
+- Replaced 130 lines of OkHttp boilerplate with Spring AI's `ImageModel`
+- Added `spring-ai-stability-ai-spring-boot-starter` dependency
+- Rewrote tests to mock Spring AI interfaces
+- Result: Cleaner, more maintainable code
+
+**Follow-up**: "Do the same for audio generation"
+- Refactored from OkHttp to Spring's `RestClient`
+- Reduced complexity while maintaining ElevenLabs integration
+- Updated all tests to match new implementation
+
+### Phase 3: Performance & Reliability
+**Issue**: "The API is timing out on story generation"
+- Increased HTTP client timeouts from 2 minutes to 5 minutes
+- Added proper timeout configuration in `application.yml`
+- Fixed model name from incorrect `claude-sonnet-4-5-20250929` to correct `claude-3-5-sonnet-20241022`
+
+**Issue**: "Audio generation is failing due to rate limiting"
+- Implemented batch processing with 3 concurrent request limit
+- Changed from parallel execution to throttled batches
+- Prevented API throttling while maintaining reasonable speed
+
+### Phase 4: UI/UX Polish
+**Request**: "The title is being cut off"
+- Moved header outside constrained container
+- Added responsive text sizing
+- Fixed overflow issues with proper layout structure
+
+**Issue**: "Surprise Me button makes the form disappear"
+- Changed from instant jump to smooth step-by-step transition
+- Added 100ms interval animation through form steps
+- Improved visual continuity
+
+**Bug**: "Old errors show up when starting new story"
+- Added `useEffect` to reset store state on InputPage mount
+- Cleared previous generation errors and progress
+- Ensured clean slate for each new story
+
+### Phase 5: Bug Fixes & Edge Cases
+**Issue**: "Images returning 404 with duplicate /api/api/ in URL"
+- Fixed `getAssetUrl` to check if URL already starts with `/api`
+- Prevented double-prepending of base URL
+- Resolved asset loading issues
+
+**Request**: "Fix the test files after refactoring"
+- Rewrote `StoryOrchestrationServiceTest` to match new service signatures
+- Updated mocks for `ImageGenerationService` and `AudioGenerationService`
+- Ensured all tests pass with refactored architecture
+
+### Phase 6: Configuration & Tooling
+**Request**: "Add sequential-thinking and memory MCP servers"
+- Added MCP server configurations to `.kiro/settings/mcp.json`
+- Debugged package names (npx vs uvx, correct package identifiers)
+- Integrated Context7 for up-to-date documentation access
+
+### Key Patterns That Emerged
+
+1. **Iterative Refinement**: Start with working code, then optimize
+2. **Documentation First**: Fetch current API docs before implementing
+3. **Test After Refactor**: Update tests immediately after service changes
+4. **Configuration Over Code**: Use Spring Boot properties instead of hardcoding
+5. **Error-Driven Development**: Fix issues as they appear in logs
+6. **User Feedback Loop**: Polish UI based on actual usage experience
+
+### Lessons Learned
+
+- **Spring AI Simplifies Integration**: Native support beats custom HTTP clients
+- **Throttling is Essential**: AI APIs have rate limits - respect them
+- **State Management Matters**: Clear old state to prevent UI bugs
+- **Timeouts Need Tuning**: AI operations take time - configure accordingly
+- **URL Construction is Tricky**: Be careful with base URLs and path concatenation
+
+### The "Frankenstein" Approach
+
+True to the project's name, we stitched together:
+- 3 different AI services (each with unique APIs)
+- 40+ third-party libraries (each with their own quirks)
+- Multiple architectural patterns (REST, WebSocket, async processing)
+- Frontend and backend technologies (React + Spring Boot)
+
+The result? A cohesive, working application that feels like a single, unified experience - despite being assembled from many disparate parts.
+
 ## 🤝 Contributing
 
 This is a competition entry project. For bugs or suggestions, please open an issue.

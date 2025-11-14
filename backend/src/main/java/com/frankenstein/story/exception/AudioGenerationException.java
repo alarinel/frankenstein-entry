@@ -7,11 +7,11 @@ package com.frankenstein.story.exception;
  */
 public class AudioGenerationException extends RuntimeException {
 
-   public AudioGenerationException(String message) {
+   public AudioGenerationException(final String message) {
       super(message);
    }
 
-   public AudioGenerationException(String message, Throwable cause) {
+   public AudioGenerationException(final String message, final Throwable cause) {
       super(message, cause);
    }
 }

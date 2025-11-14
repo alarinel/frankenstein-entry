@@ -171,7 +171,7 @@ src/main/java/com/frankenstein/story/
 │   ├── StoryPage
 │   └── StoryStructure
 └── service/            # Business logic
-    ├── AudioGenerationService     # ElevenLabs integration
+    ├── AudioGenerationService     # ElevenLabs integration via RestClient
     ├── FileStorageService         # File management
     ├── ImageGenerationService     # Stability AI integration via Spring AI
     ├── ProgressNotificationService # WebSocket updates
@@ -186,7 +186,6 @@ src/main/java/com/frankenstein/story/
   - Spring AI Anthropic (Claude integration)
   - Spring AI Stability AI (Stability AI image generation)
 - **java-dotenv**: Environment variable loading from .env files
-- **OkHttp**: HTTP client for external APIs (ElevenLabs)
 - **RestClient**: Spring's HTTP client (with custom timeout configuration)
 - **Jackson**: JSON processing
 - **Lombok**: Reduce boilerplate
@@ -213,7 +212,7 @@ http:
 
 The `HttpClientConfig` class provides:
 
-- `OkHttpClient` bean for direct HTTP calls
+- `RestClient.Builder` bean with configured timeouts for all HTTP calls
 - `RestClientCustomizer` bean for Spring's RestClient with JDK HttpClient
 - Configurable timeout properties via `HttpClientProperties` record
 
@@ -301,6 +300,29 @@ The backend uses a comprehensive exception handling strategy with custom excepti
 All exceptions are handled by `GlobalExceptionHandler` which returns consistent error responses to the frontend.
 
 ## Recent Changes
+
+### Audio Generation Migration (Spring RestClient Integration)
+
+The `AudioGenerationService` has been migrated from OkHttp to Spring's RestClient:
+
+**Benefits**:
+- Consistent HTTP client usage across all services
+- Simplified code with Spring's fluent API
+- Better integration with Spring's timeout configuration
+- Reduced dependencies (removed OkHttp dependency)
+- Improved error handling with `AudioGenerationException`
+
+**Implementation Changes**:
+- Uses `RestClient.Builder` for HTTP calls to ElevenLabs API
+- Constructor injection with `@RequiredArgsConstructor` (follows best practices)
+- Proper exception handling with custom `AudioGenerationException`
+- Cleaner code with immutable `Map.of()` for request bodies
+
+**API Compatibility**:
+- The service interface remains unchanged
+- `generateNarration(String text)` returns `CompletableFuture<byte[]>`
+- `generateSoundEffect(String effectDescription)` returns `CompletableFuture<byte[]>`
+- `estimateNarrationDuration(String text)` returns `double`
 
 ### Image Generation Migration (Spring AI Integration)
 

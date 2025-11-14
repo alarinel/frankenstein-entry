@@ -7,11 +7,11 @@ package com.frankenstein.story.exception;
  */
 public class FileStorageException extends RuntimeException {
 
-   public FileStorageException(String message) {
+   public FileStorageException(final String message) {
       super(message);
    }
 
-   public FileStorageException(String message, Throwable cause) {
+   public FileStorageException(final String message, final Throwable cause) {
       super(message, cause);
    }
 }

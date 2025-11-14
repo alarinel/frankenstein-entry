@@ -45,18 +45,18 @@ class StoryGenerationServiceTest {
    @Test
    void generateStory_Success() {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("enchanted forest")
-                                   .villain("dark wizard")
-                                   .specialItem("magic wand")
-                                   .characterTrait("brave")
-                                   .goal("save the forest")
-                                   .timePeriod("medieval times")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("enchanted forest")
+                                         .villain("dark wizard")
+                                         .specialItem("magic wand")
+                                         .characterTrait("brave")
+                                         .goal("save the forest")
+                                         .timePeriod("medieval times")
+                                         .mood("adventurous")
+                                         .build();
 
-      String mockResponse = """
+      final String mockResponse = """
                             ```json
                             {
                               "title": "Luna's Magical Adventure",
@@ -78,7 +78,7 @@ class StoryGenerationServiceTest {
       when(generation.getOutput()).thenReturn(new org.springframework.ai.chat.messages.AssistantMessage(mockResponse));
 
       // When
-      StoryStructure result = service.generateStory(input);
+      final StoryStructure result = service.generateStory(input);
 
       // Then
       assertThat(result).isNotNull();
@@ -92,18 +92,18 @@ class StoryGenerationServiceTest {
    @Test
    void generateStory_WithInvalidJson_ThrowsException() {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
 
-      String invalidResponse = "This is not valid JSON";
+      final String invalidResponse = "This is not valid JSON";
 
       when(chatModel.call(any(Prompt.class))).thenReturn(chatResponse);
       when(chatResponse.getResult()).thenReturn(generation);
@@ -117,16 +117,16 @@ class StoryGenerationServiceTest {
    @Test
    void generateStory_WithChatModelException_ThrowsException() {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("forest")
-                                   .villain("wizard")
-                                   .specialItem("wand")
-                                   .characterTrait("brave")
-                                   .goal("save forest")
-                                   .timePeriod("medieval")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("forest")
+                                         .villain("wizard")
+                                         .specialItem("wand")
+                                         .characterTrait("brave")
+                                         .goal("save forest")
+                                         .timePeriod("medieval")
+                                         .mood("adventurous")
+                                         .build();
 
       when(chatModel.call(any(Prompt.class))).thenThrow(new RuntimeException("API Error"));
 
@@ -138,18 +138,18 @@ class StoryGenerationServiceTest {
    @Test
    void generateStory_BuildsCorrectPrompt() {
       // Given
-      StoryInput input = StoryInput.builder()
-                                   .characterName("Luna")
-                                   .setting("enchanted forest")
-                                   .villain("dark wizard")
-                                   .specialItem("magic wand")
-                                   .characterTrait("brave")
-                                   .goal("save the forest")
-                                   .timePeriod("medieval times")
-                                   .mood("adventurous")
-                                   .build();
+      final StoryInput input = StoryInput.builder()
+                                         .characterName("Luna")
+                                         .setting("enchanted forest")
+                                         .villain("dark wizard")
+                                         .specialItem("magic wand")
+                                         .characterTrait("brave")
+                                         .goal("save the forest")
+                                         .timePeriod("medieval times")
+                                         .mood("adventurous")
+                                         .build();
 
-      String mockResponse = """
+      final String mockResponse = """
                             {
                               "title": "Test Story",
                               "pages": []
@@ -164,10 +164,10 @@ class StoryGenerationServiceTest {
       service.generateStory(input);
 
       // Then
-      ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+      final ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
       verify(chatModel).call(promptCaptor.capture());
 
-      String promptContent = promptCaptor.getValue().getContents();
+      final String promptContent = promptCaptor.getValue().getContents();
       assertThat(promptContent).contains("Luna");
       assertThat(promptContent).contains("enchanted forest");
       assertThat(promptContent).contains("dark wizard");
