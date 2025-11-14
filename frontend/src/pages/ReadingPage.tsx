@@ -30,7 +30,10 @@ export const ReadingPage = () => {
 
   const [isFlipping, setIsFlipping] = useState(false);
   const [highlightedWords, setHighlightedWords] = useState<number[]>([]);
+  const [showPlayPrompt, setShowPlayPrompt] = useState(true);
   const audioRef = useRef<Howl | null>(null);
+  const allAudioRef = useRef<Map<number, Howl>>(new Map());
+  const hasUserInteracted = useRef(false);
 
   useEffect(() => {
     loadStory();
@@ -121,12 +124,26 @@ export const ReadingPage = () => {
     audioRef.current = howl;
     setCurrentPageAudio(howl);
 
-    // Auto-play after a short delay to ensure audio is loaded
-    setTimeout(() => {
-      if (audioRef.current === howl) { // Only play if this is still the current audio
-        howl.play();
-      }
-    }, 500);
+    // Only auto-play if user has already interacted
+    if (hasUserInteracted.current) {
+      setTimeout(() => {
+        if (audioRef.current === howl) {
+          howl.play();
+        }
+      }, 500);
+    } else {
+      // Show play prompt for first interaction
+      setShowPlayPrompt(true);
+    }
+  };
+
+  const handleStartReading = () => {
+    hasUserInteracted.current = true;
+    setShowPlayPrompt(false);
+    
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
   };
 
   const startTextHighlighting = (text: string, duration: number) => {
@@ -142,6 +159,9 @@ export const ReadingPage = () => {
 
   const handleNextPage = () => {
     if (!currentStory || isFlipping) return;
+
+    hasUserInteracted.current = true;
+    setShowPlayPrompt(false);
 
     // Stop current audio
     if (audioRef.current) {
@@ -165,6 +185,9 @@ export const ReadingPage = () => {
 
   const handlePreviousPage = () => {
     if (currentPage > 0 && !isFlipping) {
+      hasUserInteracted.current = true;
+      setShowPlayPrompt(false);
+
       // Stop current audio
       if (audioRef.current) {
         audioRef.current.stop();
@@ -183,6 +206,9 @@ export const ReadingPage = () => {
 
   const handleTogglePlayPause = () => {
     if (!audioRef.current) return;
+
+    hasUserInteracted.current = true;
+    setShowPlayPrompt(false);
 
     if (isPlaying) {
       audioRef.current.pause();
@@ -219,6 +245,46 @@ export const ReadingPage = () => {
       <div className="absolute bottom-4 right-4 text-4xl animate-bounce-subtle" style={{ animationDelay: '0.7s' }}>
         🎭
       </div>
+
+      {/* Play Prompt Overlay */}
+      <AnimatePresence>
+        {showPlayPrompt && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={handleStartReading}
+          >
+            <motion.div
+              initial={{ scale: 0.8, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 20 }}
+              className="text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-8xl mb-6"
+              >
+                📖
+              </motion.div>
+              <h2 className="text-4xl font-spooky text-transparent bg-gradient-to-r from-spooky-purple-400 via-spooky-pink-400 to-spooky-orange-400 bg-clip-text mb-4">
+                Ready to Begin?
+              </h2>
+              <p className="text-gray-300 text-lg mb-8 font-fun">
+                Click the button below to start your magical story
+              </p>
+              <SpookyButton onClick={handleStartReading} variant="primary" className="text-xl px-8 py-4">
+                <span className="text-2xl mr-3">▶️</span>
+                Start Reading
+                <span className="text-2xl ml-3">✨</span>
+              </SpookyButton>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="max-w-7xl w-full z-10">
         {/* Story Title */}

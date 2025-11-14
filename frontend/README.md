@@ -122,12 +122,13 @@ src/
 - Automatic navigation on completion
 
 ### 3. Reading Interface (`ReadingPage.tsx`)
+- Initial play prompt overlay (required for browser audio autoplay policies)
 - Two-page book layout
 - Image on left, text on right
 - Page flip animations
 - Text highlighting synchronized with audio
-- Auto-advance to next page
-- Navigation controls
+- Auto-advance to next page after audio completes
+- Navigation controls (previous/next, play/pause)
 
 ### 4. Completion Screen (`CompletionPage.tsx`)
 - Book closing animation

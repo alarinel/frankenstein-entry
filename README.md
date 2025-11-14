@@ -22,6 +22,7 @@ Frankenstein brings together seemingly incompatible elements to build something 
    - "Surprise Me!" button to instantly generate random story inputs
 2. **Real-time Generation** - Watch as AI crafts your story with live progress updates
 3. **Cinematic Playback** - Experience the story like a movie with:
+   - User-initiated playback (browser-friendly audio controls)
    - 3D page-turning animations
    - Synchronized narration and text highlighting
    - Dynamic sound effects
