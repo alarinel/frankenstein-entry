@@ -2,6 +2,36 @@
 
 ## Code Style and Best Practices
 
+### Component Size and Complexity
+
+**CRITICAL**: Keep components small and focused. Large monolithic components are hard to maintain and debug.
+
+**Rules**:
+- **Maximum 200 lines** per component (preferably under 150)
+- **Single Responsibility**: Each component should do ONE thing well
+- **Extract Logic**: Move complex logic to custom hooks
+- **Reusable UI**: Extract repeated UI patterns into separate components
+- **Composition Over Complexity**: Build complex UIs from simple components
+
+**When to Split a Component**:
+- File exceeds 200 lines
+- Component has more than 3-4 pieces of state
+- Logic is complex or reusable
+- UI has distinct sections that could be independent
+
+**Example Structure**:
+```
+pages/
+  ReadingPage.tsx (< 200 lines) - Orchestrates components
+components/
+  Book3D.tsx - 3D book display
+  AudioProgressBar.tsx - Progress visualization
+  NavigationControls.tsx - Button controls
+hooks/
+  useAutoPlay.ts - Auto-advance logic
+  useStoryAudio.ts - Audio management
+```
+
 ### Dependency Injection
 
 **NEVER use `@Autowired` annotation**. Always use constructor-based dependency injection with Lombok's `@RequiredArgsConstructor` or explicit all-args constructors.
