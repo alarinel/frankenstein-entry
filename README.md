@@ -753,13 +753,46 @@ Built for the "Frankenstein: Stitch together a chimera of technologies" ideation
 - Horror/spooky aesthetics
 - Cinematic user experiences
 
-## 📞 Support
+## 📞 Support & Documentation
 
-For detailed information:
-- **Backend**: See `backend/README.md`
-- **Frontend**: See `frontend/README.md`
-- **Development Guidelines**: See `.kiro/steering/guidelines.md`
-- **Architecture**: See `.kiro/steering/structure.md`
+### Quick Start
+- **Setup**: See sections above for backend and frontend setup
+- **API Keys**: Configure in `.env` files (see Environment Variables section)
+
+### Detailed Documentation
+
+#### For Developers
+- **Development Guidelines**: [.kiro/steering/guidelines.md](.kiro/steering/guidelines.md)
+- **Project Structure**: [.kiro/steering/structure.md](.kiro/steering/structure.md)
+- **Tech Stack**: [.kiro/steering/tech.md](.kiro/steering/tech.md)
+- **Product Overview**: [.kiro/steering/product.md](.kiro/steering/product.md)
+
+#### For Understanding the System
+- **API Integrations**: [kirodocs/apis/](kirodocs/apis/) - All 10 APIs documented
+- **Component Architecture**: [kirodocs/architecture/](kirodocs/architecture/) - System design
+- **Implementation History**: [kirodocs/implementation/](kirodocs/implementation/) - Feature development
+- **Refactoring Details**: [kirodocs/development/](kirodocs/development/) - Code improvements
+
+#### Module-Specific
+- **Backend Details**: `backend/README.md`
+- **Frontend Details**: `frontend/README.md`
+
+### Documentation Structure
+
+```
+frankenstein/
+├── README.md                    # Main entry point (you are here)
+├── .kiro/steering/              # AI agent guidelines (active)
+│   ├── guidelines.md           # Coding standards
+│   ├── structure.md            # File organization
+│   ├── tech.md                 # Technology stack
+│   └── product.md              # Product overview
+└── kirodocs/                    # Detailed documentation (archive)
+    ├── apis/                   # API integration docs
+    ├── implementation/         # Feature implementation
+    ├── architecture/           # System design
+    └── development/            # Development process
+```
 
 ---
 
