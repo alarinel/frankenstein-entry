@@ -499,7 +499,7 @@ export const ReadingPage = () => {
                 transform: 'rotateX(12deg)',
               }}
             >
-              {/* Stacked Page Layers for depth - More visible */}
+              {/* Stacked Page Layers for depth */}
               {[...Array(8)].map((_, i) => (
                 <div
                   key={`depth-${i}`}
@@ -519,7 +519,6 @@ export const ReadingPage = () => {
                 style={{
                   transformStyle: 'preserve-3d',
                   transform: 'translateZ(1px)',
-                  clipPath: 'polygon(2% 0%, 98% 0%, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0% 98%, 0% 2%)',
                 }}
               >
                 {/* Page edges with realistic paper effect */}
@@ -533,67 +532,39 @@ export const ReadingPage = () => {
                   {/* Right edge */}
                   <div className="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-l from-amber-200/30 to-transparent" />
                 </div>
-                {/* Book Spine with dramatic V-shaped depth */}
-                <div 
-                  className="absolute left-1/2 top-0 bottom-0 w-6 transform -translate-x-1/2 hidden md:block z-30"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    transform: 'translateX(-50%) translateZ(-20px)',
-                    background: 'linear-gradient(to bottom, #78350f 0%, #451a03 50%, #1c0a00 100%)',
-                    boxShadow: `
-                      inset 0 0 40px rgba(0, 0, 0, 0.9),
-                      inset -2px 0 10px rgba(0, 0, 0, 0.8),
-                      inset 2px 0 10px rgba(0, 0, 0, 0.8),
-                      0 0 30px rgba(0, 0, 0, 0.6)
-                    `,
-                  }}
-                >
-                  {/* Spine texture lines */}
-                  <div className="absolute inset-0 opacity-30">
-                    {[...Array(20)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute left-0 right-0 h-px bg-black"
-                        style={{ top: `${i * 5}%` }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Full Spread Image Background - Covers entire book */}
-                <div className="absolute inset-0 z-10 rounded-3xl overflow-hidden bg-amber-100">
+                {/* Full Spread Image Background */}
+                <div className="absolute inset-0 z-5 rounded-3xl overflow-hidden bg-amber-100">
                   <img
                     src={imageUrl || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3C/svg%3E'}
                     alt={`Page ${currentPageData?.pageNumber || 0}`}
                     className="w-full h-full object-cover"
                     style={{ display: imageUrl ? 'block' : 'none' }}
                   />
-                  {/* Enhanced gradient overlays for depth and readability */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/30" />
-                  {/* Vignette effect */}
-                  <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.3)]" />
                 </div>
 
-                {/* Left Page - Subtle shadow and rotation for depth */}
+                {/* V-Shape Effect - Dark gradient toward center */}
                 <div 
-                  className="absolute left-0 top-0 bottom-0 w-1/2 pointer-events-none origin-right"
+                  className="absolute inset-0 z-15 pointer-events-none"
                   style={{
-                    transformStyle: 'preserve-3d',
-                    transform: 'rotateY(-2deg)',
-                    zIndex: 15,
-                    boxShadow: `inset -40px 0 60px -30px rgba(0, 0, 0, 0.3)`,
+                    background: `
+                      radial-gradient(ellipse 100px 100% at 50% 50%, rgba(0,0,0,0.7) 0%, transparent 100%)
+                    `,
                   }}
                 />
 
-                {/* Right Page - Subtle shadow and rotation for depth */}
+                {/* Book Spine - Deep shadow in center */}
                 <div 
-                  className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none origin-left"
+                  className="absolute left-1/2 top-0 bottom-0 w-6 transform -translate-x-1/2 z-30"
                   style={{
                     transformStyle: 'preserve-3d',
-                    transform: 'rotateY(2deg)',
-                    zIndex: 15,
-                    boxShadow: `inset 40px 0 60px -30px rgba(0, 0, 0, 0.3)`,
+                    transform: 'translateX(-50%) translateZ(-10px)',
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.9) 100%)',
+                    boxShadow: `
+                      inset 0 0 20px rgba(0, 0, 0, 1),
+                      0 0 30px rgba(0, 0, 0, 0.8)
+                    `,
                   }}
                 />
 
