@@ -20,14 +20,32 @@ Frankenstein brings together seemingly incompatible elements to build something 
    - Step-by-step guided input for 8 story elements
    - Quick suggestion chips for each field
    - "Surprise Me!" button to instantly generate random story inputs
+   - Floating spooky elements (bats, spiders, candles, ghosts)
+   
 2. **Real-time Generation** - Watch as AI crafts your story with live progress updates
+   - Literary quotes to inspire (Quotable API)
+   - Family-friendly jokes to entertain (JokeAPI)
+   - Progress visualization with cauldron animation
+   - WebSocket updates for real-time status
+   
 3. **Cinematic Playback** - Experience the story like a movie with:
+   - **Auto-play**: Automatically advances pages after 5-second countdown
+   - **Audio Progress Bar**: Visual progress with countdown timer
+   - **3D Book Effect**: Realistic depth with stacked pages
+   - **Dynamic Theming**: Background changes based on time of day (Sunrise-Sunset API)
+   - **Word Highlighting**: Text synced with narration
+   - **Floating Elements**: Bats, spiders, candles, and sparkles
+   - **Text Positioning**: Toggle between left, right, or hidden
    - User-initiated playback (browser-friendly audio controls)
-   - 3D page-turning animations
-   - Word-level text highlighting synchronized with narration
+   - 3D page-turning animations with depth effect
    - Dynamic sound effects
    - Atmospheric particle effects
+   
 4. **Completion** - Story summary with options to replay or create new stories
+   - Random advice for encouragement (Advice Slip API)
+   - Achievement badges and stats
+   - Celebration effects (fireworks, confetti)
+   
 5. **Admin Dashboard** - Monitor and manage API usage (accessible at `/admin`)
    - View all API call logs with costs and performance metrics
    - Track total spending and success rates
@@ -266,6 +284,179 @@ Subscribe: /topic/story-progress/{storyId}
 4. **Frontend receives complete story** with all assets
 5. **Cinematic playback** with synchronized audio/text
 6. **Completion screen** with replay/new story options
+
+## 🌐 External APIs & Services
+
+This application integrates **10 external APIs** (5 paid AI services + 5 free enhancement APIs) to deliver its full functionality:
+
+### AI & Content Generation APIs (3)
+
+1. **Anthropic Claude API** 
+   - **Purpose**: Story text generation and image prompt creation
+   - **Model**: Claude 3.5 Sonnet (claude-3-5-sonnet-20241022)
+   - **Integration**: Spring AI Anthropic starter
+   - **Cost**: ~$0.015 per story (input: $3/M tokens, output: $15/M tokens)
+   - **Documentation**: https://docs.anthropic.com/
+   - **Required**: `ANTHROPIC_API_KEY` environment variable
+
+2. **Stability AI API**
+   - **Purpose**: AI image generation for story pages
+   - **Model**: SDXL 1024 (Stable Diffusion XL)
+   - **Integration**: Spring AI Stability AI starter
+   - **Features**: Consistent seed-based generation for thematic coherence
+   - **Cost**: ~$0.08 per story (8 images × $0.01 per image)
+   - **Documentation**: https://platform.stability.ai/docs
+   - **Required**: `STABILITY_API_KEY` environment variable
+
+3. **ElevenLabs API**
+   - **Purpose**: Text-to-speech narration and sound effects generation
+   - **Integration**: Direct REST API via Spring RestClient
+   - **Features**: 
+     - High-quality voice synthesis
+     - Configurable voice selection
+     - Concurrent request throttling (max 3 simultaneous)
+   - **Cost**: ~$0.30 per story (narration + sound effects)
+   - **Documentation**: https://elevenlabs.io/docs
+   - **Required**: `ELEVENLABS_API_KEY` and optional `ELEVENLABS_VOICE_ID`
+
+### Free Enhancement APIs (7)
+
+4. **Quotable API**
+   - **Purpose**: Display inspirational literary quotes on loading screens
+   - **Integration**: Direct fetch API calls from frontend
+   - **Features**: 
+     - Filtered by literary/inspirational themes
+     - No API key required
+     - Completely free
+   - **Documentation**: https://github.com/lukePeavey/quotable
+   - **Endpoint**: `https://api.quotable.io/random`
+
+5. **Sunrise-Sunset API**
+   - **Purpose**: Dynamic theming based on user's local time of day
+   - **Integration**: Direct fetch API calls from frontend with geolocation
+   - **Features**:
+     - Automatic location detection
+     - Day/twilight/night theme switching
+     - Graceful fallback to local time
+     - No API key required
+     - Completely free
+   - **Documentation**: https://sunrise-sunset.org/api
+   - **Endpoint**: `https://api.sunrise-sunset.org/json`
+
+---
+
+6. **Advice Slip API**
+   - **Purpose**: Random advice for encouragement on completion page
+   - **Integration**: Direct fetch API from frontend
+   - **Features**:
+     - Provides random life advice
+     - Displays after story completion
+     - Motivates users to create more stories
+     - No API key required
+     - Completely free
+   - **Documentation**: https://api.adviceslip.com/
+   - **Endpoint**: `https://api.adviceslip.com/advice`
+
+---
+
+7. **JokeAPI**
+   - **Purpose**: Family-friendly jokes on loading screens
+   - **Integration**: Direct fetch API from frontend
+   - **Features**:
+     - Safe, clean jokes only
+     - Filters out offensive content
+     - Categories: Programming, Miscellaneous, Puns
+     - Entertains during wait time
+     - No API key required
+     - Completely free
+   - **Documentation**: https://v2.jokeapi.dev/
+   - **Endpoint**: `https://v2.jokeapi.dev/joke/Programming,Miscellaneous,Pun`
+
+---
+
+8. **Random User API**
+   - **Purpose**: Generate random character names (ready to integrate)
+   - **Integration**: Direct fetch API from frontend
+   - **Features**:
+     - Provides realistic character names
+     - Can suggest names when users need inspiration
+     - Includes avatar images
+     - No API key required
+     - Completely free
+   - **Documentation**: https://randomuser.me/
+   - **Endpoint**: `https://randomuser.me/api/`
+   - **Status**: API client created, ready for integration
+
+---
+
+9. **Bored API**
+   - **Purpose**: Activity suggestions for story goals (ready to integrate)
+   - **Integration**: Direct fetch API from frontend
+   - **Features**:
+     - Random activity suggestions
+     - Can inspire story goals
+     - Helps overcome writer's block
+     - No API key required
+     - Completely free
+   - **Documentation**: https://www.boredapi.com/
+   - **Endpoint**: `https://www.boredapi.com/api/activity`
+   - **Status**: API client created, ready for integration
+
+---
+
+10. **Agify API**
+    - **Purpose**: Predict age from name for theme suggestions (ready to integrate)
+    - **Integration**: Direct fetch API from frontend
+    - **Features**:
+      - Predicts age based on character name
+      - Suggests age-appropriate story moods
+      - Personalizes recommendations
+      - 1000 free requests per day
+    - **Documentation**: https://agify.io/
+    - **Endpoint**: `https://api.agify.io/`
+    - **Status**: API client created, ready for integration
+
+### API Cost Summary
+
+**Per Story Generation**:
+- Anthropic Claude: $0.015
+- Stability AI: $0.080
+- ElevenLabs: $0.300
+- Quotable: $0.000 (free)
+- Sunrise-Sunset: $0.000 (free)
+- Advice Slip: $0.000 (free)
+- JokeAPI: $0.000 (free)
+- Random User: $0.000 (free)
+- Bored API: $0.000 (free)
+- Agify: $0.000 (free, up to 1000/day)
+- **Total**: ~$0.395 per story
+
+**Monthly Estimates** (100 stories):
+- AI Services: ~$40
+- Free Enhancement APIs: $0
+- **Total API Costs**: ~$40/month
+
+**Value Added by Free APIs**:
+- 7 free APIs providing quotes, jokes, advice, theming, and inspiration
+- Zero additional cost
+- Significant UX improvements
+- Professional polish
+
+### API Rate Limits & Throttling
+
+- **Anthropic**: Tier-based limits (varies by account)
+- **Stability AI**: Configurable in admin dashboard
+- **ElevenLabs**: 3 concurrent requests max (configurable)
+- **Quotable**: No rate limits
+- **Sunrise-Sunset**: No rate limits
+
+### API Configuration
+
+All API costs and rate limits are configurable via the Admin Dashboard (`/admin`):
+- Adjust pricing to match your actual API costs
+- Monitor real-time usage and spending
+- Configure concurrent request limits
+- Track success rates and performance metrics
 
 ## 🔧 Development
 

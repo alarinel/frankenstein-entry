@@ -9,6 +9,8 @@ import { storyApi } from '@/api/client';
 import { useStoryStore } from '@/store/storyStore';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { FloatingBats } from '@/components/spooky/FloatingBats';
+import { FloatingCandles } from '@/components/spooky/FloatingCandles';
+import { FloatingSpiders } from '@/components/spooky/FloatingSpiders';
 import { GhostCluster } from '@/components/spooky/FloatingGhost';
 import { SpookyCard } from '@/components/spooky/SpookyCard';
 import { SpookyButton } from '@/components/spooky/SpookyButton';
@@ -196,6 +198,8 @@ export const InputPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex flex-col items-center justify-center p-4 overflow-hidden relative">
       <ParticleBackground />
       <FloatingBats count={12} />
+      <FloatingSpiders count={5} />
+      <FloatingCandles />
       <GhostCluster />
 
       {/* Decorative corner elements */}

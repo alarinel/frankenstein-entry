@@ -13,6 +13,7 @@ import { FlyingBooks } from '@/components/spooky/FlyingBooks';
 import { LightningEffect } from '@/components/spooky/LightningEffect';
 import { SpookyTitle } from '@/components/spooky/SpookyEffects';
 import { fetchRandomQuote, Quote } from '@/api/quotable';
+import { fetchSafeJoke, formatJoke, Joke } from '@/api/jokeApi';
 
 const loadingMessages = [
   { emoji: '🧙', text: 'Mixing a pinch of magic with a dash of wonder...' },
@@ -32,6 +33,7 @@ export const LoadingPage = () => {
   const [websocket] = useState(() => new StoryProgressWebSocket());
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [quote, setQuote] = useState<Quote | null>(null);
+  const [joke, setJoke] = useState<Joke | null>(null);
 
   useEffect(() => {
     if (!storyId) {
@@ -39,8 +41,9 @@ export const LoadingPage = () => {
       return;
     }
 
-    // Fetch a random quote on mount
+    // Fetch a random quote and joke on mount
     fetchRandomQuote().then(setQuote);
+    fetchSafeJoke().then(setJoke);
 
     // Connect to WebSocket for progress updates
     websocket.connect(storyId, handleProgress);
@@ -283,6 +286,26 @@ export const LoadingPage = () => {
               </p>
               <p className="text-spooky-purple-400 text-sm text-center font-semibold">
                 — {quote.author}
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Fun Joke */}
+        {joke && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="mt-6 max-w-2xl mx-auto"
+          >
+            <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-orange-600/30 shadow-lg">
+              <div className="text-4xl mb-3 text-center">😄</div>
+              <p className="text-gray-300 text-base leading-relaxed text-center">
+                {formatJoke(joke)}
+              </p>
+              <p className="text-spooky-orange-400 text-xs text-center mt-3 font-semibold">
+                — A little humor while you wait
               </p>
             </div>
           </motion.div>

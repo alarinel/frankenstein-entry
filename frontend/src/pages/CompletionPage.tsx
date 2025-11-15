@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useStoryStore } from '@/store/storyStore';
@@ -11,18 +11,23 @@ import { GhostCluster } from '@/components/spooky/FloatingGhost';
 import { SpookyButton } from '@/components/spooky/SpookyButton';
 import { SpookyCard } from '@/components/spooky/SpookyCard';
 import { SpookyTitle } from '@/components/spooky/SpookyEffects';
+import { fetchRandomAdvice, Advice } from '@/api/adviceSlip';
 
 export const CompletionPage = () => {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
   const { currentStory, reset } = useStoryStore();
+  const [advice, setAdvice] = useState<Advice | null>(null);
 
   useEffect(() => {
     if (!currentStory && storyId) {
       // If we don't have the story in state, redirect to reading page
       navigate(`/read/${storyId}`);
     }
-  }, [currentStory, storyId]);
+    
+    // Fetch random advice for encouragement
+    fetchRandomAdvice().then(setAdvice);
+  }, [currentStory, storyId, navigate]);
 
   const handleNewStory = () => {
     reset();
@@ -242,12 +247,32 @@ export const CompletionPage = () => {
             </SpookyButton>
           </motion.div>
 
+          {/* Random Advice from API */}
+          {advice && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 3.2 }}
+              className="mt-8 max-w-2xl mx-auto"
+            >
+              <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-purple-600/30 shadow-lg">
+                <div className="text-3xl mb-3 text-center">💡</div>
+                <p className="text-gray-300 text-base leading-relaxed text-center italic">
+                  "{advice.advice}"
+                </p>
+                <p className="text-spooky-purple-400 text-xs text-center mt-3 font-semibold">
+                  — Advice for your next adventure
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {/* Fun message */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 3.2 }}
-            className="mt-8 text-gray-400 font-fun italic"
+            transition={{ delay: 3.4 }}
+            className="mt-6 text-gray-400 font-fun italic"
           >
             "Every story is a new adventure waiting to be told..."
           </motion.p>

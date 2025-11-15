@@ -7,6 +7,9 @@ import { useAudioStore } from '@/store/audioStore';
 
 import { SubtleParticleBackground } from '@/components/SubtleParticleBackground';
 import { FloatingBats } from '@/components/spooky/FloatingBats';
+import { FloatingCandles } from '@/components/spooky/FloatingCandles';
+import { FloatingSpiders } from '@/components/spooky/FloatingSpiders';
+import { MagicSparkles } from '@/components/spooky/MagicSparkles';
 import toast from 'react-hot-toast';
 
 import { useStoryAudio } from '@/hooks/useStoryAudio';
@@ -23,9 +26,16 @@ export const ReadingPage = () => {
 
   const [showPlayPrompt, setShowPlayPrompt] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [textPosition, setTextPosition] = useState<'left' | 'right'>('right');
+  const [textPosition, setTextPosition] = useState<'left' | 'right' | 'hidden'>('right');
   const lastSwitchedPageRef = useRef<number>(-1);
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>('night');
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
+  const [countdown, setCountdown] = useState(0);
+  const [isCountingDown, setIsCountingDown] = useState(false);
+  const countdownIntervalRef = useRef<number | null>(null);
+  const autoAdvanceTimeoutRef = useRef<number | null>(null);
+  const currentPageRef = useRef(0);
 
   // Page navigation hook - must be declared before callbacks that use its values
   const {
@@ -65,16 +75,59 @@ export const ReadingPage = () => {
 
   const handlePlayEnd = useCallback(
     (pageIndex: number) => {
+      const actualCurrentPage = currentPageRef.current;
+      console.log('handlePlayEnd called for page:', pageIndex, 'actualCurrentPage:', actualCurrentPage, 'canGoNext:', canGoNext, 'isFlipping:', isFlipping);
+      
       setIsPlaying(false);
 
+      // Clear any existing timers
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+        countdownIntervalRef.current = null;
+      }
+      if (autoAdvanceTimeoutRef.current) {
+        clearTimeout(autoAdvanceTimeoutRef.current);
+        autoAdvanceTimeoutRef.current = null;
+      }
+
       // Auto-advance to next page if not manually navigating
-      if (!isFlipping && currentPage === pageIndex && canGoNext) {
-        setTimeout(() => {
+      // Check if the page that just finished is the current page and we can go next
+      if (!isFlipping && actualCurrentPage === pageIndex && canGoNext) {
+        console.log('Starting countdown for auto-advance');
+        setIsCountingDown(true);
+        setCountdown(5);
+        
+        // Countdown timer
+        countdownIntervalRef.current = window.setInterval(() => {
+          setCountdown(prev => {
+            if (prev <= 1) {
+              if (countdownIntervalRef.current) {
+                clearInterval(countdownIntervalRef.current);
+                countdownIntervalRef.current = null;
+              }
+              setIsCountingDown(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        
+        // Auto-advance after delay
+        autoAdvanceTimeoutRef.current = window.setTimeout(() => {
+          console.log('Auto-advancing to next page');
+          if (countdownIntervalRef.current) {
+            clearInterval(countdownIntervalRef.current);
+            countdownIntervalRef.current = null;
+          }
+          setIsCountingDown(false);
+          setCountdown(0);
           nextPage();
         }, READING_CONSTANTS.ANIMATION.AUTO_ADVANCE_DELAY);
+      } else {
+        console.log('Not auto-advancing. Conditions not met. isFlipping:', isFlipping, 'pageMatch:', actualCurrentPage === pageIndex, 'canGoNext:', canGoNext);
       }
     },
-    [setIsPlaying, isFlipping, currentPage, canGoNext, nextPage]
+    [setIsPlaying, isFlipping, canGoNext, nextPage]
   );
 
   // Audio management hook
@@ -125,9 +178,21 @@ export const ReadingPage = () => {
     return () => {
       cleanup();
       cleanupNavigation();
+      // Clear countdown timers
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+      }
+      if (autoAdvanceTimeoutRef.current) {
+        clearTimeout(autoAdvanceTimeoutRef.current);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storyId]);
+
+  // Update current page ref
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
 
   // Switch to page when currentPage changes - with deduplication
   useEffect(() => {
@@ -168,6 +233,16 @@ export const ReadingPage = () => {
   const handleNextPage = useCallback(() => {
     if (!currentStory) return;
 
+    // Clear countdown timers
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+    }
+    if (autoAdvanceTimeoutRef.current) {
+      clearTimeout(autoAdvanceTimeoutRef.current);
+    }
+    setIsCountingDown(false);
+    setCountdown(0);
+
     if (canGoNext) {
       audioHook.stop();
       audioHook.markUserInteracted();
@@ -180,6 +255,16 @@ export const ReadingPage = () => {
   }, [currentStory, canGoNext, nextPage, resetHighlighting, navigate, storyId, audioHook]);
 
   const handlePreviousPage = useCallback(() => {
+    // Clear countdown timers
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+    }
+    if (autoAdvanceTimeoutRef.current) {
+      clearTimeout(autoAdvanceTimeoutRef.current);
+    }
+    setIsCountingDown(false);
+    setCountdown(0);
+
     if (canGoPrevious) {
       audioHook.stop();
       audioHook.markUserInteracted();
@@ -196,7 +281,11 @@ export const ReadingPage = () => {
   }, [audioHook, isPlaying, setIsPlaying]);
 
   const toggleTextPosition = useCallback(() => {
-    setTextPosition(prev => prev === 'right' ? 'left' : 'right');
+    setTextPosition(prev => {
+      if (prev === 'right') return 'left';
+      if (prev === 'left') return 'hidden';
+      return 'right';
+    });
   }, []);
 
   const handleBackToMenu = useCallback(() => {
@@ -231,6 +320,27 @@ export const ReadingPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setCurrentPageAudio]);
 
+  // Track audio progress
+  useEffect(() => {
+    if (!audioHook.audioRef.current || !isPlaying) return;
+
+    const audio = audioHook.audioRef.current;
+    
+    const updateProgress = () => {
+      const seek = audio.seek();
+      const duration = audio.duration();
+      
+      if (duration > 0) {
+        const progress = (seek / duration) * 100;
+        setAudioProgress(progress);
+        setAudioDuration(duration);
+      }
+    };
+
+    const interval = setInterval(updateProgress, 100);
+    return () => clearInterval(interval);
+  }, [audioHook.audioRef, isPlaying]);
+
   if (isLoading || !currentStory || !currentPageData) {
     return (
       <div className="min-h-screen bg-dark-950 flex items-center justify-center">
@@ -246,16 +356,19 @@ export const ReadingPage = () => {
       {/* Subtle particle background */}
       <SubtleParticleBackground intensity={theme.intensity as 'light' | 'medium' | 'dark'} />
       
-      {/* Floating bats */}
-      <FloatingBats count={4} />
+      {/* Floating spooky elements */}
+      <FloatingBats count={3} />
+      <FloatingSpiders count={4} />
+      <FloatingCandles />
+      <MagicSparkles isActive={true} />
 
       {/* Decorative corners */}
-      <div className="absolute top-4 left-4 text-4xl animate-float-slow">📚</div>
-      <div className="absolute top-4 right-4 text-4xl animate-float" style={{ animationDelay: '0.5s' }}>
+      <div className="absolute top-4 left-4 text-4xl animate-float-slow z-10">📚</div>
+      <div className="absolute top-4 right-4 text-4xl animate-float z-10" style={{ animationDelay: '0.5s' }}>
         ⭐
       </div>
-      <div className="absolute bottom-4 left-4 text-4xl animate-bounce-subtle">🌙</div>
-      <div className="absolute bottom-4 right-4 text-4xl animate-bounce-subtle" style={{ animationDelay: '0.7s' }}>
+      <div className="absolute bottom-4 left-4 text-4xl animate-bounce-subtle z-10">🌙</div>
+      <div className="absolute bottom-4 right-4 text-4xl animate-bounce-subtle z-10" style={{ animationDelay: '0.7s' }}>
         🎭
       </div>
 
@@ -321,13 +434,18 @@ export const ReadingPage = () => {
       </div>
 
       {/* Main content area - centered */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-4 overflow-hidden">
-        <div className="max-w-7xl w-full flex flex-col items-center gap-4">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 min-h-0">
+        <div className="w-full max-w-7xl flex flex-col items-center" style={{ height: '90vh' }}>
+          {/* Story Title - Absolute positioned to stay in place */}
+          <div className="absolute top-6 left-0 right-0 z-20">
+            <h1 className="text-2xl md:text-3xl font-spooky bg-gradient-to-r from-spooky-purple-400 via-spooky-pink-400 to-spooky-orange-400 bg-clip-text text-transparent text-center">
+              {currentStory.title}
+            </h1>
+          </div>
 
-          {/* Story Title */}
-          <h1 className="text-2xl md:text-3xl font-spooky bg-gradient-to-r from-spooky-purple-400 via-spooky-pink-400 to-spooky-orange-400 bg-clip-text text-transparent text-center">
-            {currentStory.title}
-          </h1>
+          {/* Book Container - Centered with negative margin to move up */}
+          <div className="flex-1 flex items-center justify-center w-full -mt-8">
+            <div className="w-full flex flex-col items-center gap-3">
 
           {/* Book Container with 3D effect and floating animation */}
           <motion.div
@@ -365,7 +483,7 @@ export const ReadingPage = () => {
               transformStyle: 'preserve-3d',
             }}
             animate={{
-              rotateX: [30, 28, 30],
+              rotateX: [12, 10, 12],
             }}
             transition={{
               duration: 4,
@@ -378,19 +496,19 @@ export const ReadingPage = () => {
               className="relative"
               style={{
                 transformStyle: 'preserve-3d',
-                transform: 'rotateX(30deg)',
+                transform: 'rotateX(12deg)',
               }}
             >
-              {/* Stacked Page Layers for depth - Optimized to prevent flickering */}
-              {[...Array(5)].map((_, i) => (
+              {/* Stacked Page Layers for depth - More visible */}
+              {[...Array(8)].map((_, i) => (
                 <div
                   key={`depth-${i}`}
-                  className="absolute inset-0 bg-amber-100 rounded-3xl"
+                  className="absolute inset-0 bg-amber-100 rounded-3xl border border-amber-200"
                   style={{
                     transformStyle: 'preserve-3d',
-                    transform: `translateZ(-${(i + 1) * 3}px)`,
-                    opacity: 1 - (i * 0.15),
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                    transform: `translateZ(-${(i + 1) * 5}px) scale(${1 - i * 0.002})`,
+                    opacity: 1 - (i * 0.1),
+                    boxShadow: `0 ${2 + i}px ${8 + i * 2}px rgba(0, 0, 0, ${0.2 + i * 0.05})`,
                   }}
                 />
               ))}
@@ -401,6 +519,7 @@ export const ReadingPage = () => {
                 style={{
                   transformStyle: 'preserve-3d',
                   transform: 'translateZ(1px)',
+                  clipPath: 'polygon(2% 0%, 98% 0%, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0% 98%, 0% 2%)',
                 }}
               >
                 {/* Page edges with realistic paper effect */}
@@ -456,27 +575,30 @@ export const ReadingPage = () => {
                   <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.3)]" />
                 </div>
 
-                {/* Left Page - Subtle shadow for depth */}
+                {/* Left Page - Subtle shadow and rotation for depth */}
                 <div 
-                  className="absolute left-0 top-0 bottom-0 w-1/2 pointer-events-none"
+                  className="absolute left-0 top-0 bottom-0 w-1/2 pointer-events-none origin-right"
                   style={{
                     transformStyle: 'preserve-3d',
+                    transform: 'rotateY(-2deg)',
                     zIndex: 15,
                     boxShadow: `inset -40px 0 60px -30px rgba(0, 0, 0, 0.3)`,
                   }}
                 />
 
-                {/* Right Page - Subtle shadow for depth */}
+                {/* Right Page - Subtle shadow and rotation for depth */}
                 <div 
-                  className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none"
+                  className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none origin-left"
                   style={{
                     transformStyle: 'preserve-3d',
+                    transform: 'rotateY(2deg)',
                     zIndex: 15,
                     boxShadow: `inset 40px 0 60px -30px rgba(0, 0, 0, 0.3)`,
                   }}
                 />
 
-                {/* Text Overlay - Positionable left or right */}
+                {/* Text Overlay - Positionable left/right/hidden */}
+                {textPosition !== 'hidden' && (
                 <div 
                   className={`absolute top-0 bottom-0 w-full md:w-1/2 p-6 md:p-10 flex items-end justify-center z-20 transition-all duration-300 ${
                     textPosition === 'right' ? 'right-0' : 'left-0'
@@ -499,18 +621,18 @@ export const ReadingPage = () => {
                           {/* Paper texture overlay */}
                           <div className="absolute inset-0 opacity-[0.03] rounded-3xl bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iNCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiLz48L3N2Zz4=')]" />
                           
-                          <div className="relative font-serif text-gray-900 text-base md:text-xl leading-loose">
+                          <div className="relative font-serif text-base md:text-xl leading-loose">
                             {words.map((word, index) => (
                               <span
                                 key={`word-${currentPage}-${index}`}
                                 className={`inline-block mr-3 mb-2 transition-all duration-200 ${
                                   highlightedWords.has(index)
-                                    ? 'text-transparent bg-gradient-to-r from-spooky-purple-600 via-spooky-pink-600 to-spooky-orange-600 bg-clip-text font-bold'
-                                    : 'text-gray-800'
+                                    ? 'text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text font-bold'
+                                    : 'text-amber-50'
                                 }`}
                                 style={{
                                   textShadow: highlightedWords.has(index)
-                                    ? '0 0 15px rgba(168, 85, 247, 0.4)'
+                                    ? '0 0 25px rgba(168, 85, 247, 0.8), 0 0 15px rgba(236, 72, 153, 0.6)'
                                     : 'none',
                                   transform: highlightedWords.has(index) ? 'scale(1.05)' : 'scale(1)',
                                 }}
@@ -535,13 +657,39 @@ export const ReadingPage = () => {
                       </div>
                   </div>
                 </div>
+                )}
               </div>
             </div>
           </motion.div>
           </motion.div>
 
+          {/* Audio Progress Bar and Countdown */}
+          <div className="relative z-20 w-full max-w-2xl mt-4">
+            <div className="bg-dark-800/80 backdrop-blur-sm rounded-xl p-4 border border-spooky-purple-600/30">
+              {/* Progress Bar */}
+              <div className="h-2 bg-dark-700 rounded-full overflow-hidden mb-2">
+                <div
+                  className="h-full bg-gradient-to-r from-spooky-purple-500 via-spooky-pink-500 to-spooky-orange-500 transition-all duration-100"
+                  style={{
+                    width: `${audioProgress}%`,
+                  }}
+                />
+              </div>
+              
+              {/* Status Text */}
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-400">
+                  {isPlaying ? '🎵 Playing...' : isCountingDown ? `⏳ Next page in ${countdown}s` : '⏸️ Paused'}
+                </span>
+                <span className="text-spooky-purple-300 font-mono">
+                  {Math.floor(audioProgress)}%
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Navigation Controls with 3D buttons */}
-          <div className="relative z-20 flex flex-col md:flex-row justify-between items-center mt-4 gap-3">
+          <div className="relative z-20 flex flex-col md:flex-row justify-between items-center mt-3 gap-3">
             <button
               onClick={handlePreviousPage}
               disabled={!canGoPrevious || isFlipping}
@@ -582,10 +730,11 @@ export const ReadingPage = () => {
                 style={{
                   boxShadow: '0 6px 20px rgba(147, 51, 234, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                 }}
-                aria-label="Toggle text position"
+                aria-label={`Text position: ${textPosition}`}
+                title={`Text: ${textPosition === 'right' ? 'Right' : textPosition === 'left' ? 'Left' : 'Hidden'}`}
               >
                 <span className="text-lg group-hover:animate-pulse">
-                  {textPosition === 'right' ? '⬅️' : '➡️'}
+                  {textPosition === 'right' ? '➡️' : textPosition === 'left' ? '⬅️' : '👁️'}
                 </span>
               </button>
             </div>
@@ -605,21 +754,10 @@ export const ReadingPage = () => {
               </span>
             </button>
           </div>
-
-          {/* Progress indicator */}
-          <div className="w-full max-w-md mt-4">
-            <div className="h-2 bg-dark-800/80 rounded-full overflow-hidden border border-spooky-purple-600/30">
-              <div
-                className="h-full bg-gradient-to-r from-spooky-purple-600 via-spooky-pink-500 to-spooky-orange-500 transition-all duration-300"
-                style={{
-                  width: `${((currentPage + 1) / currentStory.pages.length) * 100}%`,
-                }}
-              />
-            </div>
-            <p className="text-center text-spooky-purple-300 text-sm mt-2 font-fun">
-              Page {currentPage + 1} of {currentStory.pages.length}
-            </p>
           </div>
+        </div>
+
+        </div>
       </div>
     </div>
   );

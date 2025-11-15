@@ -7,7 +7,7 @@
 export const READING_CONSTANTS = {
   ANIMATION: {
     PAGE_FLIP_DURATION: 800,
-    AUTO_ADVANCE_DELAY: 2000,
+    AUTO_ADVANCE_DELAY: 5000, // 5 seconds between pages
     AUDIO_START_DELAY: 300,
   },
   AUDIO: {
