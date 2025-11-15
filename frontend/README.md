@@ -8,7 +8,7 @@ React + TypeScript + Vite frontend for the AI-powered children's story generator
 - **Real-time Progress**: WebSocket updates during story generation
 - **Cinematic Loading**: Animated loading screen with progress tracking
 - **Interactive Book**: 3D book with page-turning animations
-- **Synchronized Audio**: Text highlighting synchronized with narration
+- **Synchronized Audio**: Narration playback with page navigation
 - **Particle Effects**: Beautiful atmospheric background effects
 - **Smooth Animations**: Framer Motion + GSAP for movie-like transitions
 
@@ -126,7 +126,7 @@ src/
 - Two-page book layout
 - Image on left, text on right
 - Page flip animations
-- Text highlighting synchronized with audio
+- Synchronized audio narration
 - Auto-advance to next page after audio completes
 - Navigation controls (previous/next, play/pause)
 
@@ -135,26 +135,17 @@ src/
 - Story metadata display
 - Options to replay or create new story
 
-## Audio Synchronization
+## Audio Playback
 
 The reading page uses Howler.js to:
-1. Load narration audio for each page
-2. Calculate time per word
-3. Highlight words progressively
-4. Auto-advance to next page when audio ends
+1. Preload narration audio for all pages
+2. Play audio synchronized with page display
+3. Auto-advance to next page when audio ends
+4. Provide play/pause controls for user interaction
 
-```typescript
-const startTextHighlighting = (text: string, duration: number) => {
-  const words = text.split(' ');
-  const timePerWord = duration / words.length;
-
-  words.forEach((_, index) => {
-    setTimeout(() => {
-      setHighlightedWords((prev) => [...prev, index]);
-    }, timePerWord * 1000 * index);
-  });
-};
-```
+The audio system is managed through custom hooks:
+- `useStoryAudio`: Handles audio loading, playback, and page switching
+- `usePageNavigation`: Manages page state and flip animations
 
 ## Animation Examples
 

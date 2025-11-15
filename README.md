@@ -24,10 +24,15 @@ Frankenstein brings together seemingly incompatible elements to build something 
 3. **Cinematic Playback** - Experience the story like a movie with:
    - User-initiated playback (browser-friendly audio controls)
    - 3D page-turning animations
-   - Synchronized narration and text highlighting
+   - Word-level text highlighting synchronized with narration
    - Dynamic sound effects
    - Atmospheric particle effects
 4. **Completion** - Story summary with options to replay or create new stories
+5. **Admin Dashboard** - Monitor and manage API usage (accessible at `/admin`)
+   - View all API call logs with costs and performance metrics
+   - Track total spending and success rates
+   - Configure API pricing for accurate cost tracking
+   - Clean up old logs to manage storage
 
 ### Technical Highlights
 
@@ -35,6 +40,8 @@ Frankenstein brings together seemingly incompatible elements to build something 
 - **Image Generation** - Stability AI via Spring AI with consistent seeds for thematic coherence
 - **Audio Generation** - ElevenLabs for realistic narration and sound effects
 - **Real-time Updates** - WebSocket for live progress tracking
+- **Cost Tracking** - Built-in API usage monitoring and cost calculation
+- **Word-level Highlighting** - Text synchronized with narration playback
 - **Responsive Design** - Beautiful dark theme optimized for all devices
 
 ## 🏗️ Architecture
@@ -175,7 +182,9 @@ VITE_WS_URL=http://localhost:8083/ws/story-progress
 
 ## 🎯 API Endpoints
 
-### Story Generation
+### Story Endpoints
+
+#### Generate Story
 ```http
 POST /api/stories/generate
 Content-Type: application/json
@@ -192,12 +201,55 @@ Content-Type: application/json
 }
 ```
 
-### Get Story
+#### Get Story
 ```http
 GET /api/stories/{storyId}
 ```
 
-### WebSocket Progress
+#### List All Stories
+```http
+GET /api/stories
+```
+
+### Admin Endpoints
+
+#### Get All API Logs
+```http
+GET /api/admin/logs
+```
+
+#### Get Statistics
+```http
+GET /api/admin/statistics
+```
+
+#### Get Configuration
+```http
+GET /api/admin/configuration
+```
+
+#### Update Configuration
+```http
+PUT /api/admin/configuration
+Content-Type: application/json
+
+{
+  "anthropicInputCostPerMillionTokens": 3.0,
+  "anthropicOutputCostPerMillionTokens": 15.0,
+  "stabilityImageCostPerImage": 0.04,
+  "elevenlabsCostPerCharacter": 0.00003,
+  "elevenlabsMaxConcurrentRequests": 3,
+  "maxStoriesPerDay": 100,
+  "enableCostTracking": true
+}
+```
+
+#### Delete Old Logs
+```http
+DELETE /api/admin/logs/old/{days}
+```
+
+### WebSocket
 ```
 Connect: ws://localhost:8083/ws/story-progress
 Subscribe: /topic/story-progress/{storyId}
@@ -251,11 +303,13 @@ npm run build
 
 - **Generation Time**: < 2 minutes for complete 8-page story
 - **Parallel Processing**: Images and audio generated simultaneously
+- **Rate Limiting**: ElevenLabs requests throttled to 3 concurrent max
 - **Optimizations**:
   - Image compression
   - Audio streaming
   - Asset lazy loading
   - GPU-accelerated animations
+  - Memoized components for text highlighting
 
 ## 🔒 Security
 
@@ -264,6 +318,7 @@ npm run build
 - CORS configuration for specific origins
 - Rate limiting on generation endpoint
 - No sensitive data exposed in errors
+- Admin endpoints accessible (consider adding authentication in production)
 
 ## 🚀 Deployment
 
@@ -331,17 +386,26 @@ docker run -p 8080:8080 \
 frankenstein/
 ├── backend/                    # Spring Boot application
 │   ├── src/main/java/         # Java source code
+│   │   ├── controller/       # REST endpoints (Story, Asset, Admin)
+│   │   ├── service/          # Business logic & API tracking
+│   │   ├── model/            # Data models & DTOs
+│   │   ├── config/           # Spring configuration
+│   │   └── exception/        # Error handling
 │   ├── src/main/resources/    # Configuration files
 │   └── src/test/java/         # Unit tests
 ├── frontend/                   # React TypeScript application
 │   ├── src/                   # Source code
-│   │   ├── pages/            # Route components
-│   │   ├── components/       # Reusable components
+│   │   ├── pages/            # Route components (Input, Loading, Reading, Completion, Admin)
+│   │   ├── components/       # Reusable components (including HighlightedWord)
 │   │   ├── hooks/            # Custom hooks
 │   │   ├── store/            # State management
 │   │   ├── api/              # Backend communication
 │   │   └── utils/            # Helper functions
 │   └── public/               # Static assets
+├── storage/                    # File storage
+│   ├── {storyId}/            # Story assets (images, audio, metadata)
+│   ├── api-tracking/         # API call logs
+│   └── api-config.json       # API pricing configuration
 ├── .kiro/                     # Kiro AI configuration
 │   ├── hooks/                # Agent hooks
 │   └── steering/             # Development guidelines
@@ -420,6 +484,25 @@ This project was built through an iterative, conversational development process 
 - Debugged package names (npx vs uvx, correct package identifiers)
 - Integrated Context7 for up-to-date documentation access
 
+### Phase 7: Admin Dashboard & Cost Tracking
+**Request**: "Add API cost tracking and admin dashboard"
+- Created `ApiTrackingService` for logging all API calls with costs
+- Built `ApiConfiguration` model with configurable pricing
+- Added `AdminController` with endpoints for logs, statistics, and configuration
+- Developed `AdminPage` React component with:
+  - Real-time statistics dashboard (total calls, costs, success rates)
+  - Detailed API call logs table
+  - Editable configuration for API pricing
+  - Bulk log cleanup functionality
+- Implemented file-based storage for logs and configuration
+- Added route `/admin` to access the dashboard
+
+**Enhancement**: "Improve text highlighting during narration"
+- Created `HighlightedWord` component with memoization
+- Implemented word-level synchronization with audio playback
+- Added gradient text effects for highlighted words
+- Optimized rendering performance with React.memo
+
 ### Key Patterns That Emerged
 
 1. **Iterative Refinement**: Start with working code, then optimize
@@ -428,6 +511,8 @@ This project was built through an iterative, conversational development process 
 4. **Configuration Over Code**: Use Spring Boot properties instead of hardcoding
 5. **Error-Driven Development**: Fix issues as they appear in logs
 6. **User Feedback Loop**: Polish UI based on actual usage experience
+7. **Observability Matters**: Track costs and performance from day one
+8. **Component Optimization**: Use memoization for frequently re-rendered components
 
 ### Lessons Learned
 
@@ -436,6 +521,8 @@ This project was built through an iterative, conversational development process 
 - **State Management Matters**: Clear old state to prevent UI bugs
 - **Timeouts Need Tuning**: AI operations take time - configure accordingly
 - **URL Construction is Tricky**: Be careful with base URLs and path concatenation
+- **Cost Tracking is Critical**: Monitor API usage to avoid surprises
+- **Performance Optimization**: Memoize components that render frequently with same props
 
 ### The "Frankenstein" Approach
 

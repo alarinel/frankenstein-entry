@@ -2,13 +2,21 @@
   "mcpServers": {
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "sequentialthinking",
+        "sequentialthinking"
+      ]
     },
     "memory": {
       "command": "uvx",
-      "args": ["mcp-memory"],
+      "args": [
+        "mcp-memory"
+      ],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
       },
@@ -17,7 +25,12 @@
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "ctx7sk-d3185438-d407-4cca-9f5b-0d5d782757e0"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "ctx7sk-d3185438-d407-4cca-9f5b-0d5d782757e0"
+      ],
       "disabled": false,
       "autoApprove": []
     }

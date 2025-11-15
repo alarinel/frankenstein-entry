@@ -27,6 +27,12 @@
 
 **Storage**: File-based local filesystem (images, audio, metadata as JSON)
 
+**API Tracking**: Cost tracking and usage monitoring
+- File-based JSON storage for API call logs
+- Configurable pricing for Anthropic, Stability AI, and ElevenLabs
+- Statistics aggregation (total costs, success rates, per-provider metrics)
+- Automatic log cleanup by age
+
 ## Frontend
 
 **Framework**: React 18 with TypeScript

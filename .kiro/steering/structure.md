@@ -22,14 +22,16 @@ backend/src/main/java/com/frankenstein/story/
 │   └── WebSocketConfig.java              # WebSocket/STOMP config
 ├── controller/                           # REST endpoints
 │   ├── StoryController.java              # Story generation API
-│   └── AssetController.java              # Static asset serving
+│   ├── AssetController.java              # Static asset serving
+│   └── AdminController.java              # Admin dashboard API
 ├── service/                              # Business logic
 │   ├── StoryOrchestrationService.java    # Main coordinator
 │   ├── StoryGenerationService.java       # Claude integration via Spring AI
 │   ├── ImageGenerationService.java       # Stability AI integration via Spring AI
 │   ├── AudioGenerationService.java       # ElevenLabs integration
 │   ├── FileStorageService.java           # File I/O operations
-│   └── ProgressNotificationService.java  # WebSocket updates
+│   ├── ProgressNotificationService.java  # WebSocket updates
+│   └── ApiTrackingService.java           # API cost tracking & configuration
 ├── model/                                # Data models
 │   ├── Story.java                        # Main story entity
 │   ├── StoryInput.java                   # User input DTO
@@ -38,7 +40,9 @@ backend/src/main/java/com/frankenstein/story/
 │   ├── StoryStatus.java                  # Status enum
 │   ├── StoryStructure.java               # Claude response structure
 │   ├── GenerateStoryResponse.java        # API response
-│   └── GenerationProgress.java           # Progress updates
+│   ├── GenerationProgress.java           # Progress updates
+│   ├── ApiCallLog.java                   # API call tracking record
+│   └── ApiConfiguration.java             # API cost & rate limit config
 └── exception/                            # Error handling
     ├── GlobalExceptionHandler.java       # @ControllerAdvice
     ├── StoryGenerationException.java
@@ -65,13 +69,15 @@ frontend/src/
 ├── App.tsx                     # Root component with routing
 ├── index.css                   # Global styles (Tailwind)
 ├── pages/                      # Route components
-│   ├── InputPage.tsx           # Mad-lib form (/input)
+│   ├── InputPage.tsx           # Mad-lib form (/)
 │   ├── LoadingPage.tsx         # Generation progress (/loading/:id)
 │   ├── ReadingPage.tsx         # Story playback (/read/:id)
-│   └── CompletionPage.tsx      # Completion screen (/complete/:id)
+│   ├── CompletionPage.tsx      # Completion screen (/complete/:id)
+│   └── AdminPage.tsx           # Admin dashboard (/admin)
 ├── components/                 # Reusable components
 │   ├── ErrorBoundary.tsx
 │   ├── ParticleBackground.tsx
+│   ├── HighlightedWord.tsx     # Word-level text highlighting
 │   └── spooky/                 # Themed UI components
 │       ├── SpookyButton.tsx
 │       ├── SpookyCard.tsx
@@ -96,7 +102,12 @@ frontend/src/
 │   └── websocket.ts            # WebSocket client
 ├── hooks/                      # Custom React hooks
 │   ├── useApiWithRetry.ts      # Retry logic
-│   └── useReducedMotion.ts     # Accessibility
+│   ├── useReducedMotion.ts     # Accessibility
+│   ├── useStoryAudio.ts        # Audio playback management
+│   ├── useTextHighlighting.ts  # Text sync with audio
+│   └── usePageNavigation.ts    # Page navigation logic
+├── constants/                  # Application constants
+│   └── reading.ts              # Reading page timing & config
 ├── types/                      # TypeScript definitions
 │   └── index.ts                # Shared types
 └── utils/                      # Helper functions
@@ -150,19 +161,22 @@ frontend/src/
 
 ```
 storage/
-└── {storyId}/
-    ├── metadata.json           # Story metadata
-    ├── images/
-    │   ├── page-1.png
-    │   ├── page-2.png
-    │   └── ...
-    └── audio/
-        ├── narration/
-        │   ├── page-1.mp3
-        │   └── ...
-        └── effects/
-            ├── thunder.mp3
-            └── ...
+├── {storyId}/                  # Individual story assets
+│   ├── metadata.json           # Story metadata
+│   ├── images/
+│   │   ├── page-1.png
+│   │   ├── page-2.png
+│   │   └── ...
+│   └── audio/
+│       ├── narration/
+│       │   ├── page-1.mp3
+│       │   └── ...
+│       └── effects/
+│           ├── thunder.mp3
+│           └── ...
+├── api-tracking/               # API call logs
+│   └── {timestamp}_{logId}.json
+└── api-config.json             # API cost & rate limit configuration
 ```
 
 ## Data Models
@@ -211,22 +225,55 @@ interface Story {
 
 ## API Endpoints
 
-### POST /api/stories/generate
+### Story Endpoints
+
+#### POST /api/stories/generate
 - **Request**: StoryInput
 - **Response**: { storyId: string, status: string }
 - **Description**: Initiates story generation
 
-### GET /api/stories/{storyId}/status
+#### GET /api/stories/{storyId}/status
 - **Response**: { status: string, progress: number, stage: string }
 - **Description**: Checks generation status
 
-### GET /api/stories/{storyId}
+#### GET /api/stories/{storyId}
 - **Response**: Story
 - **Description**: Retrieves complete story with assets
 
-### GET /api/stories
+#### GET /api/stories
 - **Response**: Story[]
 - **Description**: Lists all saved stories
 
-### WS /ws/story-progress
-- **Purpose**: Real-time progress updates
+### Admin Endpoints
+
+#### GET /api/admin/logs
+- **Response**: ApiCallLog[]
+- **Description**: Retrieves all API call logs
+
+#### GET /api/admin/logs/story/{storyId}
+- **Response**: ApiCallLog[]
+- **Description**: Retrieves logs for a specific story
+
+#### DELETE /api/admin/logs/{logId}
+- **Description**: Deletes a specific log entry
+
+#### DELETE /api/admin/logs/old/{days}
+- **Description**: Deletes logs older than specified days
+
+#### GET /api/admin/statistics
+- **Response**: Statistics object with totals, costs, success rates
+- **Description**: Retrieves aggregated API usage statistics
+
+#### GET /api/admin/configuration
+- **Response**: ApiConfiguration
+- **Description**: Retrieves current API cost and rate limit configuration
+
+#### PUT /api/admin/configuration
+- **Request**: ApiConfiguration
+- **Response**: ApiConfiguration
+- **Description**: Updates API cost and rate limit configuration
+
+### WebSocket
+
+#### WS /ws/story-progress
+- **Purpose**: Real-time progress updates during story generation

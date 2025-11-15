@@ -5,6 +5,7 @@ import { InputPage } from '@/pages/InputPage';
 import { LoadingPage } from '@/pages/LoadingPage';
 import { ReadingPage } from '@/pages/ReadingPage';
 import { CompletionPage } from '@/pages/CompletionPage';
+import { AdminPage } from '@/pages/AdminPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/loading/:storyId" element={<LoadingPage />} />
           <Route path="/read/:storyId" element={<ReadingPage />} />
           <Route path="/complete/:storyId" element={<CompletionPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 

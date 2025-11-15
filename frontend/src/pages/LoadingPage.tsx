@@ -12,6 +12,7 @@ import { MagicalCauldron } from '@/components/spooky/MagicalCauldron';
 import { FlyingBooks } from '@/components/spooky/FlyingBooks';
 import { LightningEffect } from '@/components/spooky/LightningEffect';
 import { SpookyTitle } from '@/components/spooky/SpookyEffects';
+import { fetchRandomQuote, Quote } from '@/api/quotable';
 
 const loadingMessages = [
   { emoji: '🧙', text: 'Mixing a pinch of magic with a dash of wonder...' },
@@ -30,12 +31,16 @@ export const LoadingPage = () => {
   const { setCurrentStory, setGenerationProgress, generationProgress } = useStoryStore();
   const [websocket] = useState(() => new StoryProgressWebSocket());
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
     if (!storyId) {
       navigate('/');
       return;
     }
+
+    // Fetch a random quote on mount
+    fetchRandomQuote().then(setQuote);
 
     // Connect to WebSocket for progress updates
     websocket.connect(storyId, handleProgress);
@@ -263,6 +268,26 @@ export const LoadingPage = () => {
           </motion.div>
         </AnimatePresence>
 
+        {/* Inspirational Quote */}
+        {quote && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 max-w-2xl mx-auto"
+          >
+            <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-purple-600/30 shadow-lg">
+              <div className="text-4xl mb-3 text-center">📜</div>
+              <p className="text-gray-300 text-base italic leading-relaxed text-center mb-3">
+                "{quote.content}"
+              </p>
+              <p className="text-spooky-purple-400 text-sm text-center font-semibold">
+                — {quote.author}
+              </p>
+            </div>
+          </motion.div>
+        )}
+
         {/* Stage Steps Indicator */}
         <div className="mt-12 flex justify-center gap-3">
           {[
@@ -270,7 +295,7 @@ export const LoadingPage = () => {
             { status: StoryStatus.GENERATING_IMAGES, emoji: '🎨', label: 'Images' },
             { status: StoryStatus.GENERATING_AUDIO, emoji: '🎵', label: 'Audio' },
             { status: StoryStatus.ASSEMBLING, emoji: '🔧', label: 'Assembly' },
-          ].map((stage, index) => {
+          ].map((stage) => {
             const isActive = generationProgress?.status === stage.status;
             const isPast =
               generationProgress &&

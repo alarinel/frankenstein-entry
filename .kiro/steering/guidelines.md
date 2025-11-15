@@ -141,6 +141,76 @@ This approach prevents:
 4. **Lazy Loading**: Load assets on-demand in frontend
 5. **Optimization**: Compress images and audio appropriately
 
+## API Cost Tracking
+
+The application includes built-in API cost tracking and monitoring:
+
+### ApiTrackingService
+
+Tracks all API calls to external services (Anthropic, Stability AI, ElevenLabs) with:
+- Token usage and character counts
+- Cost calculations based on configurable pricing
+- Success/failure status
+- Duration metrics
+- Per-story and aggregate statistics
+
+### Configuration Management
+
+API costs and rate limits are configurable via:
+- `storage/api-config.json` - Persistent configuration file
+- Admin API endpoints - Runtime updates
+- Default values provided if config doesn't exist
+
+### Best Practices
+
+1. **Log All API Calls**: Use `ApiTrackingService.logApiCall()` after each external API interaction
+2. **Calculate Costs**: Use helper methods like `calculateStoryGenerationCost()` for accurate pricing
+3. **Monitor Usage**: Regularly review statistics via admin dashboard
+4. **Clean Old Logs**: Implement periodic cleanup to manage storage
+5. **Update Pricing**: Keep configuration current with provider pricing changes
+
+### Example Usage
+
+```java
+@Service
+@RequiredArgsConstructor
+public class StoryGenerationService {
+    private final ApiTrackingService apiTrackingService;
+    
+    public Story generateStory(StoryInput input) {
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // Make API call
+            ChatResponse response = chatClient.call(prompt);
+            
+            // Track the call
+            ApiCallLog log = ApiCallLog.builder()
+                .storyId(storyId)
+                .apiProvider("ANTHROPIC")
+                .operation("STORY_GENERATION")
+                .tokensUsed(response.getMetadata().getUsage().getTotalTokens())
+                .costUsd(apiTrackingService.calculateStoryGenerationCost(
+                    inputTokens, outputTokens))
+                .status("SUCCESS")
+                .durationMs(System.currentTimeMillis() - startTime)
+                .build();
+                
+            apiTrackingService.logApiCall(log);
+            
+            return story;
+        } catch (Exception e) {
+            // Log failure
+            apiTrackingService.logApiCall(ApiCallLog.builder()
+                .status("FAILED")
+                .errorMessage(e.getMessage())
+                .build());
+            throw e;
+        }
+    }
+}
+```
+
 ## Security Best Practices
 
 1. **API Keys**: Store in environment variables, never commit
@@ -149,3 +219,4 @@ This approach prevents:
 4. **File Storage**: Implement size limits
 5. **CORS**: Configure properly for frontend origin
 6. **Error Handling**: Never expose internal errors to frontend
+7. **Admin Access**: Secure admin endpoints (consider authentication in production)

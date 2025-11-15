@@ -6,8 +6,9 @@ Frankenstein is an AI-powered children's story generator that creates immersive,
 
 1. **Mad-Lib Input**: Sequential form where users provide 8 story elements (character name, setting, villain, special item, trait, goal, time period, mood)
 2. **Real-time Generation**: Live progress updates via WebSocket as AI services create the story
-3. **Cinematic Playback**: 3D book interface with synchronized narration, text highlighting, and atmospheric effects
+3. **Cinematic Playback**: 3D book interface with synchronized narration, word-level text highlighting, and atmospheric effects
 4. **Completion**: Story summary with options to replay or create new stories
+5. **Admin Dashboard**: Monitor API usage, costs, and configure pricing (accessible at /admin)
 
 ## Key Features
 
@@ -16,7 +17,9 @@ Frankenstein is an AI-powered children's story generator that creates immersive,
 - Audio narration and sound effects from ElevenLabs
 - 3D page-turning animations with Three.js
 - Real-time WebSocket progress updates
+- Word-level text highlighting synchronized with narration
 - Spooky/magical dark theme with particle effects
+- Admin dashboard for API cost tracking and configuration
 - Fully responsive design
 
 ## Target Audience
