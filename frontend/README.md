@@ -2,15 +2,9 @@
 
 React + TypeScript + Vite frontend for the AI-powered children's story generator.
 
-## Features
+> **📚 Full Documentation**: See [kirodocs/](../kirodocs/) for complete architecture, features, and development guides.
 
-- **Spooky Mad-Lib Interface**: Sequential input form with suggestions
-- **Real-time Progress**: WebSocket updates during story generation
-- **Cinematic Loading**: Animated loading screen with progress tracking
-- **Interactive Book**: 3D book with page-turning animations
-- **Synchronized Audio**: Narration playback with page navigation
-- **Particle Effects**: Beautiful atmospheric background effects
-- **Smooth Animations**: Framer Motion + GSAP for movie-like transitions
+## Quick Start
 
 ## Tech Stack
 
@@ -377,27 +371,27 @@ The `vite.config.ts` includes:
 
 This allows the frontend to communicate with the backend without CORS issues during development.
 
+## Documentation
+
+For detailed information, see:
+
+- **Architecture**: [kirodocs/architecture/](../kirodocs/architecture/)
+- **Features**: [kirodocs/features/](../kirodocs/features/)
+- **Development**: [kirodocs/development/](../kirodocs/development/)
+- **Performance**: [kirodocs/performance/](../kirodocs/performance/)
+- **Technology Stack**: [.kiro/steering/tech.md](../.kiro/steering/tech.md)
+- **Project Structure**: [.kiro/steering/structure.md](../.kiro/steering/structure.md)
+
 ## Troubleshooting
 
 ### Audio not playing
-- Check browser console for CORS errors
-- Ensure backend is running on port 8083
-- Verify audio files were generated
+Check browser console for CORS errors, ensure backend is running on port 8083.
 
 ### WebSocket connection failed
-- Check backend WebSocket configuration
-- Verify CORS settings
-- Ensure backend is accessible at `http://localhost:8083`
-- Check that Vite proxy is working (should see `/ws` requests in Network tab)
+Verify CORS settings and Vite proxy configuration.
 
 ### Images not loading
-- Check network tab for 404 errors
-- Verify image generation completed
-- Check API proxy configuration in `vite.config.ts`
-
-### "global is not defined" error
-- This should be fixed by the `define: { global: 'globalThis' }` in vite.config.ts
-- If you still see this error, clear your browser cache and restart the dev server
+Check network tab for 404 errors, verify image generation completed.
 
 ## License
 

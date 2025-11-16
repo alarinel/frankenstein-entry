@@ -52,7 +52,7 @@ export const useStoryFormState = ({
   const isLastStep = currentStep === formFields.length - 1;
 
   // Handle next step or form submission
-  const handleNext = (currentValue: string) => {
+  const handleNext = (_currentValue: string) => {
     // Get the actual current value from form state (more reliable than watched value)
     const formValues = getValues();
     const actualValue = formValues[currentField.name];
@@ -147,6 +147,8 @@ export const useStoryFormState = ({
       toast('All fields already filled! 🎉', { icon: '✨' });
     } else {
       toast.success(`🎲 Filled ${filledCount} empty field${filledCount > 1 ? 's' : ''}!`);
+      // Jump to last step so user can immediately create story
+      setCurrentStep(formFields.length - 1);
     }
   };
 

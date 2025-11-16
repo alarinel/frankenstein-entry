@@ -56,10 +56,19 @@ export const useCountdownTimer = (): UseCountdownTimerReturn => {
     
     // Auto-advance after delay
     autoAdvanceTimeoutRef.current = window.setTimeout(() => {
-      clearCountdown();
+      // Clear the interval but don't call clearCountdown to avoid clearing this timeout
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+        countdownIntervalRef.current = null;
+      }
+      setIsCountingDown(false);
+      setCountdown(0);
+      autoAdvanceTimeoutRef.current = null;
+      
+      // Execute the callback
       onComplete();
     }, duration);
-  }, [clearCountdown]);
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {

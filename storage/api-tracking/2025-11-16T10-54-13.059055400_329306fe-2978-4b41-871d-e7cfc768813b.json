@@ -1,0 +1,14 @@
+{
+  "id" : "329306fe-2978-4b41-871d-e7cfc768813b",
+  "storyId" : "1e315304-5edb-4190-8fed-b91be8dcec97",
+  "apiProvider" : "ELEVENLABS",
+  "operation" : "NARRATION_GENERATION",
+  "tokensUsed" : 0,
+  "costUsd" : 0.01041,
+  "status" : "SUCCESS",
+  "errorMessage" : null,
+  "timestamp" : "2025-11-16T10:54:13",
+  "durationMs" : 6121,
+  "charactersUsed" : 347,
+  "metadata" : null
+}

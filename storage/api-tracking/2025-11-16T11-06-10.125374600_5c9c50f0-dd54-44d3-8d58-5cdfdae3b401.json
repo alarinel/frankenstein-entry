@@ -1,0 +1,14 @@
+{
+  "id" : "5c9c50f0-dd54-44d3-8d58-5cdfdae3b401",
+  "storyId" : "648f4f94-724d-415e-89b7-326cd569770a",
+  "apiProvider" : "ANTHROPIC",
+  "operation" : "STORY_GENERATION",
+  "tokensUsed" : 5186,
+  "costUsd" : 0.048354,
+  "status" : "SUCCESS",
+  "errorMessage" : null,
+  "timestamp" : "2025-11-16T11:06:10",
+  "durationMs" : 58694,
+  "charactersUsed" : 0,
+  "metadata" : null
+}

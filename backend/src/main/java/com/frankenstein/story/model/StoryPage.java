@@ -18,8 +18,7 @@ public class StoryPage {
    private String imagePrompt;
    private String imageUrl;
    private String narrationUrl;
-   private List<String> soundEffects;
-   private List<String> soundEffectUrls;
+   private String backgroundMusic; // scary, action, awesome, or journey
    private String mood;
    private double duration; // in seconds
 }

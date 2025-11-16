@@ -96,7 +96,7 @@ class StoryOrchestrationServiceTest {
                                                                              .pageNumber(1)
                                                                              .text("Luna entered the enchanted forest.")
                                                                              .imagePrompt("A brave girl entering a magical forest")
-                                                                             .soundEffects(List.of("forest_ambience"))
+                                                                             .backgroundMusic("journey")
                                                                              .mood("mysterious")
                                                                              .build();
 
@@ -104,7 +104,7 @@ class StoryOrchestrationServiceTest {
                                                                              .pageNumber(2)
                                                                              .text("She found a magic wand.")
                                                                              .imagePrompt("A girl discovering a glowing wand")
-                                                                             .soundEffects(List.of("magic_sparkle"))
+                                                                             .backgroundMusic("awesome")
                                                                              .mood("exciting")
                                                                              .build();
 
@@ -167,7 +167,7 @@ class StoryOrchestrationServiceTest {
                                                                             .pageNumber(1)
                                                                             .text("Test text")
                                                                             .imagePrompt("Test prompt")
-                                                                            .soundEffects(List.of("test_effect"))
+                                                                            .backgroundMusic("action")
                                                                             .mood("test")
                                                                             .build();
 

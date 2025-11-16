@@ -2,7 +2,17 @@
 
 ## Overview
 
-This directory contains comprehensive documentation for the Frankenstein AI-powered children's story generator. The project creates immersive, multimedia stories with AI-generated text, images, narration, and sound effects.
+Comprehensive documentation for the Frankenstein AI-powered children's story generator. This project creates immersive, multimedia stories with educational moral themes, AI-generated text, images, and narration.
+
+> **Last Updated**: November 16, 2025
+
+## Quick Navigation
+
+- **Getting Started**: See [../README.md](../README.md) and [STORY_DETAILS.md](../STORY_DETAILS.md)
+- **Backend Setup**: [../backend/README.md](../backend/README.md)
+- **Frontend Setup**: [../frontend/README.md](../frontend/README.md)
+- **Recent Changes**: [RECENT_UPDATES.md](RECENT_UPDATES.md)
+- **Steering Docs**: [../.kiro/steering/](../.kiro/steering/)
 
 ## Documentation Structure
 
@@ -36,17 +46,25 @@ Testing documentation and guides:
 - [Integration Test Plan](testing/INTEGRATION_TEST_PLAN.md) - Testing strategy
 - [Integration Test Summary](testing/INTEGRATION_TEST_SUMMARY.md) - Test results
 - [Validation Checklist](testing/INTEGRATION_VALIDATION_CHECKLIST.md) - QA checklist
+- [Voice Config Verification](testing/VOICE_CONFIG_VERIFICATION.md) - Voice API testing
+- [Client Integration](testing/CLIENT_INTEGRATION.md) - API client testing
+- [API Client Integration Verification](testing/API_CLIENT_INTEGRATION_VERIFICATION.md) - Full verification
 - [Testing README](testing/README.md) - Testing documentation index
 
 ### ✨ Features
 New feature documentation:
-- [Form Improvements](features/FORM_IMPROVEMENTS.md) - Enhanced input form UX
-- [Moral Themes](features/MORAL_THEMES.md) - Educational story themes
+- [Form Improvements](features/FORM_IMPROVEMENTS.md) - Non-linear navigation, smart randomization
+- [Moral Themes](features/MORAL_THEMES.md) - Educational story themes (15 life lessons)
+- [Expansion: Suggestion Variety](features/EXPANSION_SUGGESTION_VARIETY.md) - 20 suggestions per field
+- [Complete Form Validation](features/FEATURE_COMPLETE_FORM_VALIDATION.md) - Validation before submission
+- [Suggestion Limit](features/IMPROVEMENT_SUGGESTION_LIMIT.md) - Display 6 random suggestions
 
 ### 🐛 Bug Fixes
 Bug fix documentation:
 - [Voice Selector Validation](bugfixes/VOICE_SELECTOR_VALIDATION.md) - Form validation fix
-- [API Migration](bugfixes/API_MIGRATION_ZENQUOTES.md) - ZenQuotes API migration
+- [API Migration: ZenQuotes](bugfixes/API_MIGRATION_ZENQUOTES.md) - ZenQuotes API migration
+- [Unsafe API Removal](bugfixes/UNSAFE_API_REMOVAL.md) - Removed Advice Slip API
+- [Background Music Integration](bugfixes/2025-11-16-background-music-integration.md) - Music playback fixes
 
 ### ⚡ Performance
 Performance optimization documentation:
@@ -93,15 +111,17 @@ Performance optimization documentation:
 ## Recent Major Updates
 
 ### November 16, 2025
-- ✅ Moral themes feature for educational storytelling
-- ✅ Non-linear form navigation with smart randomization
-- ✅ GPU performance optimizations for Chrome stability
-- ✅ Voice selector validation bug fix
-- ✅ Admin page configuration display fix
-- ✅ 3D book image alignment improvements
-- ✅ Progress bar status display enhancements
+- ✅ **Moral Themes**: 15 educational life lessons integrated into stories
+- ✅ **Form Enhancements**: Non-linear navigation, smart randomization, validation
+- ✅ **Suggestion Expansion**: 20 options per field, 6 random displayed
+- ✅ **Performance**: GPU optimizations preventing Chrome crashes
+- ✅ **Bug Fixes**: Voice selector validation, admin page display
+- ✅ **Documentation**: Reorganized and updated all docs
 
 See [RECENT_UPDATES.md](RECENT_UPDATES.md) for detailed changelog.
+
+### Archive
+Outdated documentation moved to [archive/](archive/) folder.
 
 ## Contributing
 

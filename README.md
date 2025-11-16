@@ -2,7 +2,7 @@
 
 > **"Stitch together a chimera of technologies into one app"**
 
-An ambitious full-stack application that transforms simple user inputs into immersive, multimedia children's stories complete with AI-generated text, images, narration, and sound effects - all presented through a movie-like interactive experience.
+An ambitious full-stack application that transforms simple user inputs into immersive, multimedia children's stories complete with AI-generated text, images, narration, and background music - all presented through a movie-like interactive experience.
 
 ## 🎬 The Vision
 
@@ -38,7 +38,7 @@ Frankenstein brings together seemingly incompatible elements to build something 
    - **Text Positioning**: Toggle between left, right, or hidden
    - User-initiated playback (browser-friendly audio controls)
    - 3D page-turning animations with depth effect
-   - Dynamic sound effects
+   - Looping background music (scary, action, awesome, journey)
    - Atmospheric particle effects
    
 4. **Completion** - Story summary with options to replay or create new stories
@@ -56,7 +56,8 @@ Frankenstein brings together seemingly incompatible elements to build something 
 
 - **AI Story Generation** - Claude (Sonnet 4.5) via Spring AI creates engaging narratives
 - **Image Generation** - Stability AI via Spring AI with consistent seeds for thematic coherence
-- **Audio Generation** - ElevenLabs for realistic narration and sound effects
+- **Audio Generation** - ElevenLabs for realistic narration
+- **Background Music** - Mood-based music tracks (scary, action, awesome, journey)
 - **Real-time Updates** - WebSocket for live progress tracking
 - **Cost Tracking** - Built-in API usage monitoring and cost calculation
 - **Word-level Highlighting** - Text synchronized with narration playback
@@ -309,7 +310,8 @@ Subscribe: /topic/story-progress/{storyId}
 2. **Backend initiates generation**:
    - Claude generates story structure (8 pages)
    - Stability AI creates images (parallel, consistent seed)
-   - ElevenLabs generates narration + sound effects (parallel)
+   - ElevenLabs generates narration (parallel)
+   - Background music selected based on story mood
 3. **Real-time progress** updates via WebSocket
 4. **Frontend receives complete story** with all assets
 5. **Cinematic playback** with synchronized audio/text

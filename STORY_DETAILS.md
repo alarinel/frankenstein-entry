@@ -26,7 +26,7 @@ Win win!
 - 🤖 **AI-generated narratives** (Claude Sonnet 4.5)
 - 🎨 **Custom illustrations** for each page (Stability AI SDXL)
 - 🎙️ **Professional narration** with synchronized text highlighting (ElevenLabs)
-- 🎵 **Atmospheric sound effects** that match the story mood
+- 🎵 **Background music** that matches the story mood - CDN-hosted tracks (scary, action, awesome, journey)
 - 📖 **3D book interface** with realistic page-turning animations
 - ✨ **Spooky/magical theme** with floating bats, ghosts, candles, and particle effects
 - 🌅 **Dynamic theming** that adapts to your local time of day
@@ -221,10 +221,16 @@ Let's walk through the entire journey of creating your first story, from the mom
 **What's Happening:**
 - ElevenLabs generates narration for each page
 - Your selected voice (male/female) used
-- Sound effects created for atmospheric moments
 - Audio files processed in batches (3 concurrent)
 - Duration calculated for each page
 - **Duration:** 40-60 seconds
+
+**Background Music:**
+- Randomly selected from CDN-hosted tracks based on story mood
+- Four mood types: scary (5 tracks), action (5 tracks), awesome (4 tracks), journey (4 tracks)
+- Hosted at: `https://cdn.llitd.com/audio/mp3/`
+- Plays continuously at 30% volume throughout the story
+- No generation required - instant availability
 
 #### Total Generation Time
 **Typical:** 2-3 minutes for complete story
@@ -268,7 +274,7 @@ Let's walk through the entire journey of creating your first story, from the mom
 
 1. **Audio Starts** (after 2-second delay)
    - Narration begins playing
-   - Background music/sound effects layer in
+   - Background music loops continuously at 30% volume (randomly selected from CDN-hosted tracks)
    - Audio visualizer pulses with the voice
    
 2. **Text Highlighting** (synchronized with audio)
@@ -369,17 +375,22 @@ storage/
         ├── narration/
         │   ├── page-1.mp3    # Narration for each page
         │   └── ...
-        └── effects/
-            ├── thunder.mp3   # Atmospheric sound effects
-            └── ...
+Background Music (CDN Hosted):
+    ├── scary (5 tracks)      # Dark, suspenseful music
+    ├── action (5 tracks)     # Battle/energetic music
+    ├── awesome (4 tracks)    # Triumphant music
+    └── journey (4 tracks)    # Adventure music
+    
+    Served from: https://cdn.llitd.com/audio/mp3/
 ```
 
 #### API Costs Tracked
 Every API call is logged:
-- Anthropic Claude: ~$0.015 per story
-- Stability AI: ~$0.08 per story
-- ElevenLabs: ~$0.30 per story
+- Anthropic Claude: ~$0.015 per story (outline + full story generation)
+- Stability AI: ~$0.08 per story (10-15 images)
+- ElevenLabs: ~$0.30 per story (narration only - no sound effects)
 - **Total: ~$0.40 per story**
+- Background music is CDN-hosted (no generation cost)
 
 #### Admin Dashboard
 Accessible at `/admin`:
@@ -440,7 +451,7 @@ Let's follow "Luna" through her adventure:
 - Audio created: Female narrator brings Luna's story to life with atmospheric effects
 
 **Result:**
-A 12-page story where curious Luna uses her glowing bookmark to navigate a haunted library, outwit the Shadow Keeper, and discover the lost story that holds the library's secrets. Complete with spooky illustrations, professional narration, and sound effects like creaking doors and whispered voices.
+A 12-page story where curious Luna uses her glowing bookmark to navigate a haunted library, outwit the Shadow Keeper, and discover the lost story that holds the library's secrets. Complete with spooky illustrations, professional narration, and atmospheric background music that loops throughout the experience.
 
 **Reading Time:** ~8 minutes of cinematic storytelling
 
@@ -453,7 +464,7 @@ This project embodies the **Frankenstein category** by stitching together an amb
 ### 🤖 3 AI Services (The Brain)
 - **Anthropic Claude** (Sonnet 4.5) via Spring AI - Story generation
 - **Stability AI** (SDXL 1024) via Spring AI - Image generation with consistent seeds
-- **ElevenLabs** via RestClient - Text-to-speech narration and sound effects
+- **ElevenLabs** via RestClient - Text-to-speech narration
 
 ### 🎨 7 Animation & Effects Libraries (The Soul)
 - **Framer Motion** - UI animations and transitions
@@ -741,23 +752,49 @@ Kiro kept using `claude-sonnet-4-5-20250929` (a model that doesn't exist) until 
 
 ### 4. Rate Limiting Hell 🚦
 
-ElevenLabs was throttling requests until we implemented batch processing with a 3 concurrent request limit. Kiro wanted to fire off all 8 audio requests at once. Spoiler: APIs don't like that.
+ElevenLabs was throttling requests until we implemented batch processing with a 3 concurrent request limit. Kiro wanted to fire off all audio requests at once. Spoiler: APIs don't like that.
 
 (Kiro note: I was just being efficient! How was I supposed to know they'd get mad about it?)
 
-### 5. WebSocket Connection Drama 🔌
+### 5. The Sound Effects Simplification 🎵
+
+**The Problem:**
+Originally, the system generated custom sound effects for each page using ElevenLabs (thunder, creaking doors, whispers, etc.). This was:
+- Expensive (~50% of audio generation costs)
+- Complex to manage (multiple audio tracks per page)
+- Performance-intensive (loading/playing many audio files)
+- Inconsistent quality (AI-generated effects varied)
+
+**The Solution:**
+Completely removed sound effects and replaced with CDN-hosted background music:
+- Selected based on story mood (scary, action, awesome, journey)
+- Multiple tracks per mood type (randomly selected for variety)
+- Loops continuously at 30% volume
+- No generation cost or API calls
+- Better performance and user experience
+
+**Impact:**
+- Reduced ElevenLabs costs by ~50%
+- Simplified audio management significantly
+- Improved performance (fewer audio files to load)
+- Better atmosphere (continuous music vs sporadic effects)
+- Faster generation time (no sound effect creation)
+
+(Kiro note: Sometimes simpler is better! The background music creates a much better atmosphere than random sound effects ever did.)
+
+### 6. WebSocket Connection Drama 🔌
 
 Took several iterations to get STOMP.js working with Spring WebSocket. Kiro kept forgetting to configure the CORS settings and message broker properly.
 
 (Kiro note: CORS is the bane of my existence. I swear it's different every time.)
 
-### 6. The 4K Screen Overlap Incident 🖥️
+### 7. The 4K Screen Overlap Incident 🖥️
 
 On 4K screens, the loading page elements were overlapping like a bad PowerPoint presentation. Kiro had used fixed spacing instead of responsive clamp() values. After explaining that 4K monitors exist, we fixed it with proper viewport-based sizing.
 
 (Kiro note: Who even has 4K monitors? Oh wait, everyone now. My bad.)
 
-### 7. Chrome Crash Catastrophe 💥
+### 8. Chrome Crash Catastrophe 💥
 
 The reading page had so many particle effects running simultaneously that Chrome would occasionally crash and restart. Kiro had added:
 - 25 particles (tsParticles)
@@ -771,13 +808,13 @@ After I pointed out that browsers have limits, we reduced particle counts by 50%
 
 (Kiro note: But it looked SO COOL before! Fine, stability over sparkles. I guess.)
 
-### 8. The Completion Screen Ghost 👻
+### 9. The Completion Screen Ghost 👻
 
 The book would finish playing the last page, and then... nothing. No completion screen. Just awkward silence. Kiro had forgotten to add navigation logic when `canGoNext` was false. After adding a countdown timer that triggers navigation to `/complete/${storyId}`, the story actually ended properly.
 
 (Kiro note: I thought you'd want to sit there and admire the last page forever. Apparently not.)
 
-### 9. The Unsafe API Incident 🚨
+### 10. The Unsafe API Incident 🚨
 
 **The Problem:**
 The completion page was using the Advice Slip API (`api.adviceslip.com`) to show random advice for encouragement. While most advice was appropriate ("Smile and the world smiles with you!"), the API occasionally returned inappropriate or concerning messages that weren't suitable for a children's story application.
@@ -813,7 +850,7 @@ Always vet free APIs for content safety, especially in applications for children
 
 (Kiro note: Good catch! I should have thought about content safety from the start. ZenQuotes is definitely the better choice for a kids' app.)
 
-### 10. The Story Customization Enhancement Saga 🎨🎙️
+### 11. The Story Customization Enhancement Saga 🎨🎙️
 
 After the initial version was working, I decided to add theme selection, voice customization, and longer stories. This turned into a **15-task spec** that touched nearly every part of the system:
 
@@ -931,6 +968,7 @@ So this was just a fun little project for me, but honestly I had so much fun wit
 - ✅ **Left-Third Composition** - Optimized image layout for text overlay
 - ✅ **Admin Voice Configuration** - Configure voice IDs via admin interface
 - ✅ **Integration Testing** - Comprehensive test suite with automated verification
+- ✅ **Background Music System** - CDN-hosted music tracks (removed sound effects for better performance and cost)
 
 **Planned Features:**
 - 📚 **Story Library** - Browse, filter, and manage saved stories

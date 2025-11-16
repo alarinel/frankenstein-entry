@@ -3,13 +3,13 @@ import { Howl } from 'howler';
 
 interface AudioStore {
   currentPageAudio: Howl | null;
-  soundEffects: Howl[];
+  backgroundMusic: Howl | null;
   isPlaying: boolean;
   currentPage: number;
   currentTime: number;
 
   setCurrentPageAudio: (audio: Howl | null) => void;
-  setSoundEffects: (effects: Howl[]) => void;
+  setBackgroundMusic: (music: Howl | null) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   setCurrentPage: (page: number) => void;
   setCurrentTime: (time: number) => void;
@@ -21,51 +21,61 @@ interface AudioStore {
 
 export const useAudioStore = create<AudioStore>((set, get) => ({
   currentPageAudio: null,
-  soundEffects: [],
+  backgroundMusic: null,
   isPlaying: false,
   currentPage: 0,
   currentTime: 0,
 
   setCurrentPageAudio: (audio) => set({ currentPageAudio: audio }),
-  setSoundEffects: (effects) => set({ soundEffects: effects }),
+  setBackgroundMusic: (music) => set({ backgroundMusic: music }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setCurrentPage: (page) => set({ currentPage: page }),
   setCurrentTime: (time) => set({ currentTime: time }),
 
   play: () => {
-    const { currentPageAudio } = get();
+    const { currentPageAudio, backgroundMusic } = get();
     if (currentPageAudio) {
       currentPageAudio.play();
       set({ isPlaying: true });
     }
+    if (backgroundMusic && !backgroundMusic.playing()) {
+      backgroundMusic.play();
+    }
   },
 
   pause: () => {
-    const { currentPageAudio } = get();
+    const { currentPageAudio, backgroundMusic } = get();
     if (currentPageAudio) {
       currentPageAudio.pause();
       set({ isPlaying: false });
     }
+    if (backgroundMusic) {
+      backgroundMusic.pause();
+    }
   },
 
   stop: () => {
-    const { currentPageAudio, soundEffects } = get();
+    const { currentPageAudio, backgroundMusic } = get();
     if (currentPageAudio) {
       currentPageAudio.stop();
     }
-    soundEffects.forEach((effect) => effect.stop());
+    if (backgroundMusic) {
+      backgroundMusic.stop();
+    }
     set({ isPlaying: false, currentTime: 0 });
   },
 
   cleanup: () => {
-    const { currentPageAudio, soundEffects } = get();
+    const { currentPageAudio, backgroundMusic } = get();
     if (currentPageAudio) {
       currentPageAudio.unload();
     }
-    soundEffects.forEach((effect) => effect.unload());
+    if (backgroundMusic) {
+      backgroundMusic.unload();
+    }
     set({
       currentPageAudio: null,
-      soundEffects: [],
+      backgroundMusic: null,
       isPlaying: false,
       currentPage: 0,
       currentTime: 0,

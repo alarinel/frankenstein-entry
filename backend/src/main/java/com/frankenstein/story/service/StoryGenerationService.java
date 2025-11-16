@@ -407,10 +407,10 @@ public class StoryGenerationService {
                                                  - Maintain visual consistency across pages (same character appearance, art style)
                                                  - Example: "Storybook watercolor illustration of [character name], a brave young [description], standing in [setting] with [lighting]. [Character] wears [clothing] and holds [item]. [Mood] atmosphere with [colors]. Fantasy art style, detailed, child-friendly."
                                                  
-                                                 Sound Effect Guidelines:
-                                                 - 1-3 effects per page that enhance immersion
-                                                 - Use descriptive names: "thunder_rumble", "door_creak", "magic_sparkle", "footsteps_forest", "wind_howling"
-                                                 - Match the scene's action and mood
+                                                 Background Music Guidelines:
+                                                 - Choose ONE music type per page that matches the scene's energy and mood
+                                                 - Options: "scary" (tense/mysterious), "action" (exciting/battle), "awesome" (triumphant/magical), "journey" (adventure/travel)
+                                                 - Match the scene's pacing and emotional tone
                                                  
                                                  Return your response as a JSON object with this EXACT structure:
                                                  {
@@ -421,11 +421,13 @@ public class StoryGenerationService {
                                                        "pageNumber": 1,
                                                        "text": "The story text for this page (3-5 sentences with rich detail)...",
                                                        "imagePrompt": "Highly detailed prompt for Stability AI SDXL...",
-                                                       "soundEffects": ["effect1", "effect2"],
+                                                       "backgroundMusic": "scary",
                                                        "mood": "mysterious"
                                                      }
                                                    ]
                                                  }
+                                                 
+                                                 CRITICAL: backgroundMusic must be one of: "scary", "action", "awesome", or "journey"
                                                  
                                                  IMPORTANT: Return ONLY the JSON object, no additional text before or after.
                                                  """;
