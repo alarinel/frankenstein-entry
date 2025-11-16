@@ -36,6 +36,15 @@
         "resolve-library-id",
         "get-library-docs"
       ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ],
+      "disabled": false,
+      "autoApprove": []
     }
   }
 }

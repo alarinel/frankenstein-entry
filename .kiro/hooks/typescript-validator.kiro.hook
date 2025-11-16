@@ -4,7 +4,8 @@
   "description": "Validates TypeScript files on save to ensure type safety, check for compilation errors, verify imports, and confirm all TypeScript details are up to date with proper typing",
   "version": "1",
   "when": {
-    "type": "userTriggered"
+    "type": "fileEdited",
+    "patterns": []
   },
   "then": {
     "type": "askAgent",

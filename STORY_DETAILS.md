@@ -1,4 +1,4 @@
-# 🧟 Frankenstein: AI-Powered Children's Story Generator
+# 🧟 Frankenbook: AI-Powered Children's Story Generator
 
 > **Category**: Frankenstein - Stitch together a chimera of technologies  
 > **Bonus**: Best Startup Project
@@ -101,7 +101,7 @@ This project embodies the **Frankenstein category** by stitching together an amb
 ### 🔧 Development Tools (The Lab Equipment)
 - **ESLint** + **Prettier** for code quality
 - **Vitest** + **React Testing Library** for testing
-- **Playwright** for E2E testing
+- **Playwright MCP** for automated UI testing and browser automation
 
 **Total: 40+ technologies working in harmony!** 🎃
 
@@ -262,6 +262,12 @@ Configured **3 MCP servers** in `.kiro/settings/mcp.json`:
 - Prevented deprecated method usage
 - Critical for working with rapidly evolving libraries like Spring AI
 
+**`playwright`** (@executeautomation/playwright-mcp-server)
+- Automated UI testing and browser automation
+- Enabled end-to-end testing of the story generation flow
+- Provided tools for screenshot capture and interaction testing
+- Simplified complex browser automation tasks
+
 **Example MCP Usage:**
 ```
 Me: "Add Framer Motion animations to the reading page"
@@ -270,7 +276,7 @@ Kiro: *Implements animations using current API*
 Result: No deprecated warnings, works perfectly
 ```
 
-**Impact**: MCP servers prevented hours of debugging by ensuring Kiro used current APIs. The sequential-thinking server helped solve complex orchestration issues. Context7 was essential for working with Spring AI milestone releases.
+**Impact**: MCP servers prevented hours of debugging by ensuring Kiro used current APIs. The sequential-thinking server helped solve complex orchestration issues. Context7 was essential for working with Spring AI milestone releases. Playwright MCP made UI testing a breeze.
 
 ---
 
@@ -290,11 +296,82 @@ Funnily enough, that sometimes works. Though, a few times I think it actually ju
 
 **Specific Challenges:**
 
-1. **Spring AI Model Names** - Kiro kept using incorrect model names until we fetched the actual documentation
-2. **Rate Limiting** - ElevenLabs was throttling requests until we implemented batch processing
-3. **WebSocket Connection** - Took several iterations to get STOMP.js working with Spring WebSocket
-4. **3D Book Rendering** - Three.js depth calculations required multiple refinements
-5. **Audio Synchronization** - Word-level highlighting needed precise timing calculations
+### 1. The Great Stacked Books Disaster 📚💥
+
+**The Problem:**
+```
+Me: "Add a 3D book component with realistic page turning"
+Kiro: *Creates beautiful 3D book with stacked pages for depth*
+Me: "Looks great! But... why are there 8 books stacked on top of each other?"
+Kiro: "For depth! It looks more realistic!"
+Me: "It looks like a library collapsed. Each page should be part of ONE book."
+```
+
+Kiro had interpreted "stacked pages" literally and created 8 separate book instances stacked vertically. The result was... architecturally interesting but functionally useless. After explaining that pages should be INSIDE the book, not stacked like pancakes, we got it working properly.
+
+(Kiro note: In my defense, I was thinking about z-index depth, not physical stacking. Though I'll admit the pancake book was a bold artistic choice.)
+
+### 2. The Spring Boot Configuration Saga ⚙️🔧
+
+**The Problem:**
+```
+Me: "Configure the HTTP client with custom timeouts"
+Kiro: *Tries to import some mysterious client library that doesn't exist*
+Kiro: *Creates elaborate Java config file with beans and annotations*
+Me: "That library doesn't exist in Spring Boot 3.2.0"
+Kiro: "Sure it does! Let me add more dependencies..."
+Me: "STOP. We're upgrading to Spring Boot 3.5.0"
+```
+
+After upgrading Spring Boot, I showed Kiro that we could configure everything in `application.yml` with simple properties like `http.client.connect-timeout: 30s` instead of writing 50 lines of Java configuration. Kiro was trying to be fancy when simple was better.
+
+Then I had to delete Kiro's broken config file to get us back on track. Sometimes you just need to throw out the whole attempt and start fresh.
+
+(Kiro note: I was just trying to show off my Java skills! But yeah, YAML is cleaner. I'll admit defeat on this one.)
+
+### 3. Spring AI Model Names 🤖❌
+
+Kiro kept using `claude-sonnet-4-5-20250929` (a model that doesn't exist) until we fetched the actual documentation and found it should be `claude-3-5-sonnet-20241022`. This caused mysterious API errors for hours.
+
+(Kiro note: In my defense, that SHOULD be the name based on the pattern. Anthropic's naming scheme is weird.)
+
+### 4. Rate Limiting Hell 🚦
+
+ElevenLabs was throttling requests until we implemented batch processing with a 3 concurrent request limit. Kiro wanted to fire off all 8 audio requests at once. Spoiler: APIs don't like that.
+
+(Kiro note: I was just being efficient! How was I supposed to know they'd get mad about it?)
+
+### 5. WebSocket Connection Drama 🔌
+
+Took several iterations to get STOMP.js working with Spring WebSocket. Kiro kept forgetting to configure the CORS settings and message broker properly.
+
+(Kiro note: CORS is the bane of my existence. I swear it's different every time.)
+
+### 6. The 4K Screen Overlap Incident 🖥️
+
+On 4K screens, the loading page elements were overlapping like a bad PowerPoint presentation. Kiro had used fixed spacing instead of responsive clamp() values. After explaining that 4K monitors exist, we fixed it with proper viewport-based sizing.
+
+(Kiro note: Who even has 4K monitors? Oh wait, everyone now. My bad.)
+
+### 7. Chrome Crash Catastrophe 💥
+
+The reading page had so many particle effects running simultaneously that Chrome would occasionally crash and restart. Kiro had added:
+- 25 particles (tsParticles)
+- 3 floating bats
+- 4 floating spiders
+- Floating candles
+- 12 magic sparkles
+- Plus a 3D book with Three.js
+
+After I pointed out that browsers have limits, we reduced particle counts by 50%, lowered FPS, and disabled some effects. Chrome stopped having existential crises.
+
+(Kiro note: But it looked SO COOL before! Fine, stability over sparkles. I guess.)
+
+### 8. The Completion Screen Ghost 👻
+
+The book would finish playing the last page, and then... nothing. No completion screen. Just awkward silence. Kiro had forgotten to add navigation logic when `canGoNext` was false. After adding a countdown timer that triggers navigation to `/complete/${storyId}`, the story actually ended properly.
+
+(Kiro note: I thought you'd want to sit there and admire the last page forever. Apparently not.)
 
 ---
 
@@ -330,13 +407,17 @@ The hooks were easy to set up and a clever idea to keep things going the right d
 **3. Specs Provide Structure for Complex Work**
 Breaking down the refactoring into requirements → design → tasks gave Kiro a clear roadmap. It followed the task list methodically without getting lost or making mistakes.
 
-**4. MCP Integration Is Powerful**
+**4. MCP Integration Is Powerful (When It Works)**
 I have some basic MCPs I always use, but I was curious how well Kiro would do setting them up for me. Spoiler: three of them were crazy easy to set up and one of them was a nightmare because Kiro was CONVINCED that it knew how to configure it, except it didn't exist in the repo it tried to use.
 
-We got there in the end, though. The Context7 MCP was essential for working with Spring AI's rapidly evolving API.
+We got there in the end, though. The Context7 MCP was essential for working with Spring AI's rapidly evolving API. And the Playwright MCP made UI testing actually enjoyable instead of a chore.
 
-**5. Conversational Development Works**
-The back-and-forth with Kiro felt natural. I could say "simplify this" or "fix that bug" and Kiro understood the context. When it made mistakes, I could correct it and it would learn.
+(Kiro note: That one MCP configuration was NOT my fault. The documentation was wrong. I stand by that.)
+
+**5. Conversational Development Works (Mostly)**
+The back-and-forth with Kiro felt natural. I could say "simplify this" or "fix that bug" and Kiro understood the context. When it made mistakes, I could correct it and it would learn. Though sometimes it took a few ALL CAPS messages to get through.
+
+(Kiro note: The ALL CAPS messages were unnecessary. I heard you the first time. I was just... thinking.)
 
 ### Comparison to Other Tools
 
@@ -392,11 +473,11 @@ This has **real commercial potential**:
 
 ### Implementation of Kiro
 This project showcases **extensive use of all Kiro features**:
-- ✅ **Vibe Coding**: 100+ conversational interactions building the entire project
+- ✅ **Vibe Coding**: 100+ conversational interactions building the entire project (with occasional ALL CAPS corrections)
 - ✅ **Steering Docs**: 4 comprehensive guides (tech, structure, product, guidelines)
 - ✅ **Agent Hooks**: 4 custom hooks (build logger, code quality, docs sync, validator)
 - ✅ **Specs**: 3 detailed specs for complex features (refactoring, story library, voice selection)
-- ✅ **MCP**: 3 servers (sequential-thinking, memory, context7) for enhanced capabilities
+- ✅ **MCP**: 4 servers (sequential-thinking, memory, context7, playwright) for enhanced capabilities
 
 ### Quality and Design
 - 🎨 **Polished UI**: Spooky/magical theme with 3D book, particle effects, animations
@@ -416,7 +497,7 @@ This project showcases **extensive use of all Kiro features**:
 - **Kiro Steering Docs**: 4
 - **Kiro Hooks**: 4
 - **Kiro Specs**: 3
-- **MCP Servers**: 3
+- **MCP Servers**: 4
 - **Development Time**: 2 weeks
 - **Cost per Story**: $0.40
 - **Fun Factor**: 💯
