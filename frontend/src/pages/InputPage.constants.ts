@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  themeSuggestions,
   characterNameSuggestions,
   settingSuggestions,
   villainSuggestions,
@@ -11,6 +12,10 @@ import {
 } from '@/utils/suggestions';
 
 export const STORY_SCHEMA = z.object({
+  theme: z.string().min(1, 'Please select a story lesson').max(50),
+  voiceType: z.enum(['male', 'female'], {
+    required_error: 'Please select a narrator voice',
+  }),
   characterName: z.string().min(1, 'Character name is required').max(50),
   setting: z.string().min(1, 'Setting is required').max(100),
   villain: z.string().min(1, 'Villain is required').max(50),
@@ -23,11 +28,28 @@ export const STORY_SCHEMA = z.object({
 
 export const FORM_FIELDS = [
   {
+    name: 'theme' as const,
+    label: 'What lesson should this story teach?',
+    placeholder: 'Choose a moral theme...',
+    suggestions: themeSuggestions,
+    emoji: '💡',
+    type: 'text' as const,
+  },
+  {
+    name: 'voiceType' as const,
+    label: 'Choose your narrator voice',
+    placeholder: '',
+    suggestions: [],
+    emoji: '🎙️',
+    type: 'voice-selector' as const,
+  },
+  {
     name: 'characterName' as const,
     label: "What's your hero's name?",
     placeholder: 'Enter a name...',
     suggestions: characterNameSuggestions,
     emoji: '🦸',
+    type: 'text' as const,
   },
   {
     name: 'setting' as const,
@@ -35,6 +57,7 @@ export const FORM_FIELDS = [
     placeholder: 'Describe the setting...',
     suggestions: settingSuggestions,
     emoji: '🏰',
+    type: 'text' as const,
   },
   {
     name: 'villain' as const,
@@ -42,6 +65,7 @@ export const FORM_FIELDS = [
     placeholder: 'Name the antagonist...',
     suggestions: villainSuggestions,
     emoji: '👹',
+    type: 'text' as const,
   },
   {
     name: 'specialItem' as const,
@@ -49,6 +73,7 @@ export const FORM_FIELDS = [
     placeholder: 'Describe the item...',
     suggestions: specialItemSuggestions,
     emoji: '✨',
+    type: 'text' as const,
   },
   {
     name: 'characterTrait' as const,
@@ -56,6 +81,7 @@ export const FORM_FIELDS = [
     placeholder: 'Describe a trait...',
     suggestions: characterTraitSuggestions,
     emoji: '💪',
+    type: 'text' as const,
   },
   {
     name: 'goal' as const,
@@ -63,6 +89,7 @@ export const FORM_FIELDS = [
     placeholder: 'Describe the goal...',
     suggestions: goalSuggestions,
     emoji: '🎯',
+    type: 'text' as const,
   },
   {
     name: 'timePeriod' as const,
@@ -70,6 +97,7 @@ export const FORM_FIELDS = [
     placeholder: 'Set the time period...',
     suggestions: timePeriodSuggestions,
     emoji: '⏰',
+    type: 'text' as const,
   },
   {
     name: 'mood' as const,
@@ -77,6 +105,7 @@ export const FORM_FIELDS = [
     placeholder: 'Describe the mood...',
     suggestions: moodSuggestions,
     emoji: '🎭',
+    type: 'text' as const,
   },
 ] as const;
 

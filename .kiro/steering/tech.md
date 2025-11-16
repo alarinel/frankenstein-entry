@@ -118,7 +118,8 @@ npm run lint
 - `ANTHROPIC_API_KEY` - Claude API
 - `STABILITY_API_KEY` - Stability AI
 - `ELEVENLABS_API_KEY` - ElevenLabs
-- `ELEVENLABS_VOICE_ID` - Voice selection (optional, has default)
+
+**Note**: Voice IDs for male and female narrators are now configured via the Admin interface at `/admin` instead of environment variables.
 
 ## Development Ports
 

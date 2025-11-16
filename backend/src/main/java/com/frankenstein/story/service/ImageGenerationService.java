@@ -24,6 +24,24 @@ public class ImageGenerationService {
 
    private final ImageModel imageModel;
 
+   /**
+    * Enhances the original prompt with left-third composition guidance for 3D book display.
+    * Positions focal points in the left 35% of the frame for optimal viewing when pages are angled.
+    *
+    * @param originalPrompt The original image generation prompt
+    * @return Enhanced prompt with composition guidance prepended
+    */
+   private String enhancePromptWithComposition(final String originalPrompt) {
+      final String compositionGuidance = "Composition: focal point positioned in the left 35% of the frame, " +
+                                         "subject on the left side of the image, " +
+                                         "main character or object left of center. ";
+      
+      final String enhancedPrompt = compositionGuidance + originalPrompt;
+      log.debug("Enhanced prompt with left-third composition guidance");
+      
+      return enhancedPrompt;
+   }
+
    public CompletableFuture<byte[]> generateImage(final String prompt, final int seed) {
       if (prompt == null || prompt.trim().isEmpty()) {
          return CompletableFuture.failedFuture(new ImageGenerationException("Prompt cannot be null or empty"));
@@ -31,9 +49,11 @@ public class ImageGenerationService {
 
       return CompletableFuture.supplyAsync(() -> {
          try {
-            log.debug("Generating image with seed {} for prompt: {}", seed, prompt);
+            // Enhance prompt with left-third composition guidance
+            final String enhancedPrompt = enhancePromptWithComposition(prompt);
+            log.debug("Generating image with seed {} for enhanced prompt: {}", seed, enhancedPrompt);
 
-            final ImagePrompt imagePrompt = new ImagePrompt(prompt);
+            final ImagePrompt imagePrompt = new ImagePrompt(enhancedPrompt);
             final ImageResponse response = imageModel.call(imagePrompt);
 
             if (response.getResults().isEmpty()) {
@@ -43,7 +63,7 @@ public class ImageGenerationService {
             final String base64Image = response.getResult().getOutput().getB64Json();
             final byte[] imageData = Base64.getDecoder().decode(base64Image);
 
-            log.debug("Successfully generated image ({} bytes)", imageData.length);
+            log.debug("Successfully generated image ({} bytes) with left-third composition", imageData.length);
             return imageData;
 
          } catch (final ImageGenerationException e) {

@@ -24,6 +24,12 @@ public class ProgressCoordinatorServiceImpl implements ProgressCoordinatorServic
    }
 
    @Override
+   public void notifyGeneratingOutline(final String storyId) {
+      log.debug("Generating story outline: {}", storyId);
+      progressNotificationService.sendGeneratingOutline(storyId);
+   }
+
+   @Override
    public void notifyGeneratingStory(final String storyId) {
       log.debug("Generating story structure: {}", storyId);
       progressNotificationService.sendGeneratingStory(storyId);

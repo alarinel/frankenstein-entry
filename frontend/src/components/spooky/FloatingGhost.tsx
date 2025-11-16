@@ -42,7 +42,6 @@ export const GhostCluster = () => {
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-10">
       <FloatingGhost emoji="👻" delay={0} startX="5%" startY="10%" duration={6} />
       <FloatingGhost emoji="👻" delay={2} startX="85%" startY="15%" duration={7} />
-      <FloatingGhost emoji="🎃" delay={1} startX="50%" startY="5%" duration={5} />
     </div>
   );
 };

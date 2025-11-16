@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 
 interface ProgressBarProps {
-  progress: number;
-  showPercentage?: boolean;
-  height?: 'sm' | 'md' | 'lg';
-  variant?: 'gradient' | 'solid';
-  className?: string;
+    progress: number;
+    showPercentage?: boolean;
+    height?: 'xs' | 'sm' | 'md' | 'lg';
+    variant?: 'gradient' | 'solid';
+    className?: string;
 }
 
 /**
@@ -13,38 +13,33 @@ interface ProgressBarProps {
  * Used for displaying progress, loading states, and completion status
  */
 export const ProgressBar = ({
-  progress,
-  showPercentage = false,
-  height = 'md',
-  variant = 'gradient',
-  className = '',
-}: ProgressBarProps) => {
-  const heights = {
-    sm: 'h-1',
-    md: 'h-2',
-    lg: 'h-3',
-  };
+                                progress,
+                                height = 'md',
+                                variant = 'gradient',
+                                className = '',
+                            }: ProgressBarProps) => {
+    const heights = {
+        xs: 'h-0.5',
+        sm: 'h-1',
+        md: 'h-2',
+        lg: 'h-3',
+    };
 
-  const variants = {
-    gradient: 'bg-gradient-to-r from-spooky-purple-500 via-spooky-pink-500 to-spooky-orange-500',
-    solid: 'bg-spooky-purple-500',
-  };
+    const variants = {
+        gradient: 'bg-gradient-to-r from-spooky-purple-500 via-spooky-pink-500 to-spooky-orange-500',
+        solid: 'bg-spooky-purple-500',
+    };
 
-  return (
-    <div className={className}>
-      <div className={`${heights[height]} bg-dark-700 rounded-full overflow-hidden`}>
-        <motion.div
-          className={`h-full ${variants[variant]} transition-all duration-100`}
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-          transition={{ duration: 0.3 }}
-        />
-      </div>
-      {showPercentage && (
-        <div className="text-right text-sm text-spooky-purple-300 font-mono mt-1">
-          {Math.floor(progress)}%
+    return (
+        <div className={className}>
+            <div className={`${heights[height]} bg-dark-700 rounded-full overflow-hidden`}>
+                <motion.div
+                    className={`h-full ${variants[variant]} transition-all duration-100`}
+                    initial={{width: 0}}
+                    animate={{width: `${Math.min(100, Math.max(0, progress))}%`}}
+                    transition={{duration: 0.3}}
+                />
+            </div>
         </div>
-      )}
-    </div>
-  );
+    );
 };

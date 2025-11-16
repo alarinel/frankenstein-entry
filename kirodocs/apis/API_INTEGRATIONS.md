@@ -59,8 +59,15 @@ STABILITY_API_KEY=your-key-here
 **Configuration**:
 ```env
 ELEVENLABS_API_KEY=your-key-here
-ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM  # Optional
 ```
+
+**Voice Configuration**: Male and female narrator voice IDs are now configured via the Admin interface at `/admin` instead of environment variables. This allows runtime configuration without redeploying the application.
+
+**Default Voices**:
+- Male: `21m00Tcm4TlvDq8ikWAM`
+- Female: `EXAVITQu4vr4xnSDxMaL`
+
+Browse available voices at [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-library)
 
 ---
 

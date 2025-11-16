@@ -9,6 +9,7 @@ interface FormNavigationProps {
   onBack: () => void;
   onNext: () => void;
   onRandomize: () => void;
+  onClear: () => void;
 }
 
 /**
@@ -23,12 +24,13 @@ export const FormNavigation = ({
   onBack,
   onNext,
   onRandomize,
+  onClear,
 }: FormNavigationProps) => {
   return (
     <>
-      {/* Randomizer Button */}
+      {/* Randomizer and Clear Buttons */}
       <motion.div
-        className="mt-8"
+        className="mt-8 flex gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.3 }}
@@ -36,12 +38,20 @@ export const FormNavigation = ({
         <SpookyButton
           onClick={onRandomize}
           variant="ghost"
-          className="w-full"
+          className="flex-1"
           disabled={isLoading}
         >
           <span>🎲</span>
-          <span>Surprise Me! (Random Story)</span>
-          <span>✨</span>
+          <span>Fill Empty</span>
+        </SpookyButton>
+        <SpookyButton
+          onClick={onClear}
+          variant="ghost"
+          className="flex-1"
+          disabled={isLoading}
+        >
+          <span>🧹</span>
+          <span>Clear All</span>
         </SpookyButton>
       </motion.div>
 

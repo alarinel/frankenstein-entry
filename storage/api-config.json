@@ -3,8 +3,9 @@
   "anthropicOutputCostPerMillionTokens" : 15.0,
   "stabilityImageCostPerImage" : 0.04,
   "elevenlabsCostPerCharacter" : 3.0E-5,
-  "elevenlabsRateLimitPerMinute" : 10,
-  "elevenlabsDelayBetweenCallsMs" : 6000,
+  "elevenlabsMaxConcurrentRequests" : 3,
+  "maleVoiceId" : "21m00Tcm4TlvDq8ikWAM",
+  "femaleVoiceId" : "EXAVITQu4vr4xnSDxMaL",
   "maxStoriesPerDay" : 100,
   "enableCostTracking" : true
 }

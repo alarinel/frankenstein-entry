@@ -15,15 +15,23 @@ kirodocs/
 │   ├── README.md           # Implementation overview
 │   ├── IMPLEMENTATION_SUMMARY.md
 │   ├── FINAL_IMPLEMENTATION_SUMMARY.md
-│   └── SPOOKY_ELEMENTS_SUMMARY.md
+│   ├── SPOOKY_ELEMENTS_SUMMARY.md
+│   └── STORY_CUSTOMIZATION_SUMMARY.md
 ├── architecture/            # System design and structure
 │   ├── README.md           # Architecture overview
 │   └── COMPONENT_ARCHITECTURE.md
-└── development/             # Development process and refactoring
-    ├── README.md           # Development overview
-    ├── REFACTORING_SUMMARY.md
-    ├── BUILD_PROCESS.md
-    └── DOCUMENTATION_UPDATE_SUMMARY.md (if exists)
+├── development/             # Development process and refactoring
+│   ├── README.md           # Development overview
+│   ├── REFACTORING_SUMMARY.md
+│   ├── BUILD_PROCESS.md
+│   └── DOCUMENTATION_UPDATE_SUMMARY.md (if exists)
+└── testing/                 # Integration testing and validation
+    ├── README.md           # Testing overview
+    ├── INTEGRATION_TEST_PLAN.md
+    ├── INTEGRATION_TEST_SUMMARY.md
+    ├── INTEGRATION_VALIDATION_CHECKLIST.md
+    ├── TASK_15_COMPLETION_GUIDE.md
+    └── verify-integration.ps1
 ```
 
 ## Quick Navigation
@@ -45,6 +53,7 @@ kirodocs/
 
 ### 💻 Implementation Details
 - [Feature History](./implementation/FINAL_IMPLEMENTATION_SUMMARY.md) - All features
+- [Story Customization](./implementation/STORY_CUSTOMIZATION_SUMMARY.md) - Theme & voice selection
 - [Spooky Elements](./implementation/SPOOKY_ELEMENTS_SUMMARY.md) - UI animations
 - [Initial Implementation](./implementation/IMPLEMENTATION_SUMMARY.md) - First phase
 
@@ -52,6 +61,12 @@ kirodocs/
 - [Refactoring Guide](./development/REFACTORING_SUMMARY.md) - Code improvements
 - [Build Process](./development/BUILD_PROCESS.md) - Build and deployment
 - [Component Guidelines](../.kiro/steering/guidelines.md#component-size-and-complexity) - Size rules
+
+### 🧪 Testing & Validation
+- [Integration Tests](./testing/INTEGRATION_TEST_PLAN.md) - 60+ test cases
+- [Test Summary](./testing/INTEGRATION_TEST_SUMMARY.md) - Quick overview
+- [Validation Checklist](./testing/INTEGRATION_VALIDATION_CHECKLIST.md) - Quick checks
+- [Completion Guide](./testing/TASK_15_COMPLETION_GUIDE.md) - Step-by-step testing
 
 ## Documentation Philosophy
 
@@ -100,12 +115,18 @@ kirodocs/
 2. Then: [Component Guidelines](../.kiro/steering/guidelines.md#component-size-and-complexity)
 3. Reference: [Component Architecture](./architecture/COMPONENT_ARCHITECTURE.md)
 
+### "I want to test the system"
+1. Start: [Test Summary](./testing/INTEGRATION_TEST_SUMMARY.md)
+2. Then: [Validation Checklist](./testing/INTEGRATION_VALIDATION_CHECKLIST.md)
+3. Reference: [Integration Test Plan](./testing/INTEGRATION_TEST_PLAN.md)
+
 ## Statistics
 
 ### Documentation Files
 - **Steering**: 4 files (active guidelines)
-- **Archive**: 10+ files (historical reference)
-- **Total**: 15+ comprehensive documents
+- **Archive**: 20+ files (historical reference)
+- **Testing**: 5 files (integration tests)
+- **Total**: 29+ comprehensive documents
 
 ### Coverage
 - ✅ All 10 APIs documented
@@ -113,6 +134,8 @@ kirodocs/
 - ✅ Complete refactoring history
 - ✅ Architecture diagrams
 - ✅ Development guidelines
+- ✅ Integration testing suite (60+ test cases)
+- ✅ Story customization features
 
 ## Maintenance
 
@@ -138,7 +161,7 @@ kirodocs/
 
 ## Last Updated
 
-November 15, 2025 - Documentation reorganization and refactoring phase
+November 16, 2025 - Story customization enhancements and integration testing complete
 
 ---
 

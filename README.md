@@ -107,6 +107,35 @@ Frankenstein brings together seemingly incompatible elements to build something 
 - **Forms**: React Hook Form, Zod
 - **UI**: Radix UI, Aceternity UI, tsParticles, React Hot Toast
 
+### Complete Technology List (40+ Technologies)
+
+**All Technologies & Frameworks (Comma-Separated):**
+
+Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
+
+**By Category:**
+
+- **Backend Core:** Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp
+- **Frontend Core:** React 18, TypeScript, Vite 5, Tailwind CSS 3.4
+- **Animation & Effects:** Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, tsParticles
+- **Audio:** Howler.js
+- **State & Routing:** Zustand, React Router DOM, Axios, STOMP.js
+- **Forms & Validation:** React Hook Form, Zod
+- **UI Components:** Radix UI, Aceternity UI, React Hot Toast
+- **AI Services (Paid):** Anthropic Claude API, Stability AI API, ElevenLabs API
+- **Enhancement APIs (Free):** Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI
+- **Development Tools:** ESLint, Prettier, Vitest, React Testing Library, Playwright
+
+**Total Count:** 45 technologies working together to create an immersive storytelling experience!
+
+---
+
+**Easy Copy List (All 45 Technologies):**
+
+```
+Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
+```
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -168,9 +197,10 @@ Using `.env` file (Recommended):
 ANTHROPIC_API_KEY=your-anthropic-api-key-here
 STABILITY_API_KEY=your-stability-api-key-here
 ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
-ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM  # Optional
 STORAGE_ROOT=./storage  # Optional, defaults to ./storage
 ```
+
+**Note**: Voice IDs are now configured via the Admin interface at `/admin` instead of environment variables.
 
 Or using `application-local.yml`:
 ```yaml
@@ -313,11 +343,12 @@ This application integrates **10 external APIs** (5 paid AI services + 5 free en
    - **Integration**: Direct REST API via Spring RestClient
    - **Features**: 
      - High-quality voice synthesis
-     - Configurable voice selection
+     - Configurable male/female voice selection via Admin UI
      - Concurrent request throttling (max 3 simultaneous)
    - **Cost**: ~$0.30 per story (narration + sound effects)
    - **Documentation**: https://elevenlabs.io/docs
-   - **Required**: `ELEVENLABS_API_KEY` and optional `ELEVENLABS_VOICE_ID`
+   - **Required**: `ELEVENLABS_API_KEY`
+   - **Voice Configuration**: Set male and female voice IDs in Admin interface at `/admin`
 
 ### Free Enhancement APIs (7)
 

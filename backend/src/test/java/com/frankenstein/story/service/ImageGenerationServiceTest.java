@@ -160,4 +160,34 @@ class ImageGenerationServiceTest {
       assertThat(result.get()).isNotNull();
       verify(imageModel).call(any(ImagePrompt.class));
    }
+
+   @Test
+   void generateImage_AppliesLeftThirdComposition() throws Exception {
+      // Given
+      final String originalPrompt = "A young girl in a magical library";
+      final int seed = 12345;
+
+      final byte[] testImageData = "test-image-data".getBytes();
+      final String base64Image = Base64.getEncoder().encodeToString(testImageData);
+
+      final Image mockImage = new Image(null, base64Image);
+      final ImageResponse mockResponse = new ImageResponse(List.of(new org.springframework.ai.image.ImageGeneration(mockImage)));
+
+      when(imageModel.call(any(ImagePrompt.class))).thenReturn(mockResponse);
+
+      // When
+      final CompletableFuture<byte[]> result = service.generateImage(originalPrompt, seed);
+
+      // Then
+      assertThat(result.get()).isNotNull();
+      
+      // Verify that the prompt was enhanced with composition guidance
+      verify(imageModel).call(argThat(imagePrompt -> {
+         final String actualPrompt = imagePrompt.getInstructions().get(0).getText();
+         return actualPrompt.contains("focal point positioned in the left 35% of the frame") &&
+                actualPrompt.contains("subject on the left side of the image") &&
+                actualPrompt.contains("main character or object left of center") &&
+                actualPrompt.contains(originalPrompt);
+      }));
+   }
 }

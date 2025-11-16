@@ -46,6 +46,8 @@ export interface ApiConfiguration {
   elevenlabsMaxConcurrentRequests: number;
   maxStoriesPerDay: number;
   enableCostTracking: boolean;
+  maleVoiceId: string;
+  femaleVoiceId: string;
 }
 
 /**

@@ -14,7 +14,8 @@ export interface FormField {
   label: string;
   placeholder: string;
   emoji: string;
-  suggestions: Suggestion[];
+  suggestions: readonly Suggestion[];
+  type?: 'text' | 'theme-selector' | 'voice-selector';
 }
 
 /**

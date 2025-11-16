@@ -1,6 +1,7 @@
 package com.frankenstein.story.service;
 
 import com.frankenstein.story.exception.AudioGenerationException;
+import com.frankenstein.story.service.tracking.ApiTrackingFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class AudioGenerationService {
 
    private final RestClient.Builder restClientBuilder;
+   private final ApiTrackingFacade apiTrackingFacade;
 
    @Value("${api.elevenlabs.key}")
    private String apiKey;
@@ -29,19 +31,57 @@ public class AudioGenerationService {
    @Value("${api.elevenlabs.url}")
    private String apiUrl;
 
-   @Value("${api.elevenlabs.voice-id}")
-   private String voiceId;
-
    @Value("${api.elevenlabs.stability}")
    private double stability;
 
    @Value("${api.elevenlabs.similarity-boost}")
    private double similarityBoost;
 
-   public CompletableFuture<byte[]> generateNarration(final String text) {
+   /**
+    * Retrieves the voice ID for the specified voice type from configuration
+    *
+    * @param voiceType The voice type ("male" or "female")
+    * @return The voice ID for the specified type, with fallback to defaults
+    */
+   private String getVoiceIdForType(final String voiceType) {
+      try {
+         final var config = apiTrackingFacade.getConfiguration();
+         final String voiceId;
+         
+         if ("male".equalsIgnoreCase(voiceType)) {
+            voiceId = config.getMaleVoiceId();
+            log.debug("Selected male voice ID: {}", voiceId);
+         } else if ("female".equalsIgnoreCase(voiceType)) {
+            voiceId = config.getFemaleVoiceId();
+            log.debug("Selected female voice ID: {}", voiceId);
+         } else {
+            log.warn("Unknown voice type '{}', defaulting to male voice", voiceType);
+            voiceId = config.getMaleVoiceId();
+         }
+         
+         // Fallback to default if configuration is missing
+         if (voiceId == null || voiceId.trim().isEmpty()) {
+            final String defaultVoiceId = "male".equalsIgnoreCase(voiceType) 
+                  ? "21m00Tcm4TlvDq8ikWAM" 
+                  : "EXAVITQu4vr4xnSDxMaL";
+            log.warn("Voice ID not configured for type '{}', using default: {}", voiceType, defaultVoiceId);
+            return defaultVoiceId;
+         }
+         
+         return voiceId;
+      } catch (final Exception e) {
+         log.error("Error retrieving voice configuration, using default male voice", e);
+         return "21m00Tcm4TlvDq8ikWAM"; // Default male voice as fallback
+      }
+   }
+
+   public CompletableFuture<byte[]> generateNarration(final String text, final String voiceType) {
       return CompletableFuture.supplyAsync(() -> {
          try {
             log.debug("Generating narration for text: {}...", text.substring(0, Math.min(50, text.length())));
+
+            final String selectedVoiceId = getVoiceIdForType(voiceType);
+            log.info("Generating narration with {} voice (ID: {})", voiceType, selectedVoiceId);
 
             final Map<String, Object> requestBody = Map.of("text",
                   text,
@@ -56,7 +96,7 @@ public class AudioGenerationService {
                                                        .build();
 
             final byte[] audioData = client.post()
-                                           .uri("/text-to-speech/{voiceId}", voiceId)
+                                           .uri("/text-to-speech/{voiceId}", selectedVoiceId)
                                            .contentType(MediaType.APPLICATION_JSON)
                                            .body(requestBody)
                                            .retrieve()
@@ -76,13 +116,14 @@ public class AudioGenerationService {
       });
    }
 
-   public CompletableFuture<byte[]> generateSoundEffect(final String effectDescription) {
+   public CompletableFuture<byte[]> generateSoundEffect(final String effectDescription, final String voiceType) {
       return CompletableFuture.supplyAsync(() -> {
          try {
             log.debug("Generating sound effect: {}", effectDescription);
 
             // Convert effect name to spoken description
             final String soundText = convertEffectNameToDescription(effectDescription);
+            final String selectedVoiceId = getVoiceIdForType(voiceType);
 
             final Map<String, Object> requestBody = Map.of("text",
                   soundText,
@@ -97,7 +138,7 @@ public class AudioGenerationService {
                                                        .build();
 
             final byte[] audioData = client.post()
-                                           .uri("/text-to-speech/{voiceId}", voiceId)
+                                           .uri("/text-to-speech/{voiceId}", selectedVoiceId)
                                            .contentType(MediaType.APPLICATION_JSON)
                                            .body(requestBody)
                                            .retrieve()

@@ -41,9 +41,10 @@ Spring Boot backend for the AI-powered children's story generator.
    ANTHROPIC_API_KEY=your-anthropic-api-key-here
    STABILITY_API_KEY=your-stability-api-key-here
    ELEVENLABS_API_KEY=your-elevenlabs-api-key-here
-   ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM  # Optional
    STORAGE_ROOT=./storage  # Optional
    ```
+
+   **Note**: Voice IDs are now configured via the Admin interface at `/admin` instead of environment variables. This allows runtime configuration of male and female narrator voices without redeploying the application.
 
    **Option 2: Using application-local.yml**
 
@@ -88,6 +89,30 @@ Spring Boot backend for the AI-powered children's story generator.
 
 This makes configuration simpler and more consistent with modern development practices.
 
+## Voice Configuration
+
+Voice IDs for male and female narrators are now configured through the Admin interface instead of environment variables. This provides several benefits:
+
+- **Runtime Configuration**: Update voices without restarting the application
+- **User Selection**: Stories can use either male or female narrator voices based on user preference
+- **Easy Management**: Configure voices through the web UI at `/admin`
+
+### Default Voices
+
+The application includes sensible defaults:
+- **Male Voice**: `21m00Tcm4TlvDq8ikWAM`
+- **Female Voice**: `EXAVITQu4vr4xnSDxMaL`
+
+### Configuring Voices
+
+1. Navigate to the Admin page at `http://localhost:8083/admin`
+2. Locate the "Voice Configuration" section
+3. Enter ElevenLabs voice IDs for male and female narrators
+4. Click "Save Configuration"
+5. Browse available voices at [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-library)
+
+Voice configuration is stored in `storage/api-config.json` and persists across application restarts.
+
 ## API Endpoints
 
 ### Story Generation
@@ -96,6 +121,8 @@ This makes configuration simpler and more consistent with modern development pra
 
 ```json
 {
+  "theme": "fantasy",
+  "voiceType": "female",
   "characterName": "Luna",
   "setting": "A magical forest",
   "villain": "The Shadow King",
@@ -106,6 +133,10 @@ This makes configuration simpler and more consistent with modern development pra
   "mood": "mysterious and adventurous"
 }
 ```
+
+**New Fields**:
+- `theme`: Story theme - one of `"spooky"`, `"adventure"`, or `"fantasy"`
+- `voiceType`: Narrator voice - either `"male"` or `"female"`
 
 Response:
 

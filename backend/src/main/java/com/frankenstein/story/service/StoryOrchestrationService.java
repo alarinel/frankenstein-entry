@@ -63,32 +63,52 @@ public class StoryOrchestrationService {
       try {
          progressCoordinator.notifyStarted(storyId);
 
-         // Step 1: Generate story structure with Claude
-         progressCoordinator.notifyGeneratingStory(storyId);
+         // Phase 1: Generate story outline
+         progressCoordinator.notifyGeneratingOutline(storyId);
          story.setStatus(StoryStatus.GENERATING_STORY);
 
-         final StoryStructure structure = storyGenerationService.generateStory(story.getInput());
-         story.setTitle(structure.getTitle());
+         final com.frankenstein.story.model.StoryOutline outline;
+         try {
+            outline = storyGenerationService.generateOutline(storyId, story.getInput());
+            log.info("Outline generation completed for story: {}", storyId);
+         } catch (final Exception e) {
+            log.error("Outline generation failed for story: {}", storyId, e);
+            throw new StoryGenerationException("Failed to generate story outline: " + e.getMessage(), e);
+         }
+
+         // Phase 2: Generate full story from outline
+         progressCoordinator.notifyGeneratingStory(storyId);
+
+         final StoryStructure structure;
+         try {
+            structure = storyGenerationService.generateFullStory(storyId, story.getInput(), outline);
+            story.setTitle(structure.getTitle());
+            log.info("Full story generation completed for story: {}", storyId);
+         } catch (final Exception e) {
+            log.error("Full story generation failed for story: {}", storyId, e);
+            throw new StoryGenerationException("Failed to generate full story: " + e.getMessage(), e);
+         }
 
          progressCoordinator.notifyStoryComplete(storyId);
 
-         // Step 2: Generate images in parallel
+         // Step 3: Generate images in parallel
          story.setStatus(StoryStatus.GENERATING_IMAGES);
          final List<byte[]> images = imageOrchestrationService.generateAllImages(storyId, structure).join();
 
          progressCoordinator.notifyImagesComplete(storyId);
 
-         // Step 3: Generate audio with throttling
+         // Step 4: Generate audio with throttling and selected voice type
          story.setStatus(StoryStatus.GENERATING_AUDIO);
-         final List<AudioSet> audioSets = audioOrchestrationService.generateAllAudio(storyId, structure).join();
+         final String voiceType = story.getInput().getVoiceType();
+         final List<AudioSet> audioSets = audioOrchestrationService.generateAllAudio(storyId, structure, voiceType).join();
 
-         // Step 4: Assemble story
+         // Step 5: Assemble story
          progressCoordinator.notifyAssembling(storyId);
          story.setStatus(StoryStatus.ASSEMBLING);
 
          storyAssemblyService.assembleStory(story, structure, images, audioSets);
 
-         // Step 5: Save and complete
+         // Step 6: Save and complete
          story.setStatus(StoryStatus.COMPLETED);
          story.setCompletedAt(LocalDateTime.now());
 

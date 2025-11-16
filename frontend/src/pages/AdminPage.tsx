@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { StatisticsCards, ConfigurationEditor, LogsTable, LogsActions } from '@/components/admin';
+import { StatisticsCards, ConfigurationEditor, LogsTable, LogsActions, VoiceConfiguration } from '@/components/admin';
 import { useAdminData } from '@/hooks/admin';
 import { ActionButton } from '@/components/shared';
 
@@ -12,7 +12,14 @@ export const AdminPage = () => {
   const navigate = useNavigate();
   const { logs, statistics, configuration, loading, refresh } = useAdminData();
   const [editingConfig, setEditingConfig] = useState(false);
-  const [editedConfig, setEditedConfig] = useState(configuration);
+  const [editedConfig, setEditedConfig] = useState<typeof configuration>(null);
+
+  // Update editedConfig when configuration loads
+  useEffect(() => {
+    if (configuration) {
+      setEditedConfig(configuration);
+    }
+  }, [configuration]);
 
   const handleDeleteLog = async (logId: string) => {
     if (!confirm('Delete this log entry?')) return;
@@ -67,6 +74,14 @@ export const AdminPage = () => {
     );
   }
 
+  if (!configuration) {
+    return (
+      <div className="min-h-screen bg-dark-950 flex items-center justify-center">
+        <div className="text-white text-2xl">Failed to load configuration. Please check the backend.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 p-8">
       <div className="max-w-7xl mx-auto">
@@ -86,14 +101,25 @@ export const AdminPage = () => {
 
         {/* Configuration */}
         {editedConfig && (
-          <ConfigurationEditor
-            configuration={editedConfig}
-            isEditing={editingConfig}
-            onEdit={handleEditConfig}
-            onSave={handleSaveConfig}
-            onCancel={handleCancelEdit}
-            onChange={setEditedConfig}
-          />
+          <>
+            <ConfigurationEditor
+              configuration={editedConfig}
+              isEditing={editingConfig}
+              onEdit={handleEditConfig}
+              onSave={handleSaveConfig}
+              onCancel={handleCancelEdit}
+              onChange={setEditedConfig}
+            />
+            
+            {/* Voice Configuration */}
+            <div className="bg-dark-800/80 rounded-lg p-6 mb-8">
+              <VoiceConfiguration
+                configuration={editedConfig}
+                isEditing={editingConfig}
+                onChange={setEditedConfig}
+              />
+            </div>
+          </>
         )}
 
         {/* Logs Management */}

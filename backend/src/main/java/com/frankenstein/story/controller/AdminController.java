@@ -59,7 +59,40 @@ public class AdminController {
 
    @PutMapping("/configuration")
    public ResponseEntity<ApiConfiguration> updateConfiguration(@RequestBody final ApiConfiguration config) {
+      // Validate voice ID fields
+      validateVoiceIds(config);
+      
       apiTrackingFacade.updateConfiguration(config);
       return ResponseEntity.ok(config);
+   }
+   
+   /**
+    * Validate voice ID fields in configuration
+    * 
+    * @param config configuration to validate
+    * @throws IllegalArgumentException if validation fails
+    */
+   private void validateVoiceIds(final ApiConfiguration config) {
+      if (config.getMaleVoiceId() != null && !config.getMaleVoiceId().isEmpty()) {
+         if (!isValidVoiceId(config.getMaleVoiceId())) {
+            throw new IllegalArgumentException("Invalid male voice ID format. Must be alphanumeric.");
+         }
+      }
+      
+      if (config.getFemaleVoiceId() != null && !config.getFemaleVoiceId().isEmpty()) {
+         if (!isValidVoiceId(config.getFemaleVoiceId())) {
+            throw new IllegalArgumentException("Invalid female voice ID format. Must be alphanumeric.");
+         }
+      }
+   }
+   
+   /**
+    * Check if voice ID has valid format (alphanumeric)
+    * 
+    * @param voiceId voice ID to validate
+    * @return true if valid, false otherwise
+    */
+   private boolean isValidVoiceId(final String voiceId) {
+      return voiceId.matches("^[a-zA-Z0-9]+$");
    }
 }

@@ -34,11 +34,415 @@ Win win!
 
 ### The Experience
 
-1. **Mad-Lib Input** - Fill in 8 story elements (character, setting, villain, special item, trait, goal, time period, mood) with helpful suggestions or hit "Surprise Me!" for instant randomization
-2. **Real-time Generation** - Watch the magic happen with live progress updates, literary quotes, and family-friendly jokes while AI crafts your story
-3. **Cinematic Playback** - Experience your story like a movie with auto-advancing pages, word-level text highlighting synced to narration, 3D book effects, and atmospheric animations
-4. **Completion** - Get random advice for encouragement, see achievement stats, and choose to replay or create a new story
-5. **Admin Dashboard** - Monitor API usage, track costs, configure pricing, and manage your story generation infrastructure
+1. **Story Customization** - Choose your theme (Spooky, Adventure, Fantasy) and narrator voice (Male, Female) to personalize your story
+2. **Mad-Lib Input** - Fill in 8 story elements (character, setting, villain, special item, trait, goal, time period, mood) with helpful suggestions or hit "Surprise Me!" for instant randomization
+3. **Two-Phase Generation** - Watch the magic happen with live progress updates showing outline creation (5%) followed by full story development, complete with literary quotes and family-friendly jokes
+4. **Cinematic Playback** - Experience your 10-15 page story like a movie with auto-advancing pages, word-level text highlighting synced to narration, 3D book effects, and atmospheric animations
+5. **Completion** - Get random advice for encouragement, see achievement stats, and choose to replay or create a new story
+6. **Admin Dashboard** - Monitor API usage, track costs, configure voice IDs and pricing, and manage your story generation infrastructure
+
+---
+
+## 🚶 Complete User Walkthrough: From Input to Story
+
+Let's walk through the entire journey of creating your first story, from the moment you open the app to experiencing your completed multimedia storybook.
+
+### Step 1: Choose Your Story Style 🎨
+
+**What You See:**
+- Three beautifully designed theme cards with animated previews
+- Each theme has a distinct visual style and color scheme
+
+**Your Options:**
+- 🎃 **Spooky** - Dark, mysterious, Halloween-themed with purple and orange accents
+- ⚔️ **Adventure** - Action-packed, exciting with bold reds and golds
+- ✨ **Fantasy** - Magical, whimsical with soft blues and purples
+
+**What Happens:**
+- Click your preferred theme card
+- The card glows and animates to confirm your selection
+- The interface adapts to your chosen theme's color palette
+
+**Pro Tip:** Each theme influences the story's tone, vocabulary, and atmosphere. Spooky stories have eerie elements, Adventure stories have action sequences, and Fantasy stories have magical elements.
+
+---
+
+### Step 2: Select Your Narrator Voice 🎙️
+
+**What You See:**
+- Two voice option cards with audio preview buttons
+- Visual indicators showing which voice is selected
+
+**Your Options:**
+- 👨 **Male Voice** - Deep, authoritative narrator (perfect for adventure stories)
+- 👩 **Female Voice** - Warm, engaging narrator (great for all story types)
+
+**What Happens:**
+- Click a voice card to select it
+- Optional: Click the preview button to hear a sample (if implemented)
+- The selection highlights and confirms your choice
+
+**Pro Tip:** The voice you choose will narrate the entire story, so pick one that matches your preferred listening experience!
+
+---
+
+### Step 3: Fill in Story Details 📝
+
+**What You See:**
+- A sequential form with 8 input fields
+- Each field has helpful suggestions you can click
+- A "Surprise Me!" button for instant randomization
+- Progress indicator showing which field you're on
+
+**The 8 Story Elements:**
+
+1. **Character Name** (e.g., "Luna", "Max", "Zara")
+   - Your story's hero
+   - Can be any name you like
+   
+2. **Setting** (e.g., "haunted library", "enchanted forest", "ancient castle")
+   - Where your story takes place
+   - Sets the scene for the adventure
+   
+3. **Villain** (e.g., "Shadow Keeper", "Dark Sorcerer", "Ghost King")
+   - The antagonist your hero must face
+   - Creates conflict and tension
+   
+4. **Special Item** (e.g., "glowing bookmark", "magic compass", "ancient key")
+   - A magical object that helps your hero
+   - Often crucial to solving the story's challenge
+   
+5. **Character Trait** (e.g., "curious", "brave", "clever")
+   - Your hero's defining quality
+   - Influences how they solve problems
+   
+6. **Goal** (e.g., "find the lost story", "break the curse", "save the kingdom")
+   - What your hero is trying to achieve
+   - The main quest of the story
+   
+7. **Time Period** (e.g., "present day", "medieval times", "distant future")
+   - When the story takes place
+   - Affects technology, language, and setting details
+   
+8. **Mood** (e.g., "mysterious", "exciting", "whimsical")
+   - The overall feeling of the story
+   - Influences tone and atmosphere
+
+**What Happens:**
+- Type your own ideas OR click suggestions for inspiration
+- Click "Surprise Me!" to auto-fill all fields with random choices
+- Each field validates as you type
+- Progress bar fills as you complete each field
+
+**Pro Tip:** Mix and match suggestions or create your own unique combinations! The AI adapts to whatever you provide.
+
+---
+
+### Step 4: Generate Your Story 🎬
+
+**What You See:**
+- A big, glowing "Generate Story" button
+- Confirmation that all fields are filled
+- Excitement building!
+
+**What Happens:**
+- Click "Generate Story"
+- You're immediately transported to the loading screen
+- The generation process begins in the background
+- Your story ID is created and saved
+
+**Behind the Scenes:**
+- Backend receives your inputs
+- Story generation request queued
+- WebSocket connection established for real-time updates
+- All three AI services prepare to work in parallel
+
+---
+
+### Step 5: Watch the Magic Happen ✨
+
+**The Loading Experience:**
+
+#### Phase 1: Outline Generation (0-5%)
+**What You See:**
+- Progress bar at 5%
+- Stage indicator: "GENERATING_OUTLINE"
+- Literary quote displayed (e.g., "Once upon a time...")
+- Animated particle effects
+- Floating spooky elements (bats, ghosts, candles)
+
+**What's Happening:**
+- Claude AI creates a structured outline
+- Plot points and story arc defined
+- Character development planned
+- Page-by-page structure created
+- **Duration:** 10-15 seconds
+
+#### Phase 2: Full Story Generation (5-30%)
+**What You See:**
+- Progress bar advancing from 5% to 30%
+- Stage indicator: "GENERATING_STORY"
+- New literary quote appears
+- Family-friendly joke displayed
+- Continued animations
+
+**What's Happening:**
+- Claude AI expands outline into full narrative
+- 10-15 pages of story text created
+- Modern, punchy writing style applied
+- Dialogue and descriptions crafted
+- Theme and mood integrated throughout
+- **Duration:** 20-30 seconds
+
+#### Phase 3: Image Generation (30-80%)
+**What You See:**
+- Progress bar advancing steadily
+- Stage indicator: "GENERATING_IMAGES"
+- Another literary quote
+- More jokes to keep you entertained
+- Visual effects intensify
+
+**What's Happening:**
+- Stability AI generates 10-15 unique illustrations
+- Each image matches its page's content
+- Left-third composition applied (focal point on left 35%)
+- Consistent visual style using seed-based generation
+- Images processed in parallel batches
+- **Duration:** 50-75 seconds
+
+#### Phase 4: Audio Generation (80-100%)
+**What You See:**
+- Progress bar approaching completion
+- Stage indicator: "GENERATING_AUDIO"
+- Final literary quote
+- Last few jokes
+- Anticipation building!
+
+**What's Happening:**
+- ElevenLabs generates narration for each page
+- Your selected voice (male/female) used
+- Sound effects created for atmospheric moments
+- Audio files processed in batches (3 concurrent)
+- Duration calculated for each page
+- **Duration:** 40-60 seconds
+
+#### Total Generation Time
+**Typical:** 2-3 minutes for complete story
+- Outline: 10-15 seconds
+- Story: 20-30 seconds
+- Images: 50-75 seconds
+- Audio: 40-60 seconds
+
+**What Keeps You Engaged:**
+- Real-time progress updates every few seconds
+- Literary quotes rotating every 10 seconds
+- Family-friendly jokes appearing periodically
+- Animated particle effects and floating elements
+- Smooth progress bar animations
+- Stage indicators showing current phase
+
+---
+
+### Step 6: Experience Your Story 📖
+
+**The Reading Interface:**
+
+#### Initial View
+**What You See:**
+- Stunning 3D book interface with depth and shadows
+- Your story's title displayed prominently
+- Page 1 visible with illustration on left, text on right
+- Audio controls at the bottom
+- Navigation arrows (previous/next)
+- Atmospheric particle effects in background
+- Theme-appropriate floating elements
+
+**The 3D Book:**
+- Realistic page stacking effect
+- Subtle depth and shadows
+- Smooth page-turning animations
+- Professional book-like appearance
+
+#### Auto-Play Experience
+**What Happens Automatically:**
+
+1. **Audio Starts** (after 2-second delay)
+   - Narration begins playing
+   - Background music/sound effects layer in
+   - Audio visualizer pulses with the voice
+   
+2. **Text Highlighting** (synchronized with audio)
+   - Each word highlights as it's spoken
+   - Smooth yellow glow follows narration
+   - Perfect synchronization using Howler.js seek position
+   - Helps with reading comprehension
+   
+3. **Page Advancement** (automatic)
+   - When narration finishes, 2-second pause
+   - Page turns automatically with 3D animation
+   - Next page loads smoothly
+   - Audio continues seamlessly
+
+**Visual Effects:**
+- Floating bats drift across the screen
+- Ghosts phase in and out
+- Candles flicker with realistic flames
+- Magic sparkles appear around the book
+- Particle effects create atmosphere
+- All effects respect reduced motion preferences
+
+#### Manual Controls
+**What You Can Do:**
+
+- **⏸️ Pause/Play** - Stop and resume narration anytime
+- **⏮️ Previous Page** - Go back to re-read or re-listen
+- **⏭️ Next Page** - Skip ahead if desired
+- **🔊 Volume** - Adjust audio level
+- **📖 Page Indicator** - Shows current page (e.g., "Page 3 of 12")
+
+**Pro Tip:** Let it auto-play for the full cinematic experience, or take control to read at your own pace!
+
+---
+
+### Step 7: Story Completion 🎉
+
+**What You See:**
+- Celebration animations (fireworks, confetti)
+- Trophy reveal with sparkle effects
+- Story statistics displayed
+- Random advice for encouragement
+- Action buttons
+
+**Story Statistics:**
+- 📖 Total pages read
+- ⏱️ Total duration
+- 🎨 Theme used
+- 🎙️ Voice selected
+- 📅 Creation date
+
+**Random Advice:**
+Examples from Advice Slip API:
+- "Smile and the world smiles with you!"
+- "Never give up on your dreams!"
+- "Be kind to yourself and others!"
+
+**Your Options:**
+
+1. **🔄 Create New Story**
+   - Returns to input page
+   - Clears previous selections
+   - Ready for another adventure
+   
+2. **🔁 Replay Story**
+   - Returns to reading page
+   - Starts from page 1
+   - Same story, fresh experience
+   
+3. **🏠 Home**
+   - Returns to main page
+   - Browse other options
+
+**Celebration Effects:**
+- Fireworks burst across the screen
+- Confetti rains down
+- Trophy animates with golden glow
+- Sparkles and magical effects
+- Triumphant feeling of completion!
+
+---
+
+### Step 8: Behind the Scenes (What You Don't See) 🔧
+
+While you're enjoying your story, here's what happened in the background:
+
+#### File Storage
+Your story is saved to the local filesystem:
+```
+storage/
+└── {your-story-id}/
+    ├── metadata.json          # Story details and settings
+    ├── images/
+    │   ├── page-1.png        # 10-15 illustrations
+    │   ├── page-2.png
+    │   └── ...
+    └── audio/
+        ├── narration/
+        │   ├── page-1.mp3    # Narration for each page
+        │   └── ...
+        └── effects/
+            ├── thunder.mp3   # Atmospheric sound effects
+            └── ...
+```
+
+#### API Costs Tracked
+Every API call is logged:
+- Anthropic Claude: ~$0.015 per story
+- Stability AI: ~$0.08 per story
+- ElevenLabs: ~$0.30 per story
+- **Total: ~$0.40 per story**
+
+#### Admin Dashboard
+Accessible at `/admin`:
+- View all API call logs
+- See cost statistics
+- Configure voice IDs
+- Update pricing
+- Monitor usage patterns
+- Delete old logs
+
+---
+
+## 🎯 Tips for the Best Experience
+
+### For First-Time Users
+1. **Start with Spooky theme** - It's the most polished and atmospheric
+2. **Try "Surprise Me!"** - Let the AI surprise you with random combinations
+3. **Use headphones** - Audio experience is much better with good sound
+4. **Let it auto-play** - The synchronized highlighting is magical
+5. **Watch the loading screen** - The quotes and jokes are entertaining!
+
+### For Power Users
+1. **Experiment with themes** - Each creates a different story style
+2. **Mix unexpected elements** - "Brave robot in medieval times seeking pizza"
+3. **Try both voices** - Male and female narrators have different feels
+4. **Check the admin dashboard** - See your API usage and costs
+5. **Configure custom voice IDs** - Use your favorite ElevenLabs voices
+
+### For Developers
+1. **Check the logs** - `storage/api-tracking/` has detailed API call data
+2. **Inspect the metadata** - Each story's `metadata.json` has full details
+3. **Monitor WebSocket** - Real-time progress updates are fascinating
+4. **Review the prompts** - See how Claude structures the stories
+5. **Analyze the costs** - Admin dashboard shows per-story breakdown
+
+---
+
+## 🎬 Example Story Journey
+
+Let's follow "Luna" through her adventure:
+
+**Inputs:**
+- Theme: Spooky 🎃
+- Voice: Female 👩
+- Character: Luna
+- Setting: Haunted library
+- Villain: Shadow Keeper
+- Item: Glowing bookmark
+- Trait: Curious
+- Goal: Find the lost story
+- Time: Present day
+- Mood: Mysterious
+
+**Generation (2m 45s):**
+- Outline created: Luna discovers magical library, meets Shadow Keeper, uses bookmark to navigate
+- Story written: 12 pages of adventure with dialogue and descriptions
+- Images generated: 12 illustrations showing Luna's journey through the library
+- Audio created: Female narrator brings Luna's story to life with atmospheric effects
+
+**Result:**
+A 12-page story where curious Luna uses her glowing bookmark to navigate a haunted library, outwit the Shadow Keeper, and discover the lost story that holds the library's secrets. Complete with spooky illustrations, professional narration, and sound effects like creaking doors and whispered voices.
+
+**Reading Time:** ~8 minutes of cinematic storytelling
 
 ---
 
@@ -373,6 +777,50 @@ The book would finish playing the last page, and then... nothing. No completion 
 
 (Kiro note: I thought you'd want to sit there and admire the last page forever. Apparently not.)
 
+### 9. The Story Customization Enhancement Saga 🎨🎙️
+
+After the initial version was working, I decided to add theme selection, voice customization, and longer stories. This turned into a **15-task spec** that touched nearly every part of the system:
+
+**The Journey:**
+```
+Me: "Let's add theme selection and voice options"
+Kiro: *Creates comprehensive spec with requirements, design, and 15 tasks*
+Me: "Start with the backend models"
+Kiro: *Adds theme and voiceType to StoryInput*
+Me: "Now add two-phase generation with outline first"
+Kiro: *Implements generateOutline() and generateFullStory() methods*
+Me: "Make stories 10-15 pages instead of 8"
+Kiro: *Updates prompts and validation*
+Me: "Add left-third image composition for better text overlay"
+Kiro: *Enhances image prompts with composition instructions*
+Me: "Voice selection needs to work with the audio service"
+Kiro: *Updates AudioGenerationService with getVoiceIdForType()*
+Me: "Add admin configuration for voice IDs"
+Kiro: *Adds voice ID fields to ApiConfiguration and admin UI*
+```
+
+**The Hiccup:**
+When testing, the backend wouldn't start. Kiro had updated `generateSoundEffect()` to require a `voiceType` parameter but forgot to update the call site in `AudioOrchestrationServiceImpl`. Classic integration bug.
+
+```
+Me: "The backend is broken in AudioOrchestrationService"
+Kiro: *Reads the file, finds the issue immediately*
+Kiro: *Updates generateSoundEffect(storyId, effectName) to include voiceType*
+Me: "Perfect, backend is running now"
+```
+
+**The Result:**
+- ✅ Three story themes (Spooky, Adventure, Fantasy)
+- ✅ Two voice options (Male, Female) with configurable IDs
+- ✅ Two-phase generation (Outline → Full Story)
+- ✅ Extended stories (10-15 pages)
+- ✅ Left-third image composition
+- ✅ Admin voice configuration
+- ✅ 60+ integration tests
+- ✅ Comprehensive documentation
+
+(Kiro note: That one missing parameter was a rookie mistake. But hey, we caught it fast and the feature set is pretty impressive now!)
+
 ---
 
 ## 🏆 Accomplishments That We're Proud Of
@@ -383,12 +831,15 @@ Got it working. That's the thing about building anything with so many moving par
 
 ✅ **40+ Technologies Integrated** - Successfully stitched together a chimera of incompatible parts  
 ✅ **10 External APIs** - 3 paid AI services + 7 free enhancement APIs working in harmony  
-✅ **Real-time Generation** - WebSocket progress updates with parallel processing  
+✅ **Theme & Voice Customization** - Three story themes and configurable narrator voices  
+✅ **Two-Phase Story Generation** - Outline creation followed by full story development (10-15 pages)  
+✅ **Left-Third Image Composition** - Consistent visual layout optimized for text overlay  
+✅ **Real-time Generation** - WebSocket progress updates with detailed stages and parallel processing  
 ✅ **Cinematic Experience** - 3D book, synchronized audio, word-level highlighting  
-✅ **Cost Tracking** - Complete admin dashboard for monitoring API usage  
+✅ **Cost Tracking** - Complete admin dashboard for monitoring API usage and configuring voice IDs  
 ✅ **Clean Architecture** - All components under 200 lines, well-organized, maintainable  
-✅ **Comprehensive Documentation** - 15+ docs covering every aspect of the project  
-✅ **Production Ready** - Error handling, rate limiting, configuration management  
+✅ **Comprehensive Documentation** - 20+ docs covering every aspect of the project  
+✅ **Production Ready** - Error handling, rate limiting, configuration management, integration testing  
 
 ---
 
@@ -432,13 +883,21 @@ The back-and-forth with Kiro felt natural. I could say "simplify this" or "fix t
 
 ---
 
-## 🚀 What's Next for Frankenstein
+## 🚀 What's Next for Frankenbook
 
 So this was just a fun little project for me, but honestly I had so much fun with it and it came out so well that I am probably going to finish turning it into a real life tool people can use in the real world.
 
+**Recently Completed:**
+- ✅ **Theme Selection** - Spooky, Adventure, and Fantasy story styles
+- ✅ **Voice Selection** - Male and female narrator options with configurable voice IDs
+- ✅ **Two-Phase Generation** - Outline creation followed by full story development
+- ✅ **Extended Stories** - 10-15 pages with modern, punchy writing style
+- ✅ **Left-Third Composition** - Optimized image layout for text overlay
+- ✅ **Admin Voice Configuration** - Configure voice IDs via admin interface
+- ✅ **Integration Testing** - Comprehensive test suite with automated verification
+
 **Planned Features:**
 - 📚 **Story Library** - Browse, filter, and manage saved stories
-- 🎙️ **Voice Selection** - Choose from multiple narration voices
 - 🎨 **Style Customization** - Select art styles (watercolor, cartoon, realistic)
 - 🌍 **Multi-language Support** - Generate stories in different languages
 - 👥 **User Accounts** - Save stories to personal library
@@ -451,7 +910,7 @@ Either way, it was really fun to create.
 
 ---
 
-## 🎯 Why This Project Deserves to Win
+## 🎯 Why This Project Deserves to *cough* Win (Kiro is a great hype friend)
 
 ### Frankenstein Category
 This project **perfectly embodies** the Frankenstein category by stitching together **40+ technologies** into one cohesive application:
@@ -490,15 +949,21 @@ This project showcases **extensive use of all Kiro features**:
 
 ## 📊 Project Statistics
 
-- **Total Files**: 150+
-- **Lines of Code**: 15,000+
+- **Total Files**: 180+
+- **Lines of Code**: 18,000+
 - **Technologies**: 40+
 - **External APIs**: 10
+- **Story Themes**: 3 (Spooky, Adventure, Fantasy)
+- **Voice Options**: 2 (Male, Female) with configurable IDs
+- **Story Length**: 10-15 pages (up from 8)
+- **Generation Stages**: 2 (Outline + Full Story)
 - **Kiro Steering Docs**: 4
 - **Kiro Hooks**: 4
-- **Kiro Specs**: 3
+- **Kiro Specs**: 3 (1 completed, 2 planned)
 - **MCP Servers**: 4
-- **Development Time**: 2 weeks
+- **Integration Tests**: 60+ test cases across 11 suites
+- **Documentation Files**: 20+
+- **Development Time**: 3 weeks
 - **Cost per Story**: $0.40
 - **Fun Factor**: 💯
 
@@ -515,4 +980,4 @@ This project showcases **extensive use of all Kiro features**:
 
 **Built with ❤️ and Kiro for Kiroween 2025** 🎃👻
 
-P.S. I wrote the basics of this entry description and then Kiro made it better. :)
+P.S. I wrote the underlying details of this entry description and then Kiro made it better. :)

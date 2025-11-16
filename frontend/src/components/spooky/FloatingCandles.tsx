@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export const FloatingCandles = () => {
   const candles = [
-    { emoji: '🕯️', top: '15%', left: '5%', delay: 0 },
+    { emoji: '🕯️', top: '25%', left: '5%', delay: 0 },
     { emoji: '🕯️', top: '75%', right: '12%', delay: 1.5 },
   ];
 

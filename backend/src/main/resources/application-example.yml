@@ -46,9 +46,12 @@ api:
   elevenlabs:
     key: your-elevenlabs-api-key-here
     url: https://api.elevenlabs.io/v1
-    voice-id: 21m00Tcm4TlvDq8ikWAM
     stability: 0.5
     similarity-boost: 0.75
+    # Note: Voice IDs are now configured via the Admin interface at /admin
+    # Male and female voice IDs can be set in the Voice Configuration section
+    # Default voices: Male (21m00Tcm4TlvDq8ikWAM), Female (EXAVITQu4vr4xnSDxMaL)
+    # Browse voices at: https://elevenlabs.io/app/voice-library
 
 generation:
   max-pages: 10

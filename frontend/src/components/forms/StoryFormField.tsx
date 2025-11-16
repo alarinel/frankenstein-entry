@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import { SpookyCard } from '@/components/spooky/SpookyCard';
 import { SuggestionChips } from './SuggestionChips';
+import { ThemeSelector } from '@/components/ThemeSelector';
+import { VoiceSelector } from '@/components/VoiceSelector';
 import { FormField } from '@/types/forms';
 
 interface StoryFormFieldProps {
@@ -10,12 +12,14 @@ interface StoryFormFieldProps {
   errors: FieldErrors;
   onSuggestionClick: (value: string) => void;
   onNext: () => void;
+  setValue?: UseFormSetValue<any>;
+  currentValue?: any;
 }
 
 /**
  * Individual form field component for story input
  * Renders emoji, label, input field, error display, and suggestions
- * Handles Enter key navigation
+ * Handles Enter key navigation and custom selector components
  */
 export const StoryFormField = ({
   field,
@@ -23,7 +27,11 @@ export const StoryFormField = ({
   errors,
   onSuggestionClick,
   onNext,
+  setValue,
+  currentValue,
 }: StoryFormFieldProps) => {
+  const fieldType = field.type || 'text';
+
   return (
     <SpookyCard style={{ padding: 'clamp(1.5rem, 3vw, 2rem)' }}>
       {/* Field Label with Emoji */}
@@ -49,24 +57,53 @@ export const StoryFormField = ({
         </label>
       </div>
 
-      {/* Input Field */}
-      <input
-        {...register(field.name)}
-        type="text"
-        placeholder={field.placeholder}
-        className="w-full bg-dark-800/50 border-2 border-spooky-purple-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-spooky-purple-500/50 focus:border-spooky-purple-400 transition-colors font-fun backdrop-blur-sm"
-        style={{ 
-          padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)',
-          fontSize: 'clamp(1rem, 1.5vw, 1.125rem)'
-        }}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            onNext();
-          }
-        }}
-        autoFocus
-      />
+      {/* Conditional Field Rendering */}
+      {fieldType === 'theme-selector' && setValue ? (
+        <ThemeSelector
+          selectedTheme={currentValue}
+          onSelect={(theme) => {
+            setValue(field.name, theme);
+            // Auto-advance after selection
+            setTimeout(() => onNext(), 300);
+          }}
+        />
+      ) : fieldType === 'voice-selector' && setValue ? (
+        <VoiceSelector
+          selectedVoice={currentValue}
+          onSelect={(voice) => {
+            setValue(field.name, voice);
+            // Auto-advance after selection
+            setTimeout(() => onNext(), 300);
+          }}
+        />
+      ) : (
+        <>
+          {/* Text Input Field */}
+          <input
+            {...register(field.name)}
+            type="text"
+            placeholder={field.placeholder}
+            className="w-full bg-dark-800/50 border-2 border-spooky-purple-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-spooky-purple-500/50 focus:border-spooky-purple-400 transition-colors font-fun backdrop-blur-sm"
+            style={{ 
+              padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)',
+              fontSize: 'clamp(1rem, 1.5vw, 1.125rem)'
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                onNext();
+              }
+            }}
+            autoFocus
+          />
+
+          {/* Suggestion Chips */}
+          <SuggestionChips
+            suggestions={field.suggestions}
+            onSelect={onSuggestionClick}
+          />
+        </>
+      )}
 
       {/* Error Display */}
       <AnimatePresence>
@@ -87,12 +124,6 @@ export const StoryFormField = ({
           </motion.p>
         )}
       </AnimatePresence>
-
-      {/* Suggestion Chips */}
-      <SuggestionChips
-        suggestions={field.suggestions}
-        onSelect={onSuggestionClick}
-      />
     </SpookyCard>
   );
 };

@@ -18,7 +18,8 @@ public interface AudioOrchestrationService {
     *
     * @param storyId   the story identifier
     * @param structure the story structure containing text and sound effects
+    * @param voiceType the voice type to use for narration ("male" or "female")
     * @return CompletableFuture containing list of audio sets
     */
-   CompletableFuture<List<AudioSet>> generateAllAudio(String storyId, StoryStructure structure);
+   CompletableFuture<List<AudioSet>> generateAllAudio(String storyId, StoryStructure structure, String voiceType);
 }
