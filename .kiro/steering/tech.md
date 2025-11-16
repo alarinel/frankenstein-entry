@@ -23,7 +23,7 @@
 **AI Services**:
 - Anthropic Claude (Sonnet 4.5) via Spring AI Anthropic - story generation
 - Stability AI (SDXL 1024) via Spring AI Stability - image generation
-- ElevenLabs via RestClient - text-to-speech and sound effects
+- ElevenLabs via RestClient - text-to-speech narration
 
 **Storage**: File-based local filesystem (images, audio, metadata as JSON)
 
@@ -132,7 +132,7 @@ npm run lint
 ### AI Services (3)
 - **Anthropic Claude (Sonnet 4.5)** via Spring AI Anthropic - Story generation, image prompts
 - **Stability AI (SDXL 1024)** via Spring AI Stability - AI image generation with consistent seeds
-- **ElevenLabs** via RestClient - Text-to-speech narration and sound effects
+- **ElevenLabs** via RestClient - Text-to-speech narration
 
 ### Backend Core (7)
 - Spring Boot, Spring AI, Maven, Lombok, Jackson, Actuator, WebSocket

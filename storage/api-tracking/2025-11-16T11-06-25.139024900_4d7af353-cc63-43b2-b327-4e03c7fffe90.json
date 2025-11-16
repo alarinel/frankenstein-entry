@@ -1,0 +1,14 @@
+{
+  "id" : "4d7af353-cc63-43b2-b327-4e03c7fffe90",
+  "storyId" : "648f4f94-724d-415e-89b7-326cd569770a",
+  "apiProvider" : "STABILITY_AI",
+  "operation" : "IMAGE_GENERATION",
+  "tokensUsed" : 0,
+  "costUsd" : 0.48,
+  "status" : "SUCCESS",
+  "errorMessage" : null,
+  "timestamp" : "2025-11-16T11:06:25",
+  "durationMs" : 15010,
+  "charactersUsed" : 0,
+  "metadata" : null
+}

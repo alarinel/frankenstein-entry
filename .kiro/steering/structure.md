@@ -6,7 +6,9 @@
 frankenstein/
 ├── backend/          # Spring Boot application
 ├── frontend/         # React TypeScript application
-└── docs/            # Project documentation (*.md files in root)
+├── kirodocs/         # Project documentation (organized by category)
+├── .kiro/            # Kiro configuration and steering docs
+└── storage/          # Generated story assets and API logs
 ```
 
 ## Backend Structure
@@ -219,7 +221,7 @@ interface StoryPage {
   text: string;
   imageUrl: string;
   narrationUrl: string;
-  soundEffects: string[];
+  backgroundMusic: string; // scary, action, awesome, or journey
   duration: number;
   mood: string;
 }

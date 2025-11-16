@@ -59,15 +59,10 @@ public class FileStorageService {
       return getAudioDirectory(storyId).resolve("narration");
    }
 
-   public Path getSoundEffectsDirectory(final String storyId) {
-      return getAudioDirectory(storyId).resolve("effects");
-   }
-
    public void createStoryDirectories(final String storyId) {
       try {
          Files.createDirectories(getImagesDirectory(storyId));
          Files.createDirectories(getNarrationDirectory(storyId));
-         Files.createDirectories(getSoundEffectsDirectory(storyId));
          log.debug("Created directories for story: {}", storyId);
       } catch (final IOException e) {
          throw new StoryGenerationException("Failed to create story directories", e);
@@ -132,26 +127,12 @@ public class FileStorageService {
       }
    }
 
-   public void saveSoundEffect(final String storyId, final String effectName, final byte[] audioData) {
-      try {
-         final Path effectPath = getSoundEffectsDirectory(storyId).resolve(effectName + ".mp3");
-         FileUtils.writeByteArrayToFile(effectPath.toFile(), audioData);
-         log.debug("Saved sound effect {} for story {}", effectName, storyId);
-      } catch (final IOException e) {
-         throw new StoryGenerationException("Failed to save sound effect", e);
-      }
-   }
-
    public String getImageUrl(final String storyId, final int pageNumber) {
       return String.format("/api/stories/%s/assets/images/page-%d.png", storyId, pageNumber);
    }
 
    public String getNarrationUrl(final String storyId, final int pageNumber) {
       return String.format("/api/stories/%s/assets/audio/narration/page-%d.mp3", storyId, pageNumber);
-   }
-
-   public String getSoundEffectUrl(final String storyId, final String effectName) {
-      return String.format("/api/stories/%s/assets/audio/effects/%s.mp3", storyId, effectName);
    }
 
    public byte[] loadAsset(final String storyId, final String assetPath) throws IOException {

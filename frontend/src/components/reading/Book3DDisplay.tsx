@@ -49,10 +49,12 @@ export const Book3DDisplay = ({
                         transformStyle: 'preserve-3d',
                         width: '50%',
                         transformOrigin: 'right center',
-                        transform: 'rotateY(30deg) translateZ(-5px)',
+                        transform: 'rotateY(30deg) translateZ(5px)',
                         overflow: 'hidden',
                         borderBottom: '10px solid black',
-                        borderLeft: '8px solid black'
+                        borderLeft: '8px solid black',
+                        borderRight: '5px solid black',
+                        borderTop: '5px solid black'
                     }}
                 >
                     <div className="absolute inset-0 overflow-hidden">
@@ -104,10 +106,12 @@ export const Book3DDisplay = ({
                         transformStyle: 'preserve-3d',
                         width: '50%',
                         transformOrigin: 'left center',
-                        transform: 'rotateY(-30deg) translateZ(-15px)',
+                        transform: 'rotateY(-30deg) translateZ(5px)',
                         overflow: 'visible',
                         borderBottom: '10px solid black',
-                        borderRight: '8px solid black'
+                        borderRight: '8px solid black',
+                        borderLeft: '5px solid black',
+                        borderTop: '5px solid black'
                     }}
                 >
                     <div className="absolute inset-0 overflow-hidden">
@@ -152,17 +156,17 @@ export const Book3DDisplay = ({
                     )}
                 </div>
 
-                {/* Spine */}
-                <div
-                    className="absolute left-1/2 top-0 bottom-0 transform -translate-x-1/2 z-30"
-                    style={{
-                        transformStyle: 'preserve-3d',
-                        background: 'brown',
-                        boxShadow: `inset 0 0 0px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.8)`,
-                        width: 'clamp(4px, 0.5vw, 24px)',
-                        border: '10px solid black'
-                    }}
-                />
+                {/*/!* Spine *!/*/}
+                {/*<div*/}
+                {/*    className="absolute left-1/2 top-0 bottom-0 transform -translate-x-1/2 z-30"*/}
+                {/*    style={{*/}
+                {/*        transformStyle: 'preserve-3d',*/}
+                {/*        background: 'black',*/}
+                {/*        boxShadow: `inset 0 0 0px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.8)`,*/}
+                {/*        width: 'clamp(4px, 0.5vw, 15px)',*/}
+                {/*        border: '2px solid black'*/}
+                {/*    }}*/}
+                {/*/>*/}
             </div>
         </div>
     );

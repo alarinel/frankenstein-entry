@@ -1,6 +1,6 @@
 # Product Overview
 
-Frankenstein is an AI-powered children's story generator that creates immersive, multimedia stories with educational moral themes. The application transforms user inputs into complete 10-15 page stories with AI-generated text, images, narration, and sound effects.
+Frankenstein is an AI-powered children's story generator that creates immersive, multimedia stories with educational moral themes. The application transforms user inputs into complete 10-15 page stories with AI-generated text, images, narration, and background music.
 
 ## Core Experience
 
@@ -17,7 +17,9 @@ Frankenstein is an AI-powered children's story generator that creates immersive,
 ### Story Creation
 - **Educational Moral Themes**: 15 pre-defined life lessons naturally woven into stories
 - **Voice Selection**: Male or female narrator with configurable ElevenLabs voice IDs
-- **Non-Linear Form**: Jump to any field, smart randomization, clear all functionality
+- **Non-Linear Form**: Jump to any field, smart randomization (preserves user choices), clear all functionality
+- **Rich Suggestions**: 20 options per field with 6 random displayed for variety (159 total suggestions)
+- **Form Validation**: Complete validation before submission with helpful feedback
 - **Two-Phase Story Generation**: Outline creation followed by full story development
 - **Extended Stories**: 10-15 pages with modern, punchy writing style
 - **Consistent Visuals**: Seed-based image generation for character consistency
@@ -32,7 +34,8 @@ Frankenstein is an AI-powered children's story generator that creates immersive,
 ### Technical Features
 - AI story generation using Claude (Sonnet 4.5)
 - Image generation via Stability AI (SDXL 1024)
-- Audio narration and sound effects from ElevenLabs
+- Audio narration from ElevenLabs
+- Background music based on story mood (scary, action, awesome, journey)
 - Real-time WebSocket progress updates
 - Admin dashboard for API cost tracking and configuration
 - Fully responsive design optimized for performance

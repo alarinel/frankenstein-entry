@@ -1,0 +1,135 @@
+{
+  "id" : "ffc6a3b0-cf27-43a4-a860-30cd45ca5d24",
+  "title" : "Rowan and the Stars That Fell Silent",
+  "input" : {
+    "theme" : "the importance of helping those in need",
+    "voiceType" : "male",
+    "characterName" : "Rowan",
+    "setting" : "a peaceful starlight valley",
+    "villain" : "the mysterious Void Keeper",
+    "specialItem" : "an enchanted spellbook",
+    "characterTrait" : "playful yet determined",
+    "goal" : "discover their true destiny",
+    "timePeriod" : "ancient Celtic times",
+    "mood" : "whimsical and lighthearted"
+  },
+  "pages" : [ {
+    "pageNumber" : 1,
+    "text" : "In a valley kissed by starlight, ten-year-old Rowan discovered a dusty spellbook in Grandmother Eira's cottage. The leather cover glowed with silver runes, and her heart raced with excitement. \"I'll be the most powerful druid ever!\" she whispered, clutching the book to her chest. Above, the ancient stars twinkled warmly, lighting every corner of the peaceful valley.",
+    "imagePrompt" : "A spirited Celtic girl with wild auburn hair and bright green eyes positioned on the left side of the image, holding a glowing silver spellbook in a cozy cottage interior, warm starlight streaming through a window, watercolor storybook illustration style, magical atmosphere, focal point left of center",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-1.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-1.mp3",
+    "backgroundMusic" : null,
+    "mood" : "wonder and excitement",
+    "duration" : 22.8
+  }, {
+    "pageNumber" : 2,
+    "text" : "Days passed, and Rowan buried herself in the spellbook's pages. Old Muriel knocked on her door, asking for help finding her lost cat. \"Too busy with important magic!\" Rowan called without looking up. A family of foxes scratched at her window, but she waved them away. The stars above began to dim, one by one, but Rowan didn't notice.",
+    "imagePrompt" : "Young auburn-haired Celtic girl on the left side hunched over a glowing spellbook at a wooden table, ignoring an elderly woman at the doorway and fox faces at the window, dimming stars visible through the window, watercolor illustration, shadows growing, character positioned left",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-2.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-2.mp3",
+    "backgroundMusic" : null,
+    "mood" : "growing tension and isolation",
+    "duration" : 23.6
+  }, {
+    "pageNumber" : 3,
+    "text" : "That night, the last stars flickered like dying candles. A desperate fox mother stood at Rowan's door. \"Please! My kit Faelan is lost in the dark!\" Rowan barely glanced up. \"I need to master the transformation spell first. That's real magic.\" As the fox family left, a cold shadow crept across the valley's edge, watching with hollow eyes.",
+    "imagePrompt" : "A frightened mother fox on the left side facing a dismissive Celtic girl in a doorway, nearly dark sky with one flickering star, ominous dark shadow forming at the valley edge in background, watercolor storybook style, focal point left of center, growing darkness",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-3.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-3.mp3",
+    "backgroundMusic" : null,
+    "mood" : "foreboding and regret",
+    "duration" : 23.2
+  }, {
+    "pageNumber" : 4,
+    "text" : "Morning brought no light. The valley lay frozen in darkness. Rowan reached for her spellbook, but it wouldn't open! Silver words glowed on the cover: \"Magic flows where kindness grows.\" \"What does that mean?\" she cried, pulling at the pages. The cold bit through her woolen tunic, and fear crept into her heart.",
+    "imagePrompt" : "Celtic girl with auburn hair on the left side desperately trying to open a sealed glowing spellbook, dark cold valley visible through window, silver words glowing on book cover, watercolor illustration style, character positioned left, frustrated expression, darkness surrounding",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-4.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-4.mp3",
+    "backgroundMusic" : null,
+    "mood" : "frustration and dawning realization",
+    "duration" : 21.2
+  }, {
+    "pageNumber" : 5,
+    "text" : "A whisper like cold wind filled the cottage. The shadow from the valley's edge took form—hollow eyes, shifting darkness. \"I am the Void Keeper,\" it breathed. \"I feed on selfishness and indifference. Your valley forgot kindness, and now I grow strong.\" Rowan's hands trembled. \"How do I stop you?\" The shadow smiled. \"Rekindle the stars... if you can remember how to care.\"",
+    "imagePrompt" : "Shadowy figure with hollow eyes like empty night sky on the left side confronting a small frightened Celtic girl, dark cottage interior, shifting darkness forming a vague humanoid shape, watercolor storybook illustration, focal point left of center, ominous atmosphere",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-5.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-5.mp3",
+    "backgroundMusic" : null,
+    "mood" : "fear and challenge",
+    "duration" : 24.8
+  }, {
+    "pageNumber" : 6,
+    "text" : "Rowan stumbled into the dark forest and found the fox family huddled together, shivering. Shame burned in her chest. \"I'll help you find Faelan,\" she said quietly. Without magic, she used her eyes and ears, following tiny paw prints to a thornbush. There! The small fox kit whimpered, trapped but safe. As she freed him, her spellbook grew warm and opened to a single glowing page.",
+    "imagePrompt" : "Celtic girl on the left side gently freeing a small red fox kit with white-tipped tail from a thornbush, grateful fox family watching, dark forest setting, spellbook glowing softly on ground, watercolor illustration style, character positioned left, tender moment",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-6.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-6.mp3",
+    "backgroundMusic" : null,
+    "mood" : "compassion awakening",
+    "duration" : 26.4
+  }, {
+    "pageNumber" : 7,
+    "text" : "Old Muriel struggled in the darkness, searching for healing moonflowers. Rowan remembered ignoring her before. \"Let me help,\" she offered, her voice small. Together they gathered the silver petals, Muriel teaching her their names and uses. \"The old ways matter too,\" Muriel smiled. Another page unlocked in Rowan's spellbook—a light-conjuring charm! A tiny star flickered back to life above.",
+    "imagePrompt" : "Young Celtic girl and elderly woman with silver hair on the left side gathering glowing moonflowers together in darkness, both holding a basket, small star beginning to glow in sky above, watercolor storybook style, focal point left of center, warm connection between generations",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-7.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-7.mp3",
+    "backgroundMusic" : null,
+    "mood" : "learning and connection",
+    "duration" : 23.6
+  }, {
+    "pageNumber" : 8,
+    "text" : "Frightened voices echoed through the valley. Five lost children huddled together, crying. Rowan's chest tightened—she could help! She opened her spellbook and read the light spell aloud. A warm golden glow surrounded her like a tiny sun. \"Follow me!\" she called, her voice brave and bright. One by one, she led them home to their grateful families. More pages unlocked, revealing the truth: each helpful act weakened the Void Keeper.",
+    "imagePrompt" : "Celtic girl with auburn hair on the left side holding up a glowing golden light spell, five small children following her through darkness, warm magical glow illuminating their path, watercolor illustration, character positioned left, heroic pose, hope returning",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-8.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-8.mp3",
+    "backgroundMusic" : null,
+    "mood" : "courage and hope",
+    "duration" : 28.0
+  }, {
+    "pageNumber" : 9,
+    "text" : "The Void Keeper appeared before Rowan, larger now but flickering. \"You waste your potential,\" it whispered. \"Return to your studies. Become powerful. Why serve others when you could command them?\" Rowan wavered, remembering her dreams of glory. Then she saw Faelan playing with his family, Old Muriel smiling, the children safe in their homes. \"No,\" she said firmly. \"Helping others isn't wasting anything. It's everything.\"",
+    "imagePrompt" : "Celtic girl on the left side standing defiantly facing a large flickering shadow figure, memories of helped creatures glowing softly around her like guardian spirits, dark valley background, watercolor storybook illustration, focal point left of center, determined expression",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-9.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-9.mp3",
+    "backgroundMusic" : null,
+    "mood" : "inner strength and decision",
+    "duration" : 26.0
+  }, {
+    "pageNumber" : 10,
+    "text" : "Rowan's spellbook opened fully, flooding her with understanding. It was never about powerful magic for herself—it was about using her gifts to serve others! The final spell glowed on the last page: \"The Starlight Restoration.\" But beneath it, a riddle: \"One voice cannot sing the stars awake. Many hearts must kindle light together.\" Rowan smiled. She knew exactly what to do.",
+    "imagePrompt" : "Celtic girl with bright green eyes on the left side reading from a fully opened glowing spellbook, understanding dawning on her face, silver runes floating in the air around her, dark valley with a few stars beginning to glow, watercolor illustration style, character positioned left, magical revelation",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-10.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-10.mp3",
+    "backgroundMusic" : null,
+    "mood" : "revelation and purpose",
+    "duration" : 24.4
+  }, {
+    "pageNumber" : 11,
+    "text" : "Rowan gathered everyone she'd helped—foxes, neighbors, children, all holding hands in a circle. \"Help each other, right now, with kindness!\" she called. The children shared their cloaks. Muriel offered healing tea. The foxes guided lost animals home. Rowan channeled the spell, and their combined kindness exploded into brilliant light! The Void Keeper shrieked and dissolved like morning mist. Above, the stars burst back to life, brighter than ever before!",
+    "imagePrompt" : "Celtic girl on the left side with arms raised, surrounded by a glowing circle of foxes, children, and elderly villagers all helping each other, brilliant golden and silver light radiating upward, stars igniting in sky above, dissolving shadow figure, watercolor storybook illustration, focal point left of center, triumphant magical moment",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-11.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-11.mp3",
+    "backgroundMusic" : null,
+    "mood" : "triumph and unity",
+    "duration" : 27.6
+  }, {
+    "pageNumber" : 12,
+    "text" : "Grandmother Eira appeared, her eyes twinkling like the restored stars. \"I left that spellbook for you, knowing you'd learn its true lesson,\" she said, hugging Rowan close. \"The greatest magic isn't power—it's kindness.\" Rowan looked at her friends, her valley, the blazing stars above. She touched her oak-leaf pendant and smiled. \"I'm not the most powerful druid,\" she said happily, \"but I'm the valley's helper. And that's exactly who I want to be.\"",
+    "imagePrompt" : "Young Celtic girl and elderly silver-haired grandmother on the left side embracing in warm starlight, restored valley glowing with life behind them, foxes and villagers celebrating in background, brilliant stars overhead, watercolor storybook illustration style, character positioned left, peaceful and joyful ending, magical warm atmosphere",
+    "imageUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/images/page-12.png",
+    "narrationUrl" : "/api/stories/ffc6a3b0-cf27-43a4-a860-30cd45ca5d24/assets/audio/narration/page-12.mp3",
+    "backgroundMusic" : null,
+    "mood" : "fulfillment and peace",
+    "duration" : 29.2
+  } ],
+  "metadata" : {
+    "imageSeed" : 4034,
+    "totalDuration" : 300.8,
+    "pageCount" : 12,
+    "estimatedReadTime" : "5:00"
+  },
+  "status" : "COMPLETED",
+  "createdAt" : [ 2025, 11, 16, 11, 30, 57, 540342800 ],
+  "completedAt" : [ 2025, 11, 16, 11, 33, 25, 792174800 ],
+  "errorMessage" : null
+}

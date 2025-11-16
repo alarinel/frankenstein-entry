@@ -25,17 +25,43 @@ public class ImageGenerationService {
    private final ImageModel imageModel;
 
    /**
-    * Enhances the original prompt with left-third composition guidance for 3D book display.
+    * Quality enhancement tags to ensure high-quality image generation
+    */
+   private static final String QUALITY_TAGS = "high quality, highly detailed, sharp focus, professional illustration, " +
+         "8k resolution, masterpiece, best quality, crisp details, vibrant colors, clean composition, " +
+         "no text, no watermark, no signature, no labels, no words, no letters";
+
+   /**
+    * Negative prompt to exclude unwanted elements
+    */
+   private static final String NEGATIVE_ELEMENTS = "Avoid: blurry, low quality, pixelated, distorted, " +
+         "text, watermark, signature, logo, copyright, words, letters, numbers, labels, captions, " +
+         "ugly, deformed, disfigured, bad anatomy, bad proportions, extra limbs, cloned face, " +
+         "malformed limbs, missing arms, missing legs, fused fingers, too many fingers, " +
+         "long neck, cross-eyed, mutated hands, poorly drawn hands, poorly drawn face, " +
+         "mutation, deformed, blurry, bad anatomy, bad proportions, extra limbs, " +
+         "disfigured, ugly, gross proportions, malformed limbs, missing arms, missing legs, " +
+         "extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck";
+
+   /**
+    * Enhances the original prompt with quality tags, composition guidance, and outpainting for 3D book display.
     * Positions focal points in the left 35% of the frame for optimal viewing when pages are angled.
+    * Adds extra canvas space for better book page display.
     *
     * @param originalPrompt The original image generation prompt
-    * @return Enhanced prompt with composition guidance prepended
+    * @return Enhanced prompt with quality tags, composition guidance, and negative prompt guidance
     */
    private String enhancePromptWithComposition(final String originalPrompt) {
-      final String compositionGuidance = "Composition: focal point positioned in the left 35% of the frame, " + "subject on the left side of the image, " + "main character or object left of center. ";
+      final String compositionGuidance = "Composition: focal point positioned in the left 35% of the frame, " + 
+         "subject on the left side of the image, " + 
+         "main character or object left of center. " +
+         "Extended canvas with extra space on top (10%), bottom (10%), and right side (30%) for book page display. " +
+         "No extra space on left side. " +
+         "Scene should extend naturally into the extra space with appropriate background elements. ";
 
-      final String enhancedPrompt = compositionGuidance + originalPrompt;
-      log.debug("Enhanced prompt with left-third composition guidance");
+      // Combine quality tags, composition guidance, original prompt, and negative guidance
+      final String enhancedPrompt = QUALITY_TAGS + " " + compositionGuidance + originalPrompt + " " + NEGATIVE_ELEMENTS;
+      log.debug("Enhanced prompt with quality tags, left-third composition, and negative prompt guidance");
 
       return enhancedPrompt;
    }

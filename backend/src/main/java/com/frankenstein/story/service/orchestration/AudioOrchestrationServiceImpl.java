@@ -73,12 +73,6 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
          final byte[] narration = audioGenerationService.generateNarration(page.getText(), voiceType).join();
          fileStorageService.saveNarration(storyId, pageNumber, narration);
 
-         // Generate sound effects
-         final List<byte[]> effects = page.getSoundEffects()
-                                          .stream()
-                                          .map(effectName -> generateSoundEffect(storyId, effectName, voiceType))
-                                          .collect(Collectors.toList());
-
          // Log API call for narration
          logAudioApiCall(storyId, "NARRATION_GENERATION", page.getText().length(), startTime, "SUCCESS", null);
 
@@ -88,19 +82,11 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
          // Calculate duration
          final double duration = audioGenerationService.estimateNarrationDuration(page.getText());
 
-         return AudioSet.builder().narration(narration).effects(effects).duration(duration).build();
+         return AudioSet.builder().narration(narration).effects(List.of()).duration(duration).build();
       } catch (final Exception e) {
          logAudioApiCall(storyId, "NARRATION_GENERATION", page.getText().length(), startTime, "FAILED", e.getMessage());
          throw e;
       }
-   }
-
-   private byte[] generateSoundEffect(final String storyId, final String effectName, final String voiceType) {
-      final byte[] effectData = audioGenerationService.generateSoundEffect(effectName, voiceType).join();
-      if (effectData.length > 0) {
-         fileStorageService.saveSoundEffect(storyId, effectName, effectData);
-      }
-      return effectData;
    }
 
    /**

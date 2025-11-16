@@ -4,8 +4,8 @@
   "stabilityImageCostPerImage" : 0.04,
   "elevenlabsCostPerCharacter" : 3.0E-5,
   "elevenlabsMaxConcurrentRequests" : 3,
-  "maleVoiceId" : "21m00Tcm4TlvDq8ikWAM",
-  "femaleVoiceId" : "EXAVITQu4vr4xnSDxMaL",
+  "maleVoiceId" : "NNl6r8mD7vthiJatiJt1",
+  "femaleVoiceId" : "aMSt68OGf4xUZAnLpTU8",
   "maxStoriesPerDay" : 100,
   "enableCostTracking" : true
 }

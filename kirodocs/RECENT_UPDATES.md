@@ -1,6 +1,34 @@
 # Recent Updates
 
-## November 16, 2025
+> **Last Updated**: November 16, 2025
+
+## November 16, 2025 - Documentation Reorganization
+
+### 📚 Documentation Restructure
+**Status**: ✅ Complete
+
+Reorganized all project documentation for better maintainability:
+- **Moved to kirodocs**: All scattered markdown files consolidated
+- **Created archive**: Outdated docs moved to `kirodocs/archive/`
+- **Updated READMEs**: Backend and frontend READMEs now reference kirodocs
+- **Steering docs**: Updated to reflect current codebase
+
+**Files Moved**:
+- `EXPANSION_SUGGESTION_VARIETY.md` → `kirodocs/features/`
+- `FEATURE_COMPLETE_FORM_VALIDATION.md` → `kirodocs/features/`
+- `IMPROVEMENT_SUGGESTION_LIMIT.md` → `kirodocs/features/`
+- `backend/VOICE_CONFIG_VERIFICATION.md` → `kirodocs/testing/`
+- `frontend/src/api/__tests__/*.md` → `kirodocs/testing/`
+
+**Files Archived**:
+- `DOCUMENTATION_UPDATE_NOVEMBER_2025.md` → `archive/`
+- `DOCUMENTATION_UPDATE_SUMMARY.md` → `archive/`
+
+**Documentation**: This file
+
+---
+
+## November 16, 2025 - Feature Updates
 
 ### 🎓 Moral Themes Feature
 **Status**: ✅ Complete
@@ -188,15 +216,69 @@ See individual documentation files for detailed information on earlier updates.
 
 ---
 
-## Documentation Updates
+### 📝 Suggestion Expansion
+**Status**: ✅ Complete
 
-### November 16, 2025
-- Reorganized documentation structure
-- Created feature-specific documentation
-- Added bug fix documentation
-- Created performance documentation
-- Updated all steering documents
-- Consolidated root-level docs into kirodocs/
+Expanded suggestion lists from 6 to 20 options per field:
+- Character names, settings, villains, items, traits, goals, time periods, moods
+- 159 total unique suggestions across all fields
+- Random 6 displayed per page load for variety
+- Fisher-Yates shuffle algorithm for fair randomization
+
+**Files Changed**:
+- `frontend/src/utils/suggestions.ts`
+- `frontend/src/components/forms/SuggestionChips.tsx`
+
+**Documentation**: [Expansion: Suggestion Variety](features/EXPANSION_SUGGESTION_VARIETY.md)
+
+---
+
+### ✅ Complete Form Validation
+**Status**: ✅ Complete
+
+Added validation to ensure all fields filled before story creation:
+- "Create Story" button disabled until all fields complete
+- Helper text shows "Fill all fields to create story"
+- Double validation (UI + submission handler)
+- Toast notification for validation failures
+
+**Files Changed**:
+- `frontend/src/pages/InputPage.tsx`
+- `frontend/src/components/forms/FormNavigation.tsx`
+- `frontend/src/hooks/forms/useStoryFormState.ts`
+
+**Documentation**: [Complete Form Validation](features/FEATURE_COMPLETE_FORM_VALIDATION.md)
+
+---
+
+### 🎲 Limited Random Suggestions
+**Status**: ✅ Complete
+
+Modified suggestion display to show maximum 6 random options:
+- Reduces visual clutter (theme field reduced from 15 to 6)
+- Fisher-Yates shuffle for unbiased randomization
+- Memoized to prevent re-shuffling on renders
+- Different suggestions on each page load
+
+**Files Changed**:
+- `frontend/src/components/forms/SuggestionChips.tsx`
+
+**Documentation**: [Suggestion Limit](features/IMPROVEMENT_SUGGESTION_LIMIT.md)
+
+---
+
+## Previous Updates
+
+### Earlier November 2025
+- Story customization features (voice selection, themes)
+- Admin dashboard for API tracking
+- Voice configuration via UI
+- Integration testing framework
+- Responsive sizing improvements
+- Component refactoring
+- Free API integrations (quotes, jokes, time of day)
+
+See individual documentation files for detailed information on earlier updates.
 
 ---
 

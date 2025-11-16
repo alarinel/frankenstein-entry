@@ -65,7 +65,7 @@ class StoryGenerationServiceTest {
                                         "pageNumber": 1,
                                         "text": "Luna lived in an enchanted forest.",
                                         "imagePrompt": "A brave young girl in a magical forest",
-                                        "soundEffects": ["forest_ambience"],
+                                        "backgroundMusic": "journey",
                                         "mood": "peaceful"
                                       }
                                     ]

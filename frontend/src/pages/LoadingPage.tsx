@@ -5,11 +5,8 @@ import { StoryProgressWebSocket } from '@/api/websocket';
 import { storyApi } from '@/api/client';
 import { useStoryStore } from '@/store/storyStore';
 import { GenerationProgress, StoryStatus } from '@/types';
-import { ParticleBackground } from '@/components/ParticleBackground';
 import { FloatingBats } from '@/components/spooky/FloatingBats';
-import { GhostCluster } from '@/components/spooky/FloatingGhost';
 import { MagicalCauldron } from '@/components/spooky/MagicalCauldron';
-import { FlyingBooks } from '@/components/spooky/FlyingBooks';
 import { LightningEffect } from '@/components/spooky/LightningEffect';
 import { SpookyTitle } from '@/components/spooky/SpookyEffects';
 import { fetchRandomQuote, Quote } from '@/api/quotable';
@@ -195,7 +192,7 @@ export const LoadingPage = () => {
         📜
       </div>
 
-      <div className="w-full text-center z-10 flex flex-col" style={{ maxWidth: 'min(90vw, 800px)', padding: '0 clamp(0.75rem, 2vw, 1.5rem)', maxHeight: '95vh', overflow: 'auto' }}>
+      <div className="w-full text-center z-10 flex flex-col" style={{ maxWidth: 'min(95vw, 800px)', padding: '0 clamp(0.5rem, 2vw, 1rem)', maxHeight: '100vh', overflow: 'hidden' }}>
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -267,19 +264,22 @@ export const LoadingPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex justify-center gap-4"
-          style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}
+          className="flex justify-center flex-wrap"
+          style={{ 
+            marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)',
+            gap: 'clamp(0.375rem, 0.75vw, 0.5rem)'
+          }}
         >
           {/* Current Stage Timer */}
-          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-purple-600/30 px-3 py-1">
-            <span className="text-spooky-purple-300 text-xs font-mono">
+          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-purple-600/30" style={{ padding: 'clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.5rem, 1vw, 0.75rem)' }}>
+            <span className="text-spooky-purple-300 font-mono" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.75rem)' }}>
               Stage: {Math.floor(currentStageTime / 60)}:{(currentStageTime % 60).toString().padStart(2, '0')}
             </span>
           </div>
           
           {/* Total Elapsed Timer */}
-          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-orange-600/30 px-3 py-1">
-            <span className="text-spooky-orange-300 text-xs font-mono">
+          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-orange-600/30" style={{ padding: 'clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.5rem, 1vw, 0.75rem)' }}>
+            <span className="text-spooky-orange-300 font-mono" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.75rem)' }}>
               Total: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}
             </span>
           </div>
@@ -316,19 +316,27 @@ export const LoadingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
+            className="w-full mx-auto"
+            style={{ 
+              marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', 
+              marginBottom: 'clamp(0.25rem, 0.5vh, 0.375rem)',
+              maxWidth: '100%'
+            }}
           >
-            <div className="flex items-center justify-center" style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
+            <div className="flex items-center justify-center" style={{ gap: 'clamp(0.375rem, 0.75vw, 0.5rem)' }}>
               <motion.span
-                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
+                style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', flexShrink: 0 }}
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 2, ease: 'linear', repeat: Infinity }}
               >
                 {loadingMessages[currentMessageIndex].emoji}
               </motion.span>
               <p 
-                className="text-gray-400 italic font-fun max-w-md"
-                style={{ fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)' }}
+                className="text-gray-400 italic font-fun line-clamp-2"
+                style={{ 
+                  fontSize: 'clamp(0.7rem, 1.1vw, 0.8rem)',
+                  maxWidth: '400px'
+                }}
               >
                 "{loadingMessages[currentMessageIndex].text}"
               </p>
@@ -342,26 +350,29 @@ export const LoadingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="max-w-2xl mx-auto"
-            style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 1, minHeight: 0 }}
+            className="w-full mx-auto"
+            style={{ 
+              marginTop: 'clamp(0.5rem, 1vh, 0.75rem)',
+              maxWidth: '100%'
+            }}
           >
             <div 
-              className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-purple-600/30 shadow-lg"
-              style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)' }}
+              className="bg-dark-800/60 backdrop-blur-md rounded-xl border border-spooky-purple-600/30 shadow-lg overflow-hidden"
+              style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(0.75rem, 1.5vw, 1rem)' }}
             >
-              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)' }} className="text-center">📜</div>
+              <div style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', marginBottom: 'clamp(0.25rem, 0.5vh, 0.375rem)' }} className="text-center">📜</div>
               <p 
-                className="text-gray-300 italic leading-relaxed text-center"
+                className="text-gray-300 italic leading-snug text-center line-clamp-3"
                 style={{ 
-                  fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)',
-                  marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                  fontSize: 'clamp(0.7rem, 1.1vw, 0.8rem)',
+                  marginBottom: 'clamp(0.25rem, 0.5vh, 0.375rem)'
                 }}
               >
                 "{quote.content}"
               </p>
               <p 
-                className="text-spooky-purple-400 text-center font-semibold"
-                style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}
+                className="text-spooky-purple-400 text-center font-semibold truncate"
+                style={{ fontSize: 'clamp(0.6rem, 0.9vw, 0.7rem)' }}
               >
                 — {quote.author}
               </p>
@@ -375,25 +386,29 @@ export const LoadingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="max-w-2xl mx-auto"
-            style={{ marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 1, minHeight: 0 }}
+            className="w-full mx-auto"
+            style={{ 
+              marginTop: 'clamp(0.5rem, 1vh, 0.75rem)',
+              marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)',
+              maxWidth: '100%'
+            }}
           >
             <div 
-              className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-orange-600/30 shadow-lg"
-              style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)' }}
+              className="bg-dark-800/60 backdrop-blur-md rounded-xl border border-spooky-orange-600/30 shadow-lg overflow-hidden"
+              style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(0.75rem, 1.5vw, 1rem)' }}
             >
-              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)' }} className="text-center">😄</div>
+              <div style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', marginBottom: 'clamp(0.25rem, 0.5vh, 0.375rem)' }} className="text-center">😄</div>
               <p 
-                className="text-gray-300 leading-relaxed text-center"
-                style={{ fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)' }}
+                className="text-gray-300 leading-snug text-center line-clamp-4"
+                style={{ fontSize: 'clamp(0.7rem, 1.1vw, 0.8rem)' }}
               >
                 {formatJoke(joke)}
               </p>
               <p 
                 className="text-spooky-orange-400 text-center font-semibold"
                 style={{ 
-                  fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
-                  marginTop: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                  fontSize: 'clamp(0.6rem, 0.9vw, 0.7rem)',
+                  marginTop: 'clamp(0.25rem, 0.5vh, 0.375rem)'
                 }}
               >
                 — A little humor while you wait

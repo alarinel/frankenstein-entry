@@ -51,19 +51,13 @@ public class StoryAssemblyServiceImpl implements StoryAssemblyService {
    private StoryPage createStoryPage(final String storyId, final int index, final StoryStructure.PageStructure pageStructure, final AudioSet audioSet) {
       final int pageNumber = index + 1;
 
-      final List<String> effectUrls = pageStructure.getSoundEffects()
-                                                   .stream()
-                                                   .map(effect -> fileStorageService.getSoundEffectUrl(storyId, effect))
-                                                   .collect(Collectors.toList());
-
       return StoryPage.builder()
                       .pageNumber(pageNumber)
                       .text(pageStructure.getText())
                       .imagePrompt(pageStructure.getImagePrompt())
                       .imageUrl(fileStorageService.getImageUrl(storyId, pageNumber))
                       .narrationUrl(fileStorageService.getNarrationUrl(storyId, pageNumber))
-                      .soundEffects(pageStructure.getSoundEffects())
-                      .soundEffectUrls(effectUrls)
+                      .backgroundMusic(pageStructure.getBackgroundMusic())
                       .mood(pageStructure.getMood())
                       .duration(audioSet.getDuration())
                       .build();

@@ -1,0 +1,14 @@
+{
+  "id" : "b3711204-fe56-44dd-b3f3-d98c5ad1f261",
+  "storyId" : "bed9edc6-45b9-44b6-a200-682aa4bbb5ce",
+  "apiProvider" : "ANTHROPIC",
+  "operation" : "STORY_GENERATION",
+  "tokensUsed" : 0,
+  "costUsd" : 0.0,
+  "status" : "FAILED",
+  "errorMessage" : "Cannot construct instance of `java.util.ArrayList` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('gentle footsteps, distant dinosaur calls, soft wind')\n at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 9, column: 23] (through reference chain: com.frankenstein.story.model.StoryStructure[\"pages\"]->java.util.ArrayList[0]->com.frankenstein.story.model.StoryStructure$PageStructure[\"soundEffects\"])",
+  "timestamp" : "2025-11-16T10:47:51",
+  "durationMs" : 57976,
+  "charactersUsed" : 0,
+  "metadata" : null
+}

@@ -2,14 +2,9 @@
 
 Spring Boot backend for the AI-powered children's story generator.
 
-## Features
+> **📚 Full Documentation**: See [kirodocs/](../kirodocs/) for complete architecture, API details, and development guides.
 
-- **Story Generation**: Uses Claude (Anthropic) to create engaging children's stories
-- **Image Generation**: Creates illustrations with Stability AI using consistent seeds
-- **Audio Generation**: Generates narration and sound effects with ElevenLabs
-- **Real-time Updates**: WebSocket support for progress tracking
-- **File Storage**: Local filesystem-based asset storage
-- **REST API**: Comprehensive API for frontend integration
+## Quick Start
 
 ## Prerequisites
 
@@ -488,34 +483,27 @@ The `ImageGenerationService` has been migrated from direct OkHttp API calls to S
 - `generateImage(String prompt, int seed)` returns `CompletableFuture<byte[]>`
 - `generateImageWithRetry(String prompt, int seed, int maxRetries)` provides retry logic with exponential backoff
 
+## Documentation
+
+For detailed information, see:
+
+- **Architecture**: [kirodocs/architecture/](../kirodocs/architecture/)
+- **API Documentation**: [kirodocs/apis/](../kirodocs/apis/)
+- **Development Guides**: [kirodocs/development/](../kirodocs/development/)
+- **Testing**: [kirodocs/testing/](../kirodocs/testing/)
+- **Technology Stack**: [.kiro/steering/tech.md](../.kiro/steering/tech.md)
+- **Project Structure**: [.kiro/steering/structure.md](../.kiro/steering/structure.md)
+
 ## Troubleshooting
 
 ### Out of Memory
-
-Increase JVM heap size:
-
-```bash
-export MAVEN_OPTS="-Xmx2g"
-mvn spring-boot:run
-```
+Increase JVM heap size: `export MAVEN_OPTS="-Xmx2g"`
 
 ### API Rate Limits
-
-If you hit API rate limits, the services include retry logic with exponential backoff.
+Services include retry logic with exponential backoff.
 
 ### Storage Issues
-
-Ensure the application has write permissions to the storage directory:
-
-```bash
-chmod -R 755 storage/
-```
-
-If you encounter `FileStorageException`, check:
-
-- Directory permissions
-- Available disk space
-- File path validity
+Ensure write permissions: `chmod -R 755 storage/`
 
 ## License
 

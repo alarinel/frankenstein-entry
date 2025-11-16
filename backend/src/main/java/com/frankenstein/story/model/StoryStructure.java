@@ -32,7 +32,7 @@ public class StoryStructure {
       private int pageNumber;
       private String text;
       private String imagePrompt;
-      private List<String> soundEffects;
+      private String backgroundMusic; // scary, action, awesome, or journey
       private String mood;
    }
 }

@@ -37,6 +37,9 @@ public class AudioGenerationService {
    @Value("${api.elevenlabs.similarity-boost}")
    private double similarityBoost;
 
+   @Value("${api.elevenlabs.speaker-boost:true}")
+   private boolean speakerBoost;
+
    /**
     * Retrieves the voice ID for the specified voice type from configuration
     *
@@ -88,7 +91,7 @@ public class AudioGenerationService {
                   "model_id",
                   "eleven_monolingual_v1",
                   "voice_settings",
-                  Map.of("stability", stability, "similarity_boost", similarityBoost));
+                  Map.of("stability", stability, "similarity_boost", similarityBoost, "speaker_boost", speakerBoost));
 
             final RestClient client = restClientBuilder.baseUrl(apiUrl)
                                                        .defaultHeader("xi-api-key", apiKey)

@@ -17,8 +17,7 @@ export interface StoryPage {
   imagePrompt: string;
   imageUrl: string;
   narrationUrl: string;
-  soundEffects: string[];
-  soundEffectUrls: string[];
+  backgroundMusic: string; // scary, action, awesome, or journey
   mood: string;
   duration: number;
 }
