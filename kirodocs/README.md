@@ -1,169 +1,134 @@
-# Kiro Documentation Archive
+# Frankenstein Story Generator - Documentation
 
-This directory contains comprehensive documentation about the Frankenstein project's development history, implementation details, and architectural decisions.
+## Overview
 
-## Directory Structure
+This directory contains comprehensive documentation for the Frankenstein AI-powered children's story generator. The project creates immersive, multimedia stories with AI-generated text, images, narration, and sound effects.
 
-```
-kirodocs/
-├── README.md (this file)
-├── apis/                    # API integration documentation
-│   ├── README.md           # API overview
-│   ├── API_INTEGRATIONS.md # All 10 APIs detailed
-│   └── FREE_APIS_ADDED.md  # Free API implementation guide
-├── implementation/          # Feature implementation histories
-│   ├── README.md           # Implementation overview
-│   ├── IMPLEMENTATION_SUMMARY.md
-│   ├── FINAL_IMPLEMENTATION_SUMMARY.md
-│   ├── SPOOKY_ELEMENTS_SUMMARY.md
-│   └── STORY_CUSTOMIZATION_SUMMARY.md
-├── architecture/            # System design and structure
-│   ├── README.md           # Architecture overview
-│   └── COMPONENT_ARCHITECTURE.md
-├── development/             # Development process and refactoring
-│   ├── README.md           # Development overview
-│   ├── REFACTORING_SUMMARY.md
-│   ├── BUILD_PROCESS.md
-│   └── DOCUMENTATION_UPDATE_SUMMARY.md (if exists)
-└── testing/                 # Integration testing and validation
-    ├── README.md           # Testing overview
-    ├── INTEGRATION_TEST_PLAN.md
-    ├── INTEGRATION_TEST_SUMMARY.md
-    ├── INTEGRATION_VALIDATION_CHECKLIST.md
-    ├── TASK_15_COMPLETION_GUIDE.md
-    └── verify-integration.ps1
-```
+## Documentation Structure
 
-## Quick Navigation
+### 📁 APIs
+Documentation for third-party API integrations:
+- [API Integrations](apis/API_INTEGRATIONS.md) - Overview of all external APIs
+- [Free APIs Added](apis/FREE_APIS_ADDED.md) - Free API services integrated
+- [APIs README](apis/README.md) - API documentation index
 
-### 🚀 Getting Started
-- [Main README](../README.md) - Quick start and setup
-- [Tech Stack](../.kiro/steering/tech.md) - Technologies used
-- [Guidelines](../.kiro/steering/guidelines.md) - Coding standards
+### 🏗️ Architecture
+System architecture and design documentation:
+- [Component Architecture](architecture/COMPONENT_ARCHITECTURE.md) - Frontend component structure
 
-### 🏗️ Architecture & Design
-- [Component Architecture](./architecture/COMPONENT_ARCHITECTURE.md) - System design
-- [Project Structure](../.kiro/steering/structure.md) - File organization
-- [Product Overview](../.kiro/steering/product.md) - Product vision
+### 💻 Development
+Development processes and guidelines:
+- [Build Process](development/BUILD_PROCESS.md) - How to build and run the project
+- [Refactoring Summary](development/REFACTORING_SUMMARY.md) - Code refactoring history
+- [Responsive Sizing](development/RESPONSIVE_SIZING_CHANGES.md) - UI responsiveness improvements
+- [Development README](development/README.md) - Development documentation index
 
-### 🌐 API Integrations
-- [All APIs Overview](./apis/API_INTEGRATIONS.md) - 10 APIs (3 paid + 7 free)
-- [Free APIs Guide](./apis/FREE_APIS_ADDED.md) - Zero-cost enhancements
-- [API Costs](../README.md#api-cost-summary) - Pricing breakdown
+### 🚀 Implementation
+Feature implementation summaries:
+- [Implementation Summary](implementation/IMPLEMENTATION_SUMMARY.md) - Overall implementation details
+- [Final Implementation](implementation/FINAL_IMPLEMENTATION_SUMMARY.md) - Final feature set
+- [Story Customization](implementation/STORY_CUSTOMIZATION_SUMMARY.md) - Customization features
+- [Spooky Elements](implementation/SPOOKY_ELEMENTS_SUMMARY.md) - Themed UI components
+- [Implementation README](implementation/README.md) - Implementation documentation index
 
-### 💻 Implementation Details
-- [Feature History](./implementation/FINAL_IMPLEMENTATION_SUMMARY.md) - All features
-- [Story Customization](./implementation/STORY_CUSTOMIZATION_SUMMARY.md) - Theme & voice selection
-- [Spooky Elements](./implementation/SPOOKY_ELEMENTS_SUMMARY.md) - UI animations
-- [Initial Implementation](./implementation/IMPLEMENTATION_SUMMARY.md) - First phase
+### 🧪 Testing
+Testing documentation and guides:
+- [Integration Test Plan](testing/INTEGRATION_TEST_PLAN.md) - Testing strategy
+- [Integration Test Summary](testing/INTEGRATION_TEST_SUMMARY.md) - Test results
+- [Validation Checklist](testing/INTEGRATION_VALIDATION_CHECKLIST.md) - QA checklist
+- [Testing README](testing/README.md) - Testing documentation index
 
-### 🔧 Development Process
-- [Refactoring Guide](./development/REFACTORING_SUMMARY.md) - Code improvements
-- [Build Process](./development/BUILD_PROCESS.md) - Build and deployment
-- [Component Guidelines](../.kiro/steering/guidelines.md#component-size-and-complexity) - Size rules
+### ✨ Features
+New feature documentation:
+- [Form Improvements](features/FORM_IMPROVEMENTS.md) - Enhanced input form UX
+- [Moral Themes](features/MORAL_THEMES.md) - Educational story themes
 
-### 🧪 Testing & Validation
-- [Integration Tests](./testing/INTEGRATION_TEST_PLAN.md) - 60+ test cases
-- [Test Summary](./testing/INTEGRATION_TEST_SUMMARY.md) - Quick overview
-- [Validation Checklist](./testing/INTEGRATION_VALIDATION_CHECKLIST.md) - Quick checks
-- [Completion Guide](./testing/TASK_15_COMPLETION_GUIDE.md) - Step-by-step testing
+### 🐛 Bug Fixes
+Bug fix documentation:
+- [Voice Selector Validation](bugfixes/VOICE_SELECTOR_VALIDATION.md) - Form validation fix
+- [API Migration](bugfixes/API_MIGRATION_ZENQUOTES.md) - ZenQuotes API migration
 
-## Documentation Philosophy
+### ⚡ Performance
+Performance optimization documentation:
+- [GPU Optimization](performance/GPU_OPTIMIZATION.md) - Chrome performance fixes
 
-### Three-Tier Documentation System
+## Quick Links
 
-1. **Active Guidelines** (`.kiro/steering/`)
-   - Used by AI agents during development
-   - Coding standards and best practices
-   - Technology stack and structure
-   - Product requirements
-   - **Always up-to-date**
+### For Developers
+- [Build Process](development/BUILD_PROCESS.md) - Get started with development
+- [Component Architecture](architecture/COMPONENT_ARCHITECTURE.md) - Understand the codebase
+- [API Integrations](apis/API_INTEGRATIONS.md) - External service setup
 
-2. **Archive Documentation** (`kirodocs/`)
-   - Historical context and decisions
-   - Detailed implementation guides
-   - Development journey
-   - Reference material
-   - **Comprehensive but not actively used**
+### For Contributors
+- [Recent Updates](RECENT_UPDATES.md) - Latest changes and improvements
+- [Testing Guide](testing/README.md) - How to test your changes
+- [Refactoring Summary](development/REFACTORING_SUMMARY.md) - Code quality improvements
 
-3. **User Documentation** (`README.md`)
-   - Quick start guide
-   - Setup instructions
-   - API overview
-   - Deployment guide
-   - **User-facing entry point**
+### For Project Managers
+- [Implementation Summary](implementation/IMPLEMENTATION_SUMMARY.md) - Feature overview
+- [Integration Test Summary](testing/INTEGRATION_TEST_SUMMARY.md) - Quality assurance
+- [Story Customization](implementation/STORY_CUSTOMIZATION_SUMMARY.md) - User-facing features
 
-## Key Documents by Use Case
+## Technology Stack
 
-### "I want to understand the codebase"
-1. Start: [Main README](../README.md)
-2. Then: [Component Architecture](./architecture/COMPONENT_ARCHITECTURE.md)
-3. Finally: [Project Structure](../.kiro/steering/structure.md)
+### Backend
+- **Framework**: Spring Boot 3.2.0 with Java 21
+- **AI Services**: Anthropic Claude, Stability AI, ElevenLabs
+- **Build Tool**: Maven 3.8+
 
-### "I want to add a new feature"
-1. Start: [Guidelines](../.kiro/steering/guidelines.md)
-2. Then: [Tech Stack](../.kiro/steering/tech.md)
-3. Reference: [Implementation History](./implementation/)
+### Frontend
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite 5
+- **Styling**: Tailwind CSS 3.4
+- **Animation**: Framer Motion, GSAP, Three.js
 
-### "I want to understand the APIs"
-1. Start: [API Integrations](./apis/API_INTEGRATIONS.md)
-2. Then: [Free APIs Guide](./apis/FREE_APIS_ADDED.md)
-3. Reference: [Main README API Section](../README.md#-external-apis--services)
+### External APIs
+- **Story Generation**: Anthropic Claude (Sonnet 4.5)
+- **Image Generation**: Stability AI (SDXL 1024)
+- **Audio Generation**: ElevenLabs
+- **Quotes**: ZenQuotes API
+- **Jokes**: JokeAPI
+- **Time of Day**: Sunrise-Sunset API
 
-### "I want to refactor code"
-1. Start: [Refactoring Summary](./development/REFACTORING_SUMMARY.md)
-2. Then: [Component Guidelines](../.kiro/steering/guidelines.md#component-size-and-complexity)
-3. Reference: [Component Architecture](./architecture/COMPONENT_ARCHITECTURE.md)
+## Recent Major Updates
 
-### "I want to test the system"
-1. Start: [Test Summary](./testing/INTEGRATION_TEST_SUMMARY.md)
-2. Then: [Validation Checklist](./testing/INTEGRATION_VALIDATION_CHECKLIST.md)
-3. Reference: [Integration Test Plan](./testing/INTEGRATION_TEST_PLAN.md)
+### November 16, 2025
+- ✅ Moral themes feature for educational storytelling
+- ✅ Non-linear form navigation with smart randomization
+- ✅ GPU performance optimizations for Chrome stability
+- ✅ Voice selector validation bug fix
+- ✅ Admin page configuration display fix
+- ✅ 3D book image alignment improvements
+- ✅ Progress bar status display enhancements
 
-## Statistics
+See [RECENT_UPDATES.md](RECENT_UPDATES.md) for detailed changelog.
 
-### Documentation Files
-- **Steering**: 4 files (active guidelines)
-- **Archive**: 20+ files (historical reference)
-- **Testing**: 5 files (integration tests)
-- **Total**: 29+ comprehensive documents
+## Contributing
 
-### Coverage
-- ✅ All 10 APIs documented
-- ✅ All major features explained
-- ✅ Complete refactoring history
-- ✅ Architecture diagrams
-- ✅ Development guidelines
-- ✅ Integration testing suite (60+ test cases)
-- ✅ Story customization features
+When adding new features or fixing bugs:
+1. Update relevant documentation in this directory
+2. Add entry to [RECENT_UPDATES.md](RECENT_UPDATES.md)
+3. Create feature/bugfix documentation if significant
+4. Update API documentation if external services change
+5. Add test documentation for new test coverage
 
-## Maintenance
+## Documentation Standards
 
-### When to Update
+- Use Markdown format for all documentation
+- Include code examples where relevant
+- Add "Date" section at end of each document
+- Keep documentation up-to-date with code changes
+- Use clear headings and structure
+- Include "Before/After" comparisons for changes
 
-**Steering Docs** (`.kiro/steering/`):
-- Technology changes
-- New coding standards
-- Structural changes
-- Product requirements
+## Contact
 
-**Archive Docs** (`kirodocs/`):
-- Major feature additions
-- Significant refactoring
-- API integrations
-- Architecture changes
-
-**Main README**:
-- Setup instructions
-- Quick start changes
-- API key requirements
-- Deployment updates
-
-## Last Updated
-
-November 16, 2025 - Story customization enhancements and integration testing complete
+For questions about documentation:
+- Check existing docs first
+- Review recent updates
+- Consult architecture documentation
+- Check API integration guides
 
 ---
 
-**Note**: This documentation structure ensures that active development guidelines are separate from historical context, making it easier for both AI agents and human developers to find relevant information quickly.
-
+**Last Updated**: November 16, 2025

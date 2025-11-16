@@ -77,7 +77,7 @@ store/
 api/
 ├── client.ts                 # Main API client (Axios)
 ├── websocket.ts              # WebSocket client (STOMP)
-├── quotable.ts               # Quotable API
+├── quotable.ts               # ZenQuotes API
 ├── sunriseSunset.ts          # Sunrise-Sunset API
 ├── adviceSlip.ts             # Advice Slip API
 ├── jokeApi.ts                # JokeAPI

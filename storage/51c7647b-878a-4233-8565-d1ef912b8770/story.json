@@ -1,0 +1,22 @@
+{
+  "id" : "51c7647b-878a-4233-8565-d1ef912b8770",
+  "title" : null,
+  "input" : {
+    "theme" : "the power of true friendship and loyalty",
+    "voiceType" : "female",
+    "characterName" : "Zara",
+    "setting" : "an ancient haunted castle",
+    "villain" : "the Ice Queen",
+    "specialItem" : "an ancient golden key",
+    "characterTrait" : "bold and creative",
+    "goal" : "save the kingdom from eternal darkness",
+    "timePeriod" : "the age of ancient myths",
+    "mood" : "mysterious and adventurous"
+  },
+  "pages" : null,
+  "metadata" : null,
+  "status" : "FAILED",
+  "createdAt" : [ 2025, 11, 16, 10, 6, 46, 682752300 ],
+  "completedAt" : null,
+  "errorMessage" : "Failed to generate story outline: Invalid story input: Format specifier '%d'"
+}

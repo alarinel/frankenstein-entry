@@ -73,28 +73,28 @@ Browse available voices at [ElevenLabs Voice Library](https://elevenlabs.io/app/
 
 ## 🆓 Free Enhancement APIs (2 Free Services)
 
-### 4. Quotable API
+### 4. ZenQuotes API
 **Purpose**: Display inspirational literary quotes on loading screens  
 **Integration**: Direct fetch API from frontend  
 **What it does**:
-- Fetches random quotes filtered by literary/inspirational themes
+- Fetches random inspirational and literary quotes
 - Displays quotes while story is being generated
 - Keeps users engaged during wait time
 - Provides fallback quote if API fails
 
 **Cost**: FREE (no API key required)
 
-**Endpoint**: `https://api.quotable.io/random?tags=literature|imagination|wisdom|inspirational|famous-quotes`
+**Endpoint**: `https://zenquotes.io/api/random`
 
 **Example Response**:
 ```json
-{
-  "_id": "abc123",
-  "content": "Every story has a beginning, a middle, and an end.",
-  "author": "Aristotle",
-  "tags": ["literature", "wisdom"],
-  "length": 50
-}
+[
+  {
+    "q": "Every story has a beginning, a middle, and an end.",
+    "a": "Aristotle",
+    "h": "<blockquote>&ldquo;Every story has a beginning, a middle, and an end.&rdquo; &mdash; <footer>Aristotle</footer></blockquote>"
+  }
+]
 ```
 
 **Features**:
@@ -160,7 +160,7 @@ Browse available voices at [ElevenLabs Voice Library](https://elevenlabs.io/app/
 | Anthropic Claude | $0.015 | Paid |
 | Stability AI | $0.080 | Paid |
 | ElevenLabs | $0.300 | Paid |
-| Quotable | $0.000 | Free |
+| ZenQuotes | $0.000 | Free |
 | Sunrise-Sunset | $0.000 | Free |
 | **Total** | **$0.395** | |
 
@@ -188,7 +188,7 @@ Browse available voices at [ElevenLabs Voice Library](https://elevenlabs.io/app/
 
 ### Loading Screen Flow
 1. **User waits for generation** → Loading page displays
-2. **Frontend calls Quotable API** → Fetches random literary quote
+2. **Frontend calls ZenQuotes API** → Fetches random literary quote
 3. **Quote displays** → Keeps user engaged during wait
 
 ### Dynamic Theming Flow
@@ -226,7 +226,7 @@ All API calls are automatically logged with:
 - **Anthropic**: Tier-based (varies by account)
 - **Stability AI**: Configurable in admin
 - **ElevenLabs**: 3 concurrent requests max (configurable)
-- **Quotable**: No limits
+- **ZenQuotes**: No limits
 - **Sunrise-Sunset**: No limits
 
 ---
@@ -266,7 +266,7 @@ All API calls are automatically logged with:
 ### Frontend (React/TypeScript)
 - `frontend/src/api/quotable.ts` - Quotable API client
 - `frontend/src/api/sunriseSunset.ts` - Sunrise-Sunset API client
-- `frontend/src/pages/LoadingPage.tsx` - Uses Quotable API
+- `frontend/src/pages/LoadingPage.tsx` - Uses ZenQuotes API
 - `frontend/src/pages/ReadingPage.tsx` - Uses Sunrise-Sunset API
 - `frontend/src/pages/AdminPage.tsx` - Admin dashboard UI
 
@@ -274,7 +274,7 @@ All API calls are automatically logged with:
 
 ## 🎨 Visual Impact
 
-### Quotable API Impact
+### ZenQuotes API Impact
 - **Before**: Plain loading screen with just progress bar
 - **After**: Engaging quotes keep users entertained while waiting
 - **User Experience**: Feels more polished and thoughtful
@@ -312,7 +312,7 @@ All API calls are automatically logged with:
 - [ElevenLabs Docs](https://elevenlabs.io/docs)
 
 ### Free APIs
-- [Quotable GitHub](https://github.com/lukePeavey/quotable)
+- [ZenQuotes API](https://zenquotes.io/)
 - [Sunrise-Sunset API](https://sunrise-sunset.org/api)
 
 ### Spring AI

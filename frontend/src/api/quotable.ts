@@ -1,7 +1,7 @@
 /**
- * Quotable API client for fetching random quotes
+ * ZenQuotes API client for fetching random quotes
  * Free API - no key required
- * @see https://github.com/lukePeavey/quotable
+ * @see https://zenquotes.io/
  */
 
 export interface Quote {
@@ -13,31 +13,34 @@ export interface Quote {
   length: number;
 }
 
-const QUOTABLE_BASE_URL = 'https://api.quotable.io';
-
-// Tags that fit our spooky/literary theme
-const THEMED_TAGS = [
-  'literature',
-  'imagination',
-  'wisdom',
-  'inspirational',
-  'famous-quotes',
-];
+const ZENQUOTES_BASE_URL = 'https://zenquotes.io/api';
 
 /**
- * Fetch a random quote from Quotable API
- * Filters by literary/inspirational themes
+ * Fetch a random quote from ZenQuotes API
+ * Returns inspirational and literary quotes
  */
 export const fetchRandomQuote = async (): Promise<Quote> => {
   try {
-    const tags = THEMED_TAGS.join('|');
-    const response = await fetch(`${QUOTABLE_BASE_URL}/random?tags=${tags}`);
+    const response = await fetch(`${ZENQUOTES_BASE_URL}/random`);
     
     if (!response.ok) {
       throw new Error('Failed to fetch quote');
     }
     
-    return await response.json();
+    const data = await response.json();
+    
+    // ZenQuotes returns an array with one quote
+    const zenQuote = data[0];
+    
+    // Transform ZenQuotes format to our Quote interface
+    return {
+      _id: `zen-${Date.now()}`,
+      content: zenQuote.q,
+      author: zenQuote.a,
+      tags: ['inspirational'],
+      authorSlug: zenQuote.a.toLowerCase().replace(/\s+/g, '-'),
+      length: zenQuote.q.length,
+    };
   } catch (error) {
     console.error('Error fetching quote:', error);
     // Return a fallback quote

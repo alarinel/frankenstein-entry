@@ -471,7 +471,7 @@ This project embodies the **Frankenstein category** by stitching together an amb
 - ElevenLabs API (~$0.30/story)
 
 **Free Enhancement APIs (7):**
-- **Quotable API** - Literary quotes on loading screens
+- **ZenQuotes API** - Literary quotes on loading screens
 - **Sunrise-Sunset API** - Dynamic theming based on time of day
 - **Advice Slip API** - Random encouragement on completion
 - **JokeAPI** - Family-friendly jokes during generation
@@ -777,7 +777,43 @@ The book would finish playing the last page, and then... nothing. No completion 
 
 (Kiro note: I thought you'd want to sit there and admire the last page forever. Apparently not.)
 
-### 9. The Story Customization Enhancement Saga 🎨🎙️
+### 9. The Unsafe API Incident 🚨
+
+**The Problem:**
+The completion page was using the Advice Slip API (`api.adviceslip.com`) to show random advice for encouragement. While most advice was appropriate ("Smile and the world smiles with you!"), the API occasionally returned inappropriate or concerning messages that weren't suitable for a children's story application.
+
+**The Discovery:**
+```
+Me: "The advice API sometimes shows inappropriate messages"
+Kiro: "Oh no! That's not good for a kids' app"
+Me: "Replace it with something safer"
+Kiro: *Switches to ZenQuotes API which we already use*
+```
+
+**The Solution:**
+- Removed Advice Slip API completely
+- Replaced with ZenQuotes API (already integrated for loading screen)
+- ZenQuotes provides curated, inspirational quotes from famous authors
+- Much safer and more appropriate for children
+- Changed icon from 💡 to ✨ and updated text to show author attribution
+
+**Why ZenQuotes is Better:**
+- Curated content from literary sources
+- Famous quotes from well-known authors
+- No user-generated content
+- Consistent quality and appropriateness
+- Already integrated in the project
+
+**Files Changed:**
+- `frontend/src/pages/CompletionPage.tsx` - Switched from Advice Slip to ZenQuotes
+- `frontend/src/api/adviceSlip.ts` - Deleted (no longer needed)
+
+**Lesson Learned:**
+Always vet free APIs for content safety, especially in applications for children. User-generated or unmoderated content can be unpredictable. Stick with curated sources from reputable providers.
+
+(Kiro note: Good catch! I should have thought about content safety from the start. ZenQuotes is definitely the better choice for a kids' app.)
+
+### 10. The Story Customization Enhancement Saga 🎨🎙️
 
 After the initial version was working, I decided to add theme selection, voice customization, and longer stories. This turned into a **15-task spec** that touched nearly every part of the system:
 

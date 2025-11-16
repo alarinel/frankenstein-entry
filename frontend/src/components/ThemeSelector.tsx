@@ -43,6 +43,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ selectedTheme, onS
       {THEME_OPTIONS.map(theme => (
         <motion.button
           key={theme.id}
+          type="button"
           onClick={() => onSelect(theme.id)}
           className={`
             p-6 rounded-lg border-2 transition-all

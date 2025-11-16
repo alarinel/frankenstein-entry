@@ -23,7 +23,7 @@ Frankenstein brings together seemingly incompatible elements to build something 
    - Floating spooky elements (bats, spiders, candles, ghosts)
    
 2. **Real-time Generation** - Watch as AI crafts your story with live progress updates
-   - Literary quotes to inspire (Quotable API)
+   - Literary quotes to inspire (ZenQuotes API)
    - Family-friendly jokes to entertain (JokeAPI)
    - Progress visualization with cauldron animation
    - WebSocket updates for real-time status
@@ -123,7 +123,7 @@ Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, 
 - **Forms & Validation:** React Hook Form, Zod
 - **UI Components:** Radix UI, Aceternity UI, React Hot Toast
 - **AI Services (Paid):** Anthropic Claude API, Stability AI API, ElevenLabs API
-- **Enhancement APIs (Free):** Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI
+- **Enhancement APIs (Free):** ZenQuotes API, Sunrise-Sunset API, Advice Slip API, JokeAPI
 - **Development Tools:** ESLint, Prettier, Vitest, React Testing Library, Playwright
 
 **Total Count:** 45 technologies working together to create an immersive storytelling experience!
@@ -352,15 +352,15 @@ This application integrates **10 external APIs** (5 paid AI services + 5 free en
 
 ### Free Enhancement APIs (7)
 
-4. **Quotable API**
+4. **ZenQuotes API**
    - **Purpose**: Display inspirational literary quotes on loading screens
    - **Integration**: Direct fetch API calls from frontend
    - **Features**: 
-     - Filtered by literary/inspirational themes
+     - Inspirational and literary quotes
      - No API key required
      - Completely free
-   - **Documentation**: https://github.com/lukePeavey/quotable
-   - **Endpoint**: `https://api.quotable.io/random`
+   - **Documentation**: https://zenquotes.io/
+   - **Endpoint**: `https://zenquotes.io/api/random`
 
 5. **Sunrise-Sunset API**
    - **Purpose**: Dynamic theming based on user's local time of day
@@ -453,7 +453,7 @@ This application integrates **10 external APIs** (5 paid AI services + 5 free en
 - Anthropic Claude: $0.015
 - Stability AI: $0.080
 - ElevenLabs: $0.300
-- Quotable: $0.000 (free)
+- ZenQuotes: $0.000 (free)
 - Sunrise-Sunset: $0.000 (free)
 - Advice Slip: $0.000 (free)
 - JokeAPI: $0.000 (free)
@@ -478,7 +478,7 @@ This application integrates **10 external APIs** (5 paid AI services + 5 free en
 - **Anthropic**: Tier-based limits (varies by account)
 - **Stability AI**: Configurable in admin dashboard
 - **ElevenLabs**: 3 concurrent requests max (configurable)
-- **Quotable**: No rate limits
+- **ZenQuotes**: No rate limits
 - **Sunrise-Sunset**: No rate limits
 
 ### API Configuration

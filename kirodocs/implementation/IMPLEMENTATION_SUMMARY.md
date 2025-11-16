@@ -2,10 +2,10 @@
 
 ## ✅ Completed Features
 
-### 1. Quotable API Integration (Loading Screen)
+### 1. ZenQuotes API Integration (Loading Screen)
 **File**: `frontend/src/api/quotable.ts`
-- ✅ Created API client for fetching random literary quotes
-- ✅ Filtered by themed tags (literature, imagination, wisdom, inspirational)
+- ✅ Created API client for fetching random inspirational quotes
+- ✅ Provides literary and motivational content
 - ✅ Fallback quote for error handling
 - ✅ Integrated into LoadingPage with animated display
 - ✅ Free API - no key required
@@ -86,7 +86,7 @@
   - Anthropic Claude
   - Stability AI
   - ElevenLabs
-  - Quotable (new)
+  - ZenQuotes (new)
   - Sunrise-Sunset (new)
 - ✅ Cost breakdown per API
 - ✅ Rate limits and throttling info
@@ -125,7 +125,7 @@
 | Anthropic Claude | Paid | $0.015/story | Story generation | ✅ Existing |
 | Stability AI | Paid | $0.08/story | Image generation | ✅ Existing |
 | ElevenLabs | Paid | $0.30/story | Audio generation | ✅ Existing |
-| Quotable | Free | $0 | Loading quotes | ✅ New |
+| ZenQuotes | Free | $0 | Loading quotes | ✅ New |
 | Sunrise-Sunset | Free | $0 | Dynamic theming | ✅ New |
 
 **Total APIs**: 5 (3 paid, 2 free)

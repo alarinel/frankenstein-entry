@@ -59,23 +59,41 @@ export const StoryFormField = ({
 
       {/* Conditional Field Rendering */}
       {fieldType === 'theme-selector' && setValue ? (
-        <ThemeSelector
-          selectedTheme={currentValue}
-          onSelect={(theme) => {
-            setValue(field.name, theme);
-            // Auto-advance after selection
-            setTimeout(() => onNext(), 300);
-          }}
-        />
+        <>
+          {/* Hidden input for form validation */}
+          <input
+            {...register(field.name)}
+            type="hidden"
+            value={currentValue || ''}
+          />
+          <ThemeSelector
+            selectedTheme={currentValue}
+            onSelect={(theme) => {
+              setValue(field.name, theme, { shouldValidate: true });
+              // Auto-advance after selection
+              setTimeout(() => onNext(), 300);
+            }}
+          />
+        </>
       ) : fieldType === 'voice-selector' && setValue ? (
-        <VoiceSelector
-          selectedVoice={currentValue}
-          onSelect={(voice) => {
-            setValue(field.name, voice);
-            // Auto-advance after selection
-            setTimeout(() => onNext(), 300);
-          }}
-        />
+        <>
+          {/* Hidden input for form validation */}
+          <input
+            {...register(field.name)}
+            type="hidden"
+            value={currentValue || ''}
+          />
+          <VoiceSelector
+            selectedVoice={currentValue}
+            onSelect={(voice) => {
+              // Set the value first
+              setValue(field.name, voice, { shouldValidate: true });
+              // Auto-advance after selection - no need to wait for watch to update
+              // The form state will have the value even if watch hasn't updated yet
+              setTimeout(() => onNext(), 300);
+            }}
+          />
+        </>
       ) : (
         <>
           {/* Text Input Field */}

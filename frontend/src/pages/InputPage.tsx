@@ -48,6 +48,17 @@ export const InputPage = () => {
 
   const currentValue = watch(currentField.name);
 
+  // Check if all fields are filled for the last step
+  const allFieldsFilled = () => {
+    if (!isLastStep) return true;
+    
+    const values = getValues();
+    return FORM_FIELDS.every(field => {
+      const value = values[field.name];
+      return value && String(value).trim() !== '';
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex flex-col items-center justify-center p-4 overflow-hidden relative">
       <FormBackground />
@@ -89,7 +100,7 @@ export const InputPage = () => {
 
         <FormNavigation
           canGoBack={currentStep > 0}
-          canGoNext={true}
+          canGoNext={allFieldsFilled()}
           isLastStep={isLastStep}
           onBack={handleBack}
           onNext={() => handleNext(currentValue)}

@@ -33,6 +33,7 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({ selectedVoice, onS
       {VOICE_OPTIONS.map(voice => (
         <motion.button
           key={voice.id}
+          type="button"
           onClick={() => onSelect(voice.id)}
           className={`
             p-6 rounded-lg border-2 transition-all

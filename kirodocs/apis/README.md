@@ -11,7 +11,7 @@ Complete overview of all 10 APIs (3 paid + 7 free) used in the application.
 - Anthropic Claude API (Story generation)
 - Stability AI API (Image generation)
 - ElevenLabs API (Audio generation)
-- Quotable API (Literary quotes)
+- ZenQuotes API (Literary quotes)
 - Sunrise-Sunset API (Dynamic theming)
 - Advice Slip API (Encouragement)
 - JokeAPI (Humor)

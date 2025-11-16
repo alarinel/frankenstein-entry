@@ -8,13 +8,13 @@ import { GhostCluster } from '@/components/spooky/FloatingGhost';
 import { SpookyCard } from '@/components/spooky/SpookyCard';
 import { SpookyTitle } from '@/components/spooky/SpookyEffects';
 import { CelebrationEffects, CompletionActions } from '@/components/completion';
-import { fetchRandomAdvice, Advice } from '@/api/adviceSlip';
+import { fetchRandomQuote, Quote } from '@/api/quotable';
 
 export const CompletionPage = () => {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
   const { currentStory, reset } = useStoryStore();
-  const [advice, setAdvice] = useState<Advice | null>(null);
+  const [inspirationalQuote, setInspirationalQuote] = useState<Quote | null>(null);
 
   useEffect(() => {
     if (!currentStory && storyId) {
@@ -22,8 +22,8 @@ export const CompletionPage = () => {
       navigate(`/read/${storyId}`);
     }
     
-    // Fetch random advice for encouragement
-    fetchRandomAdvice().then(setAdvice);
+    // Fetch random inspirational quote for encouragement
+    fetchRandomQuote().then(setInspirationalQuote);
   }, [currentStory, storyId, navigate]);
 
   const handleNewStory = () => {
@@ -210,8 +210,8 @@ export const CompletionPage = () => {
           {/* Action Buttons */}
           <CompletionActions onReadAgain={handleReadAgain} onNewStory={handleNewStory} />
 
-          {/* Random Advice from API */}
-          {advice && (
+          {/* Inspirational Quote */}
+          {inspirationalQuote && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,12 +222,12 @@ export const CompletionPage = () => {
                 className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-purple-600/30 shadow-lg"
                 style={{ padding: 'clamp(0.75rem, 1.5vw, 1rem)' }}
               >
-                <div style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)', textAlign: 'center' }}>💡</div>
+                <div style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)', textAlign: 'center' }}>✨</div>
                 <p 
                   className="text-gray-300 leading-relaxed text-center italic"
                   style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
                 >
-                  "{advice.advice}"
+                  "{inspirationalQuote.content}"
                 </p>
                 <p 
                   className="text-spooky-purple-400 text-center font-semibold"
@@ -236,7 +236,7 @@ export const CompletionPage = () => {
                     marginTop: 'clamp(0.375rem, 0.75vh, 0.5rem)'
                   }}
                 >
-                  — Advice for your next adventure
+                  — {inspirationalQuote.author}
                 </p>
               </div>
             </motion.div>
