@@ -54,9 +54,10 @@ api:
   elevenlabs:
     key: ${ELEVENLABS_API_KEY}
     url: https://api.elevenlabs.io/v1
-    voice-id: ${ELEVENLABS_VOICE_ID:21m00Tcm4TlvDq8ikWAM}
     stability: 0.5
     similarity-boost: 0.75
+    # Note: Voice IDs are now configured via the Admin interface
+    # Default voices are stored in storage/api-config.json
 
 generation:
   max-pages: 10

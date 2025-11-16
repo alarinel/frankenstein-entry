@@ -43,9 +43,8 @@ export const CompletionPage = () => {
 
   return (
     <div className="h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center overflow-hidden relative">
-      <ParticleBackground />
-      <FloatingBats count={5} />
-      <GhostCluster />
+      {/* Reduced effects for better performance */}
+      <FloatingBats count={2} />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -67,32 +66,20 @@ export const CompletionPage = () => {
           transition={{ delay: 2 }}
         >
           <SpookyTitle>
-            <motion.span
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              🎭
-            </motion.span>
+            <span>🎭</span>
             {' '}Story Complete!{' '}
-            <motion.span
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              🎭
-            </motion.span>
+            <span>🎭</span>
           </SpookyTitle>
 
-          <motion.p
+          <p
             className="text-gray-300 font-serif italic"
             style={{ 
               fontSize: 'clamp(1rem, 2vw, 1.5rem)',
               marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
             }}
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3, repeat: Infinity }}
           >
             "{currentStory.title}"
-          </motion.p>
+          </p>
 
           {/* Achievement Badges */}
           <div 

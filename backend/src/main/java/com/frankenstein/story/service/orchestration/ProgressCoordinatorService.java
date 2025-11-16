@@ -13,6 +13,11 @@ public interface ProgressCoordinatorService {
    void notifyStarted(String storyId);
 
    /**
+    * Notify outline generation progress
+    */
+   void notifyGeneratingOutline(String storyId);
+
+   /**
     * Notify story structure generation progress
     */
    void notifyGeneratingStory(String storyId);

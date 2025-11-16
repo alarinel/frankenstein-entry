@@ -2,6 +2,12 @@ import { z } from 'zod';
 import { VALIDATION_LIMITS } from '@/pages/InputPage.constants';
 
 export const storySchema = z.object({
+  theme: z.enum(['spooky', 'adventure', 'fantasy'], {
+    required_error: 'Please select a theme',
+  }),
+  voiceType: z.enum(['male', 'female'], {
+    required_error: 'Please select a narrator voice',
+  }),
   characterName: z.string().min(1, 'Character name is required').max(VALIDATION_LIMITS.CHARACTER_NAME_MAX),
   setting: z.string().min(1, 'Setting is required').max(VALIDATION_LIMITS.SETTING_MAX),
   villain: z.string().min(1, 'Villain is required').max(VALIDATION_LIMITS.VILLAIN_MAX),

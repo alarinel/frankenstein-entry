@@ -89,6 +89,8 @@ export const LoadingPage = () => {
 
   const getStageColor = (status: StoryStatus) => {
     switch (status) {
+      case StoryStatus.GENERATING_OUTLINE:
+        return 'from-blue-400 to-spooky-purple-400';
       case StoryStatus.GENERATING_STORY:
         return 'from-spooky-purple-400 to-spooky-pink-400';
       case StoryStatus.GENERATING_IMAGES:
@@ -104,6 +106,8 @@ export const LoadingPage = () => {
 
   const getStageEmoji = (status: StoryStatus) => {
     switch (status) {
+      case StoryStatus.GENERATING_OUTLINE:
+        return '📋';
       case StoryStatus.GENERATING_STORY:
         return '📝';
       case StoryStatus.GENERATING_IMAGES:
@@ -232,54 +236,6 @@ export const LoadingPage = () => {
           )}
         </AnimatePresence>
 
-        {/* Progress Bar */}
-        <div className="mx-auto" style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', maxWidth: 'min(95%, 550px)', flexShrink: 0 }}>
-          <div 
-            className="bg-dark-800/80 rounded-full overflow-hidden border-2 border-spooky-purple-600/30 relative shadow-inner"
-            style={{ height: 'clamp(8px, 1vh, 12px)' }}
-          >
-            <motion.div
-              className={`h-full bg-gradient-to-r ${getStageColor(generationProgress?.status || StoryStatus.PENDING)}`}
-              initial={{ width: 0 }}
-              animate={{
-                width: `${generationProgress?.progressPercentage || 0}%`,
-              }}
-              transition={{ duration: 0.5, type: 'spring' }}
-            >
-              <div className="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent bg-[length:200%_100%]" />
-            </motion.div>
-
-            {/* Sparkles on progress bar */}
-            {generationProgress && generationProgress.progressPercentage > 0 && (
-              <motion.div
-                className="absolute top-1/2 transform -translate-y-1/2"
-                style={{ 
-                  left: `${generationProgress.progressPercentage}%`,
-                  fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'
-                }}
-                animate={{
-                  scale: [1, 1.5, 1],
-                  rotate: [0, 180, 360],
-                }}
-                transition={{ duration: 1, repeat: Infinity }}
-              >
-                ✨
-              </motion.div>
-            )}
-          </div>
-          <motion.p
-            className="text-spooky-purple-300 font-fun font-semibold"
-            style={{ 
-              marginTop: 'clamp(0.375rem, 1vh, 0.5rem)',
-              fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'
-            }}
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            {generationProgress?.progressPercentage || 0}% Complete
-          </motion.p>
-        </div>
-
         {/* Message */}
         <AnimatePresence mode="wait">
           {generationProgress?.message && (
@@ -371,7 +327,7 @@ export const LoadingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
             className="max-w-2xl mx-auto"
-            style={{ marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 1, minHeight: 0 }}
+            style={{ marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 1, minHeight: 0 }}
           >
             <div 
               className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-orange-600/30 shadow-lg"
@@ -408,6 +364,7 @@ export const LoadingPage = () => {
           }}
         >
           {[
+            { status: StoryStatus.GENERATING_OUTLINE, emoji: '📋', label: 'Outline' },
             { status: StoryStatus.GENERATING_STORY, emoji: '📝', label: 'Story' },
             { status: StoryStatus.GENERATING_IMAGES, emoji: '🎨', label: 'Images' },
             { status: StoryStatus.GENERATING_AUDIO, emoji: '🎵', label: 'Audio' },

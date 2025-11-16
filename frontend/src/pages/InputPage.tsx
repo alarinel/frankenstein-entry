@@ -1,20 +1,12 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useStoryStore } from '@/store/storyStore';
-import {
-  StoryFormField,
-  FormProgressIndicator,
-  FormNavigation,
-  FormHeader,
-  FormDecorations,
-  FormFooter,
-  FormBackground,
-} from '@/components/forms';
-import { useStoryFormState } from '@/hooks/forms';
-import { STORY_SCHEMA, FORM_FIELDS } from './InputPage.constants';
+import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {AnimatePresence, motion} from 'framer-motion';
+import {useStoryStore} from '@/store/storyStore';
+import {FormBackground, FormDecorations, FormFooter, FormHeader, FormNavigation, FormProgressIndicator, StoryFormField,} from '@/components/forms';
+import {useStoryFormState} from '@/hooks/forms';
+import {FORM_FIELDS, STORY_SCHEMA} from './InputPage.constants';
 
 type StoryFormData = z.infer<typeof STORY_SCHEMA>;
 
@@ -31,6 +23,7 @@ export const InputPage = () => {
     handleSubmit,
     setValue,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<StoryFormData>({
     resolver: zodResolver(STORY_SCHEMA),
@@ -44,11 +37,13 @@ export const InputPage = () => {
     handleBack,
     jumpToStep,
     handleRandomize,
+    handleClear,
     handleSuggestionClick,
   } = useStoryFormState({
     formFields: FORM_FIELDS,
     setValue,
     handleSubmit,
+    getValues,
   });
 
   const currentValue = watch(currentField.name);
@@ -86,6 +81,8 @@ export const InputPage = () => {
               errors={errors}
               onSuggestionClick={handleSuggestionClick}
               onNext={() => handleNext(currentValue)}
+              setValue={setValue}
+              currentValue={currentValue}
             />
           </motion.div>
         </AnimatePresence>
@@ -97,6 +94,7 @@ export const InputPage = () => {
           onBack={handleBack}
           onNext={() => handleNext(currentValue)}
           onRandomize={handleRandomize}
+          onClear={handleClear}
         />
 
         <FormFooter />

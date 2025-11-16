@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { SpookyTitle, FloatingEmoji } from '@/components/spooky/SpookyEffects';
+import {motion} from 'framer-motion';
+import {SpookyTitle} from '@/components/spooky/SpookyEffects';
 
 /**
  * Header component for the story form
@@ -13,10 +13,8 @@ export const FormHeader = () => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="text-center mb-8 z-10 w-full"
     >
-      <SpookyTitle className="mb-4">
-        <FloatingEmoji emoji="🧟" className="mr-4" />
-        Frankenstein's Story Lab
-        <FloatingEmoji emoji="📚" className="ml-4" />
+      <SpookyTitle className="mb-2">
+        Frankenbook Story Lab
       </SpookyTitle>
       <motion.p
         className="text-spooky-orange-400 text-xl font-fun"

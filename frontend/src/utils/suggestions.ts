@@ -1,5 +1,23 @@
 import { Suggestion } from '@/types';
 
+export const themeSuggestions: Suggestion[] = [
+  { label: 'Honesty & Truth', value: 'the importance of telling the truth' },
+  { label: 'Friendship & Loyalty', value: 'the power of true friendship and loyalty' },
+  { label: 'Courage & Bravery', value: 'finding courage in the face of fear' },
+  { label: 'Kindness & Compassion', value: 'showing kindness and compassion to others' },
+  { label: 'Perseverance', value: 'never giving up, even when things are hard' },
+  { label: 'Accepting Differences', value: 'accepting and celebrating our differences' },
+  { label: 'Found Family', value: 'finding family in unexpected places' },
+  { label: 'Self-Belief', value: 'believing in yourself and your abilities' },
+  { label: 'Forgiveness', value: 'the healing power of forgiveness' },
+  { label: 'Responsibility', value: 'taking responsibility for your actions' },
+  { label: 'Sharing & Generosity', value: 'the joy of sharing and being generous' },
+  { label: 'Overcoming Fear', value: 'facing and overcoming your fears' },
+  { label: 'Teamwork', value: 'working together to achieve great things' },
+  { label: 'Being Yourself', value: 'being true to who you are' },
+  { label: 'Helping Others', value: 'the importance of helping those in need' },
+];
+
 export const characterNameSuggestions: Suggestion[] = [
   { label: 'Luna', value: 'Luna' },
   { label: 'Max', value: 'Max' },

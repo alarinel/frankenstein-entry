@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Suggestion } from '@/types';
 
 interface SuggestionChipsProps {
-  suggestions: Suggestion[];
+  suggestions: readonly Suggestion[];
   onSelect: (value: string) => void;
 }
 

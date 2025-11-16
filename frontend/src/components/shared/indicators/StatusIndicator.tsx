@@ -1,11 +1,12 @@
-import { ReactNode } from 'react';
+import {ReactNode} from 'react';
 
 interface StatusIndicatorProps {
-  status: 'playing' | 'paused' | 'loading' | 'countdown' | 'complete';
-  label?: string;
-  icon?: ReactNode;
-  countdown?: number;
-  className?: string;
+    status: 'playing' | 'paused' | 'loading' | 'countdown' | 'complete';
+    label?: string;
+    icon?: ReactNode;
+    countdown?: number;
+    className?: string;
+    progress: number;
 }
 
 /**
@@ -13,26 +14,32 @@ interface StatusIndicatorProps {
  * Displays current state with icon and optional label
  */
 export const StatusIndicator = ({
-  status,
-  label,
-  icon,
-  countdown,
-  className = '',
-}: StatusIndicatorProps) => {
-  const statusConfig = {
-    playing: { icon: icon || '🎵', defaultLabel: 'Playing...' },
-    paused: { icon: icon || '⏸️', defaultLabel: 'Paused' },
-    loading: { icon: icon || '⏳', defaultLabel: 'Loading...' },
-    countdown: { icon: icon || '⏳', defaultLabel: countdown ? `Next in ${countdown}s` : 'Waiting...' },
-    complete: { icon: icon || '✅', defaultLabel: 'Complete' },
-  };
+                                    status,
+                                    label,
+                                    icon,
+                                    countdown,
+                                    progress,
+                                    className = '',
+                                }: StatusIndicatorProps) => {
+    const statusConfig = {
+        playing: {icon: icon || '🎵', defaultLabel: 'Playing...'},
+        paused: {icon: icon || '⏸️', defaultLabel: 'Paused'},
+        loading: {icon: icon || '⏳', defaultLabel: 'Loading...'},
+        countdown: {icon: icon || '⏳', defaultLabel: countdown ? `Next in ${countdown}s` : 'Waiting...'},
+        complete: {icon: icon || '✅', defaultLabel: 'Complete'},
+    };
 
-  const config = statusConfig[status];
+    const config = statusConfig[status];
 
-  return (
-    <div className={`flex items-center gap-2 text-gray-400 text-sm ${className}`}>
-      <span>{config.icon}</span>
-      <span>{label || config.defaultLabel}</span>
-    </div>
-  );
+    return (
+        <div className={`flex items-center justify-between gap-2 text-gray-400 text-sm px-2 ${className}`}>
+            <div className="text-left text-sm text-spooky-purple-300 font-mono">
+                <span className="mr-1">{config.icon}</span>
+                <span>{label || config.defaultLabel}</span>
+            </div>
+            <div className="text-right text-sm text-spooky-purple-300 font-mono">
+                {Math.floor(progress)}%
+            </div>
+        </div>
+    );
 };

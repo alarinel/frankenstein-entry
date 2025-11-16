@@ -36,8 +36,12 @@ public class ProgressNotificationService {
       sendProgress(storyId, StoryStatus.PENDING, 0, "Starting", "Initializing your magical story...");
    }
 
+   public void sendGeneratingOutline(final String storyId) {
+      sendProgress(storyId, StoryStatus.GENERATING_STORY, 5, "GENERATING_OUTLINE", "Creating story outline...");
+   }
+
    public void sendGeneratingStory(final String storyId) {
-      sendProgress(storyId, StoryStatus.GENERATING_STORY, 10, "Crafting Story", "Weaving together your tale...");
+      sendProgress(storyId, StoryStatus.GENERATING_STORY, 15, "GENERATING_STORY", "Weaving together your tale...");
    }
 
    public void sendStoryComplete(final String storyId) {

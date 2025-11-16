@@ -13,6 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StoryInput {
 
+   @NotBlank(message = "Theme is required")
+   @Size(min = 1, max = 50, message = "Theme must be between 1 and 50 characters")
+   private String theme;
+
+   @NotBlank(message = "Voice type is required")
+   @Size(min = 1, max = 50, message = "Voice type must be between 1 and 50 characters")
+   private String voiceType;
+
    @NotBlank(message = "Character name is required")
    @Size(min = 1, max = 50, message = "Character name must be between 1 and 50 characters")
    private String characterName;

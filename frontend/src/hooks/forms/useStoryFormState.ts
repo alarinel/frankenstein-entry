@@ -10,14 +10,16 @@ interface FormField {
   name: keyof StoryInput;
   label: string;
   placeholder: string;
-  suggestions: Suggestion[];
+  suggestions: readonly Suggestion[];
   emoji: string;
+  type?: 'text' | 'theme-selector' | 'voice-selector';
 }
 
 interface UseStoryFormStateProps {
   formFields: readonly FormField[];
   setValue: UseFormSetValue<StoryInput>;
   handleSubmit: UseFormHandleSubmit<StoryInput>;
+  getValues: () => StoryInput;
 }
 
 interface UseStoryFormStateReturn {
@@ -28,6 +30,7 @@ interface UseStoryFormStateReturn {
   handleBack: () => void;
   jumpToStep: (stepIndex: number) => void;
   handleRandomize: () => void;
+  handleClear: () => void;
   handleSuggestionClick: (value: string) => void;
 }
 
@@ -39,6 +42,7 @@ export const useStoryFormState = ({
   formFields,
   setValue,
   handleSubmit,
+  getValues,
 }: UseStoryFormStateProps): UseStoryFormStateReturn => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
@@ -49,7 +53,11 @@ export const useStoryFormState = ({
 
   // Handle next step or form submission
   const handleNext = (currentValue: string) => {
-    if (currentValue && currentValue.trim()) {
+    // For selector fields (theme, voiceType), just check if value exists
+    const isSelector = currentField.name === 'theme' || currentField.name === 'voiceType';
+    const isValid = isSelector ? !!currentValue : (currentValue && currentValue.trim());
+    
+    if (isValid) {
       if (isLastStep) {
         handleSubmit(onSubmit)();
       } else {
@@ -85,28 +93,56 @@ export const useStoryFormState = ({
     }, 150);
   };
 
-  // Randomize all fields
+  // Randomize only empty fields
   const handleRandomize = () => {
+    const currentValues = getValues();
+    let filledCount = 0;
+    
     formFields.forEach((field) => {
-      const randomIndex = Math.floor(Math.random() * field.suggestions.length);
-      const randomValue = field.suggestions[randomIndex].value;
-      setValue(field.name, randomValue, { shouldValidate: true });
+      // Get current field value
+      const currentValue = currentValues[field.name];
+      
+      // Skip if field already has a value
+      if (currentValue && String(currentValue).trim()) {
+        return;
+      }
+      
+      filledCount++;
+      
+      // Handle theme field with suggestions
+      if (field.name === 'theme' && field.suggestions && field.suggestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * field.suggestions.length);
+        const randomValue = field.suggestions[randomIndex].value;
+        setValue(field.name, randomValue, { shouldValidate: true });
+      }
+      // Handle voiceType field
+      else if (field.name === 'voiceType') {
+        const voices = ['male', 'female'];
+        const randomVoice = voices[Math.floor(Math.random() * voices.length)];
+        setValue(field.name, randomVoice as any, { shouldValidate: true });
+      }
+      // Handle regular text fields with suggestions
+      else if (field.suggestions && field.suggestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * field.suggestions.length);
+        const randomValue = field.suggestions[randomIndex].value;
+        setValue(field.name, randomValue, { shouldValidate: true });
+      }
     });
     
-    const targetStep = formFields.length - 1;
-    if (currentStep !== targetStep) {
-      const stepInterval = setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev >= targetStep - 1) {
-            clearInterval(stepInterval);
-            return targetStep;
-          }
-          return prev + 1;
-        });
-      }, 60);
+    if (filledCount === 0) {
+      toast('All fields already filled! 🎉', { icon: '✨' });
+    } else {
+      toast.success(`🎲 Filled ${filledCount} empty field${filledCount > 1 ? 's' : ''}!`);
     }
-    
-    toast.success('🎲 Random story created! Ready to generate!');
+  };
+
+  // Clear all fields
+  const handleClear = () => {
+    formFields.forEach((field) => {
+      setValue(field.name, '' as any, { shouldValidate: false });
+    });
+    setCurrentStep(0);
+    toast.success('🧹 All fields cleared!');
   };
 
   // Form submission handler
@@ -130,6 +166,7 @@ export const useStoryFormState = ({
     handleBack,
     jumpToStep,
     handleRandomize,
+    handleClear,
     handleSuggestionClick,
   };
 };

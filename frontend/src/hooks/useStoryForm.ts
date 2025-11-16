@@ -20,11 +20,15 @@ export const useStoryForm = () => {
   const { handleSubmit, setValue, watch } = form;
 
   const currentField = FORM_FIELDS[currentStep];
-  const currentValue = watch(currentField.name);
+  const currentValue = watch(currentField.name as any);
   const isLastStep = currentStep === FORM_FIELDS.length - 1;
 
   const validateAndAdvance = () => {
-    if (currentValue && currentValue.trim()) {
+    // For selector fields (theme, voiceType), just check if value exists
+    const isSelector = currentField.name === 'theme' || currentField.name === 'voiceType';
+    const isValid = isSelector ? !!currentValue : (currentValue && (currentValue as string).trim());
+    
+    if (isValid) {
       if (isLastStep) {
         handleSubmit(onSubmit)();
       } else {
@@ -50,7 +54,7 @@ export const useStoryForm = () => {
   };
 
   const handleSuggestionClick = (value: string) => {
-    setValue(currentField.name, value, { shouldValidate: true });
+    setValue(currentField.name as any, value, { shouldValidate: true });
     
     // Auto-advance after setValue completes
     setTimeout(() => {
@@ -64,9 +68,24 @@ export const useStoryForm = () => {
 
   const handleRandomize = () => {
     FORM_FIELDS.forEach((field) => {
-      const randomIndex = Math.floor(Math.random() * field.suggestions.length);
-      const randomValue = field.suggestions[randomIndex].value;
-      setValue(field.name, randomValue, { shouldValidate: true });
+      // Handle theme field
+      if (field.name === 'theme') {
+        const themes = ['spooky', 'adventure', 'fantasy'];
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+        setValue(field.name as any, randomTheme, { shouldValidate: true });
+      }
+      // Handle voiceType field
+      else if (field.name === 'voiceType') {
+        const voices = ['male', 'female'];
+        const randomVoice = voices[Math.floor(Math.random() * voices.length)];
+        setValue(field.name as any, randomVoice, { shouldValidate: true });
+      }
+      // Handle regular text fields with suggestions
+      else if (field.suggestions && field.suggestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * field.suggestions.length);
+        const randomValue = field.suggestions[randomIndex].value;
+        setValue(field.name as any, randomValue, { shouldValidate: true });
+      }
     });
     
     setCurrentStep(FORM_FIELDS.length - 1);

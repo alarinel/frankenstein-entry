@@ -1,9 +1,11 @@
 package com.frankenstein.story.service.orchestration;
 
+import com.frankenstein.story.model.ApiCallLog;
 import com.frankenstein.story.model.StoryStructure;
 import com.frankenstein.story.model.orchestration.AudioSet;
 import com.frankenstein.story.service.AudioGenerationService;
 import com.frankenstein.story.service.FileStorageService;
+import com.frankenstein.story.service.tracking.ApiTrackingFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,11 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
    private final AudioGenerationService audioGenerationService;
    private final FileStorageService fileStorageService;
    private final ProgressCoordinatorService progressCoordinator;
+   private final ApiTrackingFacade apiTrackingFacade;
 
    @Override
-   public CompletableFuture<List<AudioSet>> generateAllAudio(final String storyId, final StoryStructure structure) {
-      log.info("Starting batched audio generation for story: {}", storyId);
+   public CompletableFuture<List<AudioSet>> generateAllAudio(final String storyId, final StoryStructure structure, final String voiceType) {
+      log.info("Starting batched audio generation for story: {} with voice type: {}", storyId, voiceType);
 
       final List<AudioSet> audioSets = new ArrayList<>();
 
@@ -47,7 +50,8 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
             final CompletableFuture<AudioSet> audioFuture = CompletableFuture.supplyAsync(() -> generateAudioForPage(storyId,
                   pageNumber,
                   page,
-                  structure.getPages().size()));
+                  structure.getPages().size(),
+                  voiceType));
 
             batchFutures.add(audioFuture);
          }
@@ -61,31 +65,67 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
       return CompletableFuture.completedFuture(audioSets);
    }
 
-   private AudioSet generateAudioForPage(final String storyId, final int pageNumber, final StoryStructure.PageStructure page, final int totalPages) {
-      // Generate narration
-      final byte[] narration = audioGenerationService.generateNarration(page.getText()).join();
-      fileStorageService.saveNarration(storyId, pageNumber, narration);
+   private AudioSet generateAudioForPage(final String storyId, final int pageNumber, final StoryStructure.PageStructure page, final int totalPages, final String voiceType) {
+      final long startTime = System.currentTimeMillis();
+      
+      try {
+         // Generate narration with selected voice type
+         final byte[] narration = audioGenerationService.generateNarration(page.getText(), voiceType).join();
+         fileStorageService.saveNarration(storyId, pageNumber, narration);
 
-      // Generate sound effects
-      final List<byte[]> effects = page.getSoundEffects()
-                                       .stream()
-                                       .map(effectName -> generateSoundEffect(storyId, effectName))
-                                       .collect(Collectors.toList());
+         // Generate sound effects
+         final List<byte[]> effects = page.getSoundEffects()
+                                          .stream()
+                                          .map(effectName -> generateSoundEffect(storyId, effectName, voiceType))
+                                          .collect(Collectors.toList());
 
-      // Notify progress
-      progressCoordinator.notifyAudioProgress(storyId, pageNumber, totalPages);
+         // Log API call for narration
+         logAudioApiCall(storyId, "NARRATION_GENERATION", page.getText().length(), startTime, "SUCCESS", null);
 
-      // Calculate duration
-      final double duration = audioGenerationService.estimateNarrationDuration(page.getText());
+         // Notify progress
+         progressCoordinator.notifyAudioProgress(storyId, pageNumber, totalPages);
 
-      return AudioSet.builder().narration(narration).effects(effects).duration(duration).build();
+         // Calculate duration
+         final double duration = audioGenerationService.estimateNarrationDuration(page.getText());
+
+         return AudioSet.builder().narration(narration).effects(effects).duration(duration).build();
+      } catch (final Exception e) {
+         logAudioApiCall(storyId, "NARRATION_GENERATION", page.getText().length(), startTime, "FAILED", e.getMessage());
+         throw e;
+      }
    }
 
-   private byte[] generateSoundEffect(final String storyId, final String effectName) {
-      final byte[] effectData = audioGenerationService.generateSoundEffect(effectName).join();
+   private byte[] generateSoundEffect(final String storyId, final String effectName, final String voiceType) {
+      final byte[] effectData = audioGenerationService.generateSoundEffect(effectName, voiceType).join();
       if (effectData.length > 0) {
          fileStorageService.saveSoundEffect(storyId, effectName, effectData);
       }
       return effectData;
+   }
+
+   /**
+    * Log audio API call to tracking system
+    */
+   private void logAudioApiCall(final String storyId, final String operation, final int characterCount,
+                                final long startTime, final String status, final String errorMessage) {
+      try {
+         final long duration = System.currentTimeMillis() - startTime;
+         final double cost = apiTrackingFacade.calculateAudioGenerationCost(characterCount);
+         
+         final ApiCallLog log = ApiCallLog.builder()
+               .storyId(storyId)
+               .apiProvider("ELEVENLABS")
+               .operation(operation)
+               .charactersUsed(characterCount)
+               .costUsd(cost)
+               .durationMs(duration)
+               .status(status)
+               .errorMessage(errorMessage)
+               .build();
+         
+         apiTrackingFacade.logApiCall(log);
+      } catch (final Exception e) {
+         log.error("Failed to log audio API call", e);
+      }
    }
 }

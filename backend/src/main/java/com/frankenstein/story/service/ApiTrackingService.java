@@ -48,14 +48,52 @@ public class ApiTrackingService {
    }
 
    public void updateConfiguration(final ApiConfiguration newConfig) {
+      // Validate voice ID format (alphanumeric)
+      validateVoiceId(newConfig.getMaleVoiceId(), "Male");
+      validateVoiceId(newConfig.getFemaleVoiceId(), "Female");
+      
       this.configuration = newConfig;
       saveConfiguration();
+   }
+   
+   /**
+    * Validates that a voice ID contains only alphanumeric characters
+    * 
+    * @param voiceId the voice ID to validate
+    * @param voiceType the type of voice (for error messages)
+    * @throws IllegalArgumentException if voice ID is invalid
+    */
+   private void validateVoiceId(final String voiceId, final String voiceType) {
+      if (voiceId == null || voiceId.isEmpty()) {
+         throw new IllegalArgumentException(voiceType + " voice ID cannot be null or empty");
+      }
+      
+      if (!voiceId.matches("^[a-zA-Z0-9]+$")) {
+         throw new IllegalArgumentException(voiceType + " voice ID must contain only alphanumeric characters");
+      }
    }
 
    private void loadConfiguration() {
       try {
          if (Files.exists(configPath)) {
             configuration = objectMapper.readValue(configPath.toFile(), ApiConfiguration.class);
+            
+            // Handle missing voice fields with defaults
+            final ApiConfiguration defaults = ApiConfiguration.getDefaults();
+            if (configuration.getMaleVoiceId() == null || configuration.getMaleVoiceId().isEmpty()) {
+               log.warn("Male voice ID missing in configuration, using default");
+               configuration.setMaleVoiceId(defaults.getMaleVoiceId());
+            }
+            if (configuration.getFemaleVoiceId() == null || configuration.getFemaleVoiceId().isEmpty()) {
+               log.warn("Female voice ID missing in configuration, using default");
+               configuration.setFemaleVoiceId(defaults.getFemaleVoiceId());
+            }
+            
+            // Save configuration if defaults were applied
+            if (configuration.getMaleVoiceId().equals(defaults.getMaleVoiceId()) || 
+                configuration.getFemaleVoiceId().equals(defaults.getFemaleVoiceId())) {
+               saveConfiguration();
+            }
          } else {
             configuration = ApiConfiguration.getDefaults();
             saveConfiguration();

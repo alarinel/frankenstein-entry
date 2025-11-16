@@ -26,23 +26,35 @@ backend/src/main/java/com/frankenstein/story/
 │   └── AdminController.java              # Admin dashboard API
 ├── service/                              # Business logic
 │   ├── StoryOrchestrationService.java    # Main coordinator
-│   ├── StoryGenerationService.java       # Claude integration via Spring AI
-│   ├── ImageGenerationService.java       # Stability AI integration via Spring AI
-│   ├── AudioGenerationService.java       # ElevenLabs integration
+│   ├── StoryGenerationService.java       # Claude integration via Spring AI (outline + full story)
+│   ├── ImageGenerationService.java       # Stability AI integration via Spring AI (left-third composition)
+│   ├── AudioGenerationService.java       # ElevenLabs integration (voice selection)
 │   ├── FileStorageService.java           # File I/O operations
-│   ├── ProgressNotificationService.java  # WebSocket updates
-│   └── ApiTrackingService.java           # API cost tracking & configuration
+│   ├── ProgressNotificationService.java  # WebSocket updates (outline + story stages)
+│   ├── ApiTrackingService.java           # API cost tracking & configuration
+│   └── orchestration/                    # Orchestration services
+│       ├── AudioOrchestrationService.java
+│       ├── AudioOrchestrationServiceImpl.java
+│       ├── ImageOrchestrationService.java
+│       ├── ImageOrchestrationServiceImpl.java
+│       ├── ProgressCoordinatorService.java
+│       ├── ProgressCoordinatorServiceImpl.java
+│       ├── StoryAssemblyService.java
+│       └── StoryAssemblyServiceImpl.java
 ├── model/                                # Data models
 │   ├── Story.java                        # Main story entity
-│   ├── StoryInput.java                   # User input DTO
+│   ├── StoryInput.java                   # User input DTO (theme + voiceType)
 │   ├── StoryPage.java                    # Individual page
 │   ├── StoryMetadata.java                # Story metadata
 │   ├── StoryStatus.java                  # Status enum
 │   ├── StoryStructure.java               # Claude response structure
 │   ├── GenerateStoryResponse.java        # API response
-│   ├── GenerationProgress.java           # Progress updates
+│   ├── GenerationProgress.java           # Progress updates (GENERATING_OUTLINE stage)
 │   ├── ApiCallLog.java                   # API call tracking record
-│   └── ApiConfiguration.java             # API cost & rate limit config
+│   ├── ApiConfiguration.java             # API cost & rate limit config (voice IDs)
+│   └── orchestration/                    # Orchestration models
+│       ├── AudioSet.java
+│       └── ImageSet.java
 └── exception/                            # Error handling
     ├── GlobalExceptionHandler.java       # @ControllerAdvice
     ├── StoryGenerationException.java
@@ -69,15 +81,18 @@ frontend/src/
 ├── App.tsx                     # Root component with routing
 ├── index.css                   # Global styles (Tailwind)
 ├── pages/                      # Route components
-│   ├── InputPage.tsx           # Mad-lib form (/)
-│   ├── LoadingPage.tsx         # Generation progress (/loading/:id)
+│   ├── InputPage.tsx           # Mad-lib form with theme/voice selection (/)
+│   ├── LoadingPage.tsx         # Generation progress with outline stage (/loading/:id)
 │   ├── ReadingPage.tsx         # Story playback (/read/:id)
 │   ├── CompletionPage.tsx      # Completion screen (/complete/:id)
-│   └── AdminPage.tsx           # Admin dashboard (/admin)
+│   └── AdminPage.tsx           # Admin dashboard with voice config (/admin)
 ├── components/                 # Reusable components
 │   ├── ErrorBoundary.tsx
 │   ├── ParticleBackground.tsx
 │   ├── HighlightedWord.tsx     # Word-level text highlighting
+│   ├── ThemeSelector.tsx       # Theme selection component
+│   ├── VoiceSelector.tsx       # Voice selection component
+│   ├── VoiceConfiguration.tsx  # Admin voice ID configuration
 │   └── spooky/                 # Themed UI components
 │       ├── SpookyButton.tsx
 │       ├── SpookyCard.tsx
@@ -99,7 +114,7 @@ frontend/src/
 │   └── audioStore.ts           # Audio playback state
 ├── api/                        # Backend communication
 │   ├── client.ts               # Axios instance & API methods
-│   └── websocket.ts            # WebSocket client
+│   └── websocket.ts            # WebSocket client (outline stage support)
 ├── hooks/                      # Custom React hooks
 │   ├── useApiWithRetry.ts      # Retry logic
 │   ├── useReducedMotion.ts     # Accessibility
@@ -109,7 +124,7 @@ frontend/src/
 ├── constants/                  # Application constants
 │   └── reading.ts              # Reading page timing & config
 ├── types/                      # TypeScript definitions
-│   └── index.ts                # Shared types
+│   └── index.ts                # Shared types (theme, voiceType)
 └── utils/                      # Helper functions
     ├── accessibility.ts        # A11y utilities
     ├── cn.ts                   # Class name merger
@@ -184,6 +199,8 @@ storage/
 ### Story Input
 ```typescript
 interface StoryInput {
+  theme: string;           // "spooky" | "adventure" | "fantasy"
+  voiceType: string;       // "male" | "female"
   characterName: string;
   setting: string;
   villain: string;
