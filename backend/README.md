@@ -44,7 +44,8 @@ Spring Boot backend for the AI-powered children's story generator.
    STORAGE_ROOT=./storage  # Optional
    ```
 
-   **Note**: Voice IDs are now configured via the Admin interface at `/admin` instead of environment variables. This allows runtime configuration of male and female narrator voices without redeploying the application.
+   **Note**: Voice IDs are now configured via the Admin interface at `/admin` instead of environment variables. This allows runtime configuration of
+   male and female narrator voices without redeploying the application.
 
    **Option 2: Using application-local.yml**
 
@@ -91,7 +92,8 @@ This makes configuration simpler and more consistent with modern development pra
 
 ## Voice Configuration
 
-Voice IDs for male and female narrators are now configured through the Admin interface instead of environment variables. This provides several benefits:
+Voice IDs for male and female narrators are now configured through the Admin interface instead of environment variables. This provides several
+benefits:
 
 - **Runtime Configuration**: Update voices without restarting the application
 - **User Selection**: Stories can use either male or female narrator voices based on user preference
@@ -100,6 +102,7 @@ Voice IDs for male and female narrators are now configured through the Admin int
 ### Default Voices
 
 The application includes sensible defaults:
+
 - **Male Voice**: `21m00Tcm4TlvDq8ikWAM`
 - **Female Voice**: `EXAVITQu4vr4xnSDxMaL`
 
@@ -135,6 +138,7 @@ Voice configuration is stored in `storage/api-config.json` and persists across a
 ```
 
 **New Fields**:
+
 - `theme`: Story theme - one of `"spooky"`, `"adventure"`, or `"fantasy"`
 - `voiceType`: Narrator voice - either `"male"` or `"female"`
 
@@ -251,12 +255,14 @@ This backend has been refactored to follow the Single Responsibility Principle a
 ### Service Organization
 
 **Orchestration Services** (workflow coordination):
+
 - **ImageOrchestrationService**: Manages parallel image generation for all story pages
 - **AudioOrchestrationService**: Handles batched audio generation with throttling (max 3 concurrent)
 - **StoryAssemblyService**: Combines generated assets into complete story with metadata
 - **ProgressCoordinatorService**: Centralizes all progress notifications via WebSocket
 
 **Tracking Services** (API cost monitoring):
+
 - **ApiTrackingFacade**: Provides unified API for all tracking operations
 - **ApiConfigurationService**: Manages API pricing configuration persistence
 - **ApiLogService**: Handles log file CRUD operations
@@ -266,17 +272,20 @@ This backend has been refactored to follow the Single Responsibility Principle a
 ### Example: Story Orchestration Refactoring
 
 **Before** (197 lines):
+
 - Mixed image generation, audio generation, story assembly, and progress notifications
 - Complex async workflow with nested CompletableFutures
 - Difficult to test and maintain
 
 **After** (80 lines):
+
 - Delegates to specialized orchestration services
 - Maintains async workflow coordination
 - Each service is focused and testable
 - Clear separation of concerns
 
 **Benefits**:
+
 - Each service is focused and testable
 - Easier to modify individual generation phases
 - Better error handling and logging
@@ -299,6 +308,7 @@ public class ImageOrchestrationServiceImpl implements ImageOrchestrationService 
 ```
 
 **Why Constructor Injection?**
+
 - Makes dependencies explicit and required
 - Enables immutability (final fields)
 - Better for testing (no reflection needed)

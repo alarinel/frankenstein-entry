@@ -32,13 +32,11 @@ public class ImageGenerationService {
     * @return Enhanced prompt with composition guidance prepended
     */
    private String enhancePromptWithComposition(final String originalPrompt) {
-      final String compositionGuidance = "Composition: focal point positioned in the left 35% of the frame, " +
-                                         "subject on the left side of the image, " +
-                                         "main character or object left of center. ";
-      
+      final String compositionGuidance = "Composition: focal point positioned in the left 35% of the frame, " + "subject on the left side of the image, " + "main character or object left of center. ";
+
       final String enhancedPrompt = compositionGuidance + originalPrompt;
       log.debug("Enhanced prompt with left-third composition guidance");
-      
+
       return enhancedPrompt;
    }
 

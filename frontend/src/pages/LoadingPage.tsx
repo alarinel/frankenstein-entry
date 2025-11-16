@@ -262,6 +262,29 @@ export const LoadingPage = () => {
           )}
         </AnimatePresence>
 
+        {/* Timer Display */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="flex justify-center gap-4"
+          style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}
+        >
+          {/* Current Stage Timer */}
+          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-purple-600/30 px-3 py-1">
+            <span className="text-spooky-purple-300 text-xs font-mono">
+              Stage: {Math.floor(currentStageTime / 60)}:{(currentStageTime % 60).toString().padStart(2, '0')}
+            </span>
+          </div>
+          
+          {/* Total Elapsed Timer */}
+          <div className="bg-dark-800/60 backdrop-blur-sm rounded-lg border border-spooky-orange-600/30 px-3 py-1">
+            <span className="text-spooky-orange-300 text-xs font-mono">
+              Total: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}
+            </span>
+          </div>
+        </motion.div>
+
         {/* Message */}
         <AnimatePresence mode="wait">
           {generationProgress?.message && (

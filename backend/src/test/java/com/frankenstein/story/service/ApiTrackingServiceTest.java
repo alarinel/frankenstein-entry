@@ -32,30 +32,22 @@ class ApiTrackingServiceTest {
    void setUp() {
       objectMapper = new ObjectMapper();
       service = new ApiTrackingService(objectMapper);
-      
+
       // Set up temporary paths
       final Path trackingDir = tempDir.resolve("api-tracking");
       configPath = tempDir.resolve("api-config.json");
-      
+
       ReflectionTestUtils.setField(service, "trackingDir", trackingDir);
       ReflectionTestUtils.setField(service, "configPath", configPath);
-      
+
       service.initialize();
    }
 
    @Test
    void loadConfiguration_WithMissingVoiceFields_AppliesDefaults() throws IOException {
       // Given - configuration without voice fields (simulating old config file)
-      final String configJson = "{\n" +
-         "  \"anthropicInputCostPerMillionTokens\" : 3.0,\n" +
-         "  \"anthropicOutputCostPerMillionTokens\" : 15.0,\n" +
-         "  \"stabilityImageCostPerImage\" : 0.04,\n" +
-         "  \"elevenlabsCostPerCharacter\" : 3.0E-5,\n" +
-         "  \"elevenlabsMaxConcurrentRequests\" : 3,\n" +
-         "  \"maxStoriesPerDay\" : 100,\n" +
-         "  \"enableCostTracking\" : true\n" +
-         "}";
-      
+      final String configJson = "{\n" + "  \"anthropicInputCostPerMillionTokens\" : 3.0,\n" + "  \"anthropicOutputCostPerMillionTokens\" : 15.0,\n" + "  \"stabilityImageCostPerImage\" : 0.04,\n" + "  \"elevenlabsCostPerCharacter\" : 3.0E-5,\n" + "  \"elevenlabsMaxConcurrentRequests\" : 3,\n" + "  \"maxStoriesPerDay\" : 100,\n" + "  \"enableCostTracking\" : true\n" + "}";
+
       Files.writeString(configPath, configJson);
 
       // When - service loads configuration
@@ -71,19 +63,18 @@ class ApiTrackingServiceTest {
    void loadConfiguration_WithExistingVoiceFields_PreservesValues() throws IOException {
       // Given - configuration with custom voice fields
       final ApiConfiguration configWithVoices = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("customMaleVoice123")
-         .femaleVoiceId("customFemaleVoice456")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
-      
-      objectMapper.writerWithDefaultPrettyPrinter()
-         .writeValue(configPath.toFile(), configWithVoices);
+                                                                .anthropicInputCostPerMillionTokens(3.0)
+                                                                .anthropicOutputCostPerMillionTokens(15.0)
+                                                                .stabilityImageCostPerImage(0.04)
+                                                                .elevenlabsCostPerCharacter(0.00003)
+                                                                .elevenlabsMaxConcurrentRequests(3)
+                                                                .maleVoiceId("customMaleVoice123")
+                                                                .femaleVoiceId("customFemaleVoice456")
+                                                                .maxStoriesPerDay(100)
+                                                                .enableCostTracking(true)
+                                                                .build();
+
+      objectMapper.writerWithDefaultPrettyPrinter().writeValue(configPath.toFile(), configWithVoices);
 
       // When - service loads configuration
       service.initialize();
@@ -98,16 +89,16 @@ class ApiTrackingServiceTest {
    void updateConfiguration_WithValidVoiceIds_Success() {
       // Given
       final ApiConfiguration newConfig = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("validMaleVoice123")
-         .femaleVoiceId("validFemaleVoice456")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                         .anthropicInputCostPerMillionTokens(3.0)
+                                                         .anthropicOutputCostPerMillionTokens(15.0)
+                                                         .stabilityImageCostPerImage(0.04)
+                                                         .elevenlabsCostPerCharacter(0.00003)
+                                                         .elevenlabsMaxConcurrentRequests(3)
+                                                         .maleVoiceId("validMaleVoice123")
+                                                         .femaleVoiceId("validFemaleVoice456")
+                                                         .maxStoriesPerDay(100)
+                                                         .enableCostTracking(true)
+                                                         .build();
 
       // When
       service.updateConfiguration(newConfig);
@@ -122,109 +113,104 @@ class ApiTrackingServiceTest {
    void updateConfiguration_WithInvalidMaleVoiceId_ThrowsException() {
       // Given - configuration with non-alphanumeric male voice ID
       final ApiConfiguration invalidConfig = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("invalid-voice-id!")
-         .femaleVoiceId("validFemaleVoice456")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                             .anthropicInputCostPerMillionTokens(3.0)
+                                                             .anthropicOutputCostPerMillionTokens(15.0)
+                                                             .stabilityImageCostPerImage(0.04)
+                                                             .elevenlabsCostPerCharacter(0.00003)
+                                                             .elevenlabsMaxConcurrentRequests(3)
+                                                             .maleVoiceId("invalid-voice-id!")
+                                                             .femaleVoiceId("validFemaleVoice456")
+                                                             .maxStoriesPerDay(100)
+                                                             .enableCostTracking(true)
+                                                             .build();
 
       // When/Then
-      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig))
-         .isInstanceOf(IllegalArgumentException.class)
-         .hasMessageContaining("Male voice ID must contain only alphanumeric characters");
+      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig)).isInstanceOf(IllegalArgumentException.class)
+                                                                          .hasMessageContaining(
+                                                                                "Male voice ID must contain only alphanumeric characters");
    }
 
    @Test
    void updateConfiguration_WithInvalidFemaleVoiceId_ThrowsException() {
       // Given - configuration with non-alphanumeric female voice ID
       final ApiConfiguration invalidConfig = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("validMaleVoice123")
-         .femaleVoiceId("invalid@voice#id")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                             .anthropicInputCostPerMillionTokens(3.0)
+                                                             .anthropicOutputCostPerMillionTokens(15.0)
+                                                             .stabilityImageCostPerImage(0.04)
+                                                             .elevenlabsCostPerCharacter(0.00003)
+                                                             .elevenlabsMaxConcurrentRequests(3)
+                                                             .maleVoiceId("validMaleVoice123")
+                                                             .femaleVoiceId("invalid@voice#id")
+                                                             .maxStoriesPerDay(100)
+                                                             .enableCostTracking(true)
+                                                             .build();
 
       // When/Then
-      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig))
-         .isInstanceOf(IllegalArgumentException.class)
-         .hasMessageContaining("Female voice ID must contain only alphanumeric characters");
+      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig)).isInstanceOf(IllegalArgumentException.class)
+                                                                          .hasMessageContaining(
+                                                                                "Female voice ID must contain only alphanumeric characters");
    }
 
    @Test
    void updateConfiguration_WithNullMaleVoiceId_ThrowsException() {
       // Given - configuration with null male voice ID
       final ApiConfiguration invalidConfig = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId(null)
-         .femaleVoiceId("validFemaleVoice456")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                             .anthropicInputCostPerMillionTokens(3.0)
+                                                             .anthropicOutputCostPerMillionTokens(15.0)
+                                                             .stabilityImageCostPerImage(0.04)
+                                                             .elevenlabsCostPerCharacter(0.00003)
+                                                             .elevenlabsMaxConcurrentRequests(3)
+                                                             .maleVoiceId(null)
+                                                             .femaleVoiceId("validFemaleVoice456")
+                                                             .maxStoriesPerDay(100)
+                                                             .enableCostTracking(true)
+                                                             .build();
 
       // When/Then
-      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig))
-         .isInstanceOf(IllegalArgumentException.class)
-         .hasMessageContaining("Male voice ID cannot be null or empty");
+      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig)).isInstanceOf(IllegalArgumentException.class)
+                                                                          .hasMessageContaining("Male voice ID cannot be null or empty");
    }
 
    @Test
    void updateConfiguration_WithEmptyFemaleVoiceId_ThrowsException() {
       // Given - configuration with empty female voice ID
       final ApiConfiguration invalidConfig = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("validMaleVoice123")
-         .femaleVoiceId("")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                             .anthropicInputCostPerMillionTokens(3.0)
+                                                             .anthropicOutputCostPerMillionTokens(15.0)
+                                                             .stabilityImageCostPerImage(0.04)
+                                                             .elevenlabsCostPerCharacter(0.00003)
+                                                             .elevenlabsMaxConcurrentRequests(3)
+                                                             .maleVoiceId("validMaleVoice123")
+                                                             .femaleVoiceId("")
+                                                             .maxStoriesPerDay(100)
+                                                             .enableCostTracking(true)
+                                                             .build();
 
       // When/Then
-      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig))
-         .isInstanceOf(IllegalArgumentException.class)
-         .hasMessageContaining("Female voice ID cannot be null or empty");
+      assertThatThrownBy(() -> service.updateConfiguration(invalidConfig)).isInstanceOf(IllegalArgumentException.class)
+                                                                          .hasMessageContaining("Female voice ID cannot be null or empty");
    }
 
    @Test
    void saveConfiguration_PersistsVoiceIds() throws IOException {
       // Given
       final ApiConfiguration config = ApiConfiguration.builder()
-         .anthropicInputCostPerMillionTokens(3.0)
-         .anthropicOutputCostPerMillionTokens(15.0)
-         .stabilityImageCostPerImage(0.04)
-         .elevenlabsCostPerCharacter(0.00003)
-         .elevenlabsMaxConcurrentRequests(3)
-         .maleVoiceId("persistedMaleVoice")
-         .femaleVoiceId("persistedFemaleVoice")
-         .maxStoriesPerDay(100)
-         .enableCostTracking(true)
-         .build();
+                                                      .anthropicInputCostPerMillionTokens(3.0)
+                                                      .anthropicOutputCostPerMillionTokens(15.0)
+                                                      .stabilityImageCostPerImage(0.04)
+                                                      .elevenlabsCostPerCharacter(0.00003)
+                                                      .elevenlabsMaxConcurrentRequests(3)
+                                                      .maleVoiceId("persistedMaleVoice")
+                                                      .femaleVoiceId("persistedFemaleVoice")
+                                                      .maxStoriesPerDay(100)
+                                                      .enableCostTracking(true)
+                                                      .build();
 
       // When
       service.updateConfiguration(config);
 
       // Then - verify file contains voice IDs
-      final ApiConfiguration savedConfig = objectMapper.readValue(
-         configPath.toFile(), 
-         ApiConfiguration.class
-      );
+      final ApiConfiguration savedConfig = objectMapper.readValue(configPath.toFile(), ApiConfiguration.class);
       assertThat(savedConfig.getMaleVoiceId()).isEqualTo("persistedMaleVoice");
       assertThat(savedConfig.getFemaleVoiceId()).isEqualTo("persistedFemaleVoice");
    }
@@ -232,7 +218,7 @@ class ApiTrackingServiceTest {
    @Test
    void loadConfiguration_WithNoConfigFile_CreatesDefaultWithVoiceIds() {
       // Given - no config file exists (fresh initialization)
-      
+
       // When
       final ApiConfiguration config = service.getConfiguration();
 

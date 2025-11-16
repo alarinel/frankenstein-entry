@@ -78,9 +78,7 @@ class AdminControllerTest {
                                                       .build();
 
       // When/Then
-      mockMvc.perform(put("/api/admin/configuration")
-                     .contentType(MediaType.APPLICATION_JSON)
-                     .content(objectMapper.writeValueAsString(config)))
+      mockMvc.perform(put("/api/admin/configuration").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(config)))
              .andExpect(status().isOk())
              .andExpect(jsonPath("$.maleVoiceId").value("newMaleVoiceId123"))
              .andExpect(jsonPath("$.femaleVoiceId").value("newFemaleVoiceId456"));
@@ -104,9 +102,7 @@ class AdminControllerTest {
                                                       .build();
 
       // When/Then
-      mockMvc.perform(put("/api/admin/configuration")
-                     .contentType(MediaType.APPLICATION_JSON)
-                     .content(objectMapper.writeValueAsString(config)))
+      mockMvc.perform(put("/api/admin/configuration").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(config)))
              .andExpect(status().isBadRequest());
 
       verify(apiTrackingFacade, never()).updateConfiguration(any(ApiConfiguration.class));
@@ -128,9 +124,7 @@ class AdminControllerTest {
                                                       .build();
 
       // When/Then
-      mockMvc.perform(put("/api/admin/configuration")
-                     .contentType(MediaType.APPLICATION_JSON)
-                     .content(objectMapper.writeValueAsString(config)))
+      mockMvc.perform(put("/api/admin/configuration").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(config)))
              .andExpect(status().isBadRequest());
 
       verify(apiTrackingFacade, never()).updateConfiguration(any(ApiConfiguration.class));
@@ -152,9 +146,7 @@ class AdminControllerTest {
                                                       .build();
 
       // When/Then
-      mockMvc.perform(put("/api/admin/configuration")
-                     .contentType(MediaType.APPLICATION_JSON)
-                     .content(objectMapper.writeValueAsString(config)))
+      mockMvc.perform(put("/api/admin/configuration").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(config)))
              .andExpect(status().isOk());
 
       verify(apiTrackingFacade).updateConfiguration(any(ApiConfiguration.class));
@@ -176,9 +168,7 @@ class AdminControllerTest {
                                                       .build();
 
       // When/Then
-      mockMvc.perform(put("/api/admin/configuration")
-                     .contentType(MediaType.APPLICATION_JSON)
-                     .content(objectMapper.writeValueAsString(config)))
+      mockMvc.perform(put("/api/admin/configuration").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(config)))
              .andExpect(status().isOk());
 
       verify(apiTrackingFacade).updateConfiguration(any(ApiConfiguration.class));
