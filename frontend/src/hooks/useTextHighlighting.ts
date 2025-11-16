@@ -39,7 +39,9 @@ export const useTextHighlighting = ({
     }
 
     const words = text.split(' ');
-    const timePerWord = duration / words.length;
+    // Reduce duration by 20% to make highlighting faster and better match speech
+    const adjustedDuration = duration * 0.8;
+    const timePerWord = adjustedDuration / words.length;
 
     words.forEach((_, index) => {
       const timeoutId = window.setTimeout(() => {

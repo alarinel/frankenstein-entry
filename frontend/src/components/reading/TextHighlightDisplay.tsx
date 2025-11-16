@@ -65,7 +65,7 @@ export const TextHighlightDisplay = ({
                   style={{
                     marginRight: 'clamp(0.25rem, 0.4vw, 0.375rem)',
                     marginBottom: 'clamp(0.125rem, 0.3vh, 0.25rem)',
-                    fontWeight: highlightedWords.has(index) ? 600 : 400,
+                    fontWeight: 500,
                   }}
                 >
                   {word}
