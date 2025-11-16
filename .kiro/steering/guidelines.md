@@ -165,11 +165,48 @@ This approach prevents:
 
 ## Performance Considerations
 
+### Backend Performance
 1. **Parallel Processing**: Generate images and audio simultaneously
 2. **Streaming**: Stream assets as they're generated
 3. **Caching**: Cache generated stories
-4. **Lazy Loading**: Load assets on-demand in frontend
-5. **Optimization**: Compress images and audio appropriately
+4. **Optimization**: Compress images and audio appropriately
+
+### Frontend Performance
+
+**CRITICAL**: Avoid GPU-intensive effects that cause Chrome crashes.
+
+**Rules**:
+- **Limit Particle Systems**: Maximum 1 per page, preferably none
+- **Reduce Animated Elements**: Keep under 5 animated components per page
+- **Avoid Infinite Animations**: Use sparingly and only when necessary
+- **Test on Lower-End Hardware**: Ensure 60fps on mid-range devices
+- **Monitor GPU Usage**: Keep under 40% during normal operation
+
+**Approved Effects Per Page**:
+- FloatingBats: Maximum 2 instances
+- Simple CSS animations: Unlimited (low cost)
+- Framer Motion: Use for transitions, not continuous animations
+- Three.js: Only for essential 3D elements (book display)
+
+**Banned Effects**:
+- ❌ ParticleBackground (tsParticles) - Too GPU intensive
+- ❌ Multiple particle systems simultaneously
+- ❌ Heavy canvas-based animations
+- ❌ Continuous infinite animations on large elements
+
+**Performance Testing**:
+```
+1. Open Chrome DevTools → Performance tab
+2. Record page interaction
+3. Check GPU usage and frame rate
+4. Aim for consistent 60fps
+5. GPU usage should stay under 40%
+```
+
+### Lazy Loading
+- Load assets on-demand in frontend
+- Use React.lazy() for route-based code splitting
+- Defer non-critical animations
 
 ## API Cost Tracking
 

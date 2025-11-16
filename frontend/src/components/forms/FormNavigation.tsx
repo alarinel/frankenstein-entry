@@ -72,15 +72,26 @@ export const FormNavigation = ({
           <span>Back</span>
         </SpookyButton>
 
-        <SpookyButton
-          onClick={onNext}
-          disabled={!canGoNext || isLoading}
-          variant={isLastStep ? 'secondary' : 'primary'}
-          className="flex-1"
-        >
-          <span>{isLastStep ? '✨ Create Story' : 'Next'}</span>
-          <span>{isLastStep ? '🎃' : '➡️'}</span>
-        </SpookyButton>
+        <div className="flex-1 relative">
+          <SpookyButton
+            onClick={onNext}
+            disabled={!canGoNext || isLoading}
+            variant={isLastStep ? 'secondary' : 'primary'}
+            className="w-full"
+          >
+            <span>{isLastStep ? '✨ Create Story' : 'Next'}</span>
+            <span>{isLastStep ? '🎃' : '➡️'}</span>
+          </SpookyButton>
+          {isLastStep && !canGoNext && !isLoading && (
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute -bottom-8 left-0 right-0 text-center text-xs text-spooky-orange-400 font-fun"
+            >
+              Fill all fields to create story
+            </motion.p>
+          )}
+        </div>
       </motion.div>
     </>
   );

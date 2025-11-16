@@ -53,13 +53,27 @@ export const useStoryFormState = ({
 
   // Handle next step or form submission
   const handleNext = (currentValue: string) => {
+    // Get the actual current value from form state (more reliable than watched value)
+    const formValues = getValues();
+    const actualValue = formValues[currentField.name];
+    
     // For selector fields (theme, voiceType), just check if value exists
     const isSelector = currentField.name === 'theme' || currentField.name === 'voiceType';
-    const isValid = isSelector ? !!currentValue : (currentValue && currentValue.trim());
+    const isValid = isSelector ? !!actualValue : (actualValue && String(actualValue).trim());
     
     if (isValid) {
       if (isLastStep) {
-        handleSubmit(onSubmit)();
+        // Double-check all fields are filled before submitting
+        const allFilled = formFields.every(field => {
+          const value = formValues[field.name];
+          return value && String(value).trim() !== '';
+        });
+        
+        if (allFilled) {
+          handleSubmit(onSubmit)();
+        } else {
+          toast.error('Please fill in all fields before creating your story 📝');
+        }
       } else {
         setCurrentStep((prev) => prev + 1);
       }

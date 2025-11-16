@@ -34,6 +34,11 @@ export const LoadingPage = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [quote, setQuote] = useState<Quote | null>(null);
   const [joke, setJoke] = useState<Joke | null>(null);
+  
+  // Timer state
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [stageStartTime, setStageStartTime] = useState<number>(Date.now());
+  const [currentStageTime, setCurrentStageTime] = useState(0);
 
   useEffect(() => {
     if (!storyId) {
@@ -68,12 +73,35 @@ export const LoadingPage = () => {
       setCurrentMessageIndex((prev) => (prev + 1) % loadingMessages.length);
     }, 4000);
 
+    // Timer for total elapsed time
+    const timerInterval = setInterval(() => {
+      setElapsedTime((prev) => prev + 1);
+    }, 1000);
+
     return () => {
       websocket.disconnect();
       clearInterval(interval);
       clearInterval(messageInterval);
+      clearInterval(timerInterval);
     };
   }, [storyId]);
+
+  // Update stage timer when stage changes
+  useEffect(() => {
+    if (generationProgress?.status) {
+      setStageStartTime(Date.now());
+      setCurrentStageTime(0);
+    }
+  }, [generationProgress?.status]);
+
+  // Update current stage time
+  useEffect(() => {
+    const stageTimer = setInterval(() => {
+      setCurrentStageTime(Math.floor((Date.now() - stageStartTime) / 1000));
+    }, 1000);
+
+    return () => clearInterval(stageTimer);
+  }, [stageStartTime]);
 
   const handleProgress = (progress: GenerationProgress) => {
     setGenerationProgress(progress);
@@ -123,10 +151,8 @@ export const LoadingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center p-4 overflow-hidden relative">
-      <ParticleBackground />
-      <FloatingBats count={4} />
-      <GhostCluster />
-      <FlyingBooks />
+      {/* Reduced effects for better performance */}
+      <FloatingBats count={2} />
       <LightningEffect />
 
       {/* Decorative corners */}

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Suggestion } from '@/types';
 
@@ -6,11 +7,42 @@ interface SuggestionChipsProps {
   onSelect: (value: string) => void;
 }
 
+const MAX_SUGGESTIONS = 6;
+
+/**
+ * Randomly selects a subset of suggestions
+ * Uses Fisher-Yates shuffle algorithm for fair randomization
+ */
+const getRandomSuggestions = (suggestions: readonly Suggestion[], count: number): Suggestion[] => {
+  if (suggestions.length <= count) {
+    return [...suggestions];
+  }
+
+  const shuffled = [...suggestions];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled.slice(0, count);
+};
+
 /**
  * Suggestion chips component for quick form input
  * Renders animated suggestion buttons with click handlers
+ * Displays a maximum of 6 random suggestions to save space
  */
 export const SuggestionChips = ({ suggestions, onSelect }: SuggestionChipsProps) => {
+  // Memoize random selection to prevent re-shuffling on every render
+  const displayedSuggestions = useMemo(
+    () => getRandomSuggestions(suggestions, MAX_SUGGESTIONS),
+    [suggestions]
+  );
+
+  if (displayedSuggestions.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mt-6">
       <p className="text-sm text-spooky-purple-300 mb-3 font-fun font-semibold flex items-center gap-2">
@@ -18,7 +50,7 @@ export const SuggestionChips = ({ suggestions, onSelect }: SuggestionChipsProps)
         Quick suggestions:
       </p>
       <div className="flex flex-wrap gap-2">
-        {suggestions.map((suggestion, index) => (
+        {displayedSuggestions.map((suggestion, index) => (
           <motion.button
             key={suggestion.value}
             type="button"

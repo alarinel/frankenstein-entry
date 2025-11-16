@@ -8,14 +8,14 @@ We've integrated **7 completely free APIs** that enhance the user experience wit
 
 ## 📚 API List & Implementation
 
-### 1. **Quotable API** 📜
+### 1. **ZenQuotes API** 📜
 **Status**: ✅ Implemented  
 **Location**: Loading Page  
 **Purpose**: Display inspirational literary quotes while story generates
 
 **What it does**:
-- Fetches random quotes from famous authors
-- Filtered by literary/inspirational themes
+- Fetches random inspirational quotes from famous authors
+- Provides literary and motivational content
 - Keeps users engaged during wait time
 
 **Example**:
@@ -146,7 +146,7 @@ We've integrated **7 completely free APIs** that enhance the user experience wit
 
 | API | Status | Page | Feature |
 |-----|--------|------|---------|
-| Quotable | ✅ Live | Loading | Literary quotes |
+| ZenQuotes | ✅ Live | Loading | Literary quotes |
 | Sunrise-Sunset | ✅ Live | Reading | Dynamic theming |
 | Advice Slip | ✅ Live | Completion | Encouragement |
 | JokeAPI | ✅ Live | Loading | Humor |
@@ -209,7 +209,7 @@ We've integrated **7 completely free APIs** that enhance the user experience wit
 ## 💰 Cost Analysis
 
 ### Current Implementation (4 Live APIs)
-- **Quotable**: FREE
+- **ZenQuotes**: FREE
 - **Sunrise-Sunset**: FREE
 - **Advice Slip**: FREE
 - **JokeAPI**: FREE
@@ -371,7 +371,7 @@ useEffect(() => {
 ## 📊 Performance Impact
 
 ### API Call Times
-- **Quotable**: ~200ms
+- **ZenQuotes**: ~200ms
 - **Sunrise-Sunset**: ~300ms (with geolocation)
 - **Advice Slip**: ~150ms
 - **JokeAPI**: ~250ms
@@ -391,7 +391,7 @@ useEffect(() => {
 ## ✨ Summary
 
 We've successfully integrated **4 free APIs** that are live and working:
-1. ✅ Quotable - Literary quotes on loading
+1. ✅ ZenQuotes - Literary quotes on loading
 2. ✅ Sunrise-Sunset - Dynamic theming
 3. ✅ Advice Slip - Encouragement on completion
 4. ✅ JokeAPI - Humor during loading

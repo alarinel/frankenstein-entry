@@ -56,7 +56,7 @@
 
 #### Live APIs (4):
 
-1. **Quotable API** - Literary quotes on loading page
+1. **ZenQuotes API** - Literary quotes on loading page
 2. **Sunrise-Sunset API** - Dynamic theming based on time
 3. **Advice Slip API** - Encouragement on completion page
 4. **JokeAPI** - Humor during loading
@@ -145,7 +145,7 @@
 ### APIs Integrated
 - **Total**: 10 APIs
 - **Paid**: 3 (Anthropic, Stability AI, ElevenLabs)
-- **Free**: 7 (Quotable, Sunrise-Sunset, Advice Slip, JokeAPI, Random User, Bored, Agify)
+- **Free**: 7 (ZenQuotes, Sunrise-Sunset, Advice Slip, JokeAPI, Random User, Bored, Agify)
 - **Live**: 7 APIs
 - **Ready**: 3 APIs
 
@@ -230,7 +230,7 @@
 ## 🚀 Performance
 
 ### API Response Times
-- Quotable: ~200ms
+- ZenQuotes: ~200ms
 - Sunrise-Sunset: ~300ms
 - Advice Slip: ~150ms
 - JokeAPI: ~250ms
