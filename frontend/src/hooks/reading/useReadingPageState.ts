@@ -71,8 +71,13 @@ export const useReadingPageState = ({ storyId }: UseReadingPageStateOptions) => 
     setIsPlaying(false);
     if (canGoNext && !isFlipping) {
       startCountdown(READING_CONSTANTS.ANIMATION.AUTO_ADVANCE_DELAY, nextPage);
+    } else if (!canGoNext && !isFlipping && storyId) {
+      // Story has ended, navigate to completion screen after a delay
+      startCountdown(READING_CONSTANTS.ANIMATION.AUTO_ADVANCE_DELAY, () => {
+        navigate(`/complete/${storyId}`);
+      });
     }
-  }, [setIsPlaying, canGoNext, isFlipping, startCountdown, nextPage]);
+  }, [setIsPlaying, canGoNext, isFlipping, startCountdown, nextPage, storyId, navigate]);
 
   // Audio management hook
   const audioHook = useStoryAudio({

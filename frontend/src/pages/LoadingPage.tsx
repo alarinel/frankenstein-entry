@@ -165,12 +165,12 @@ export const LoadingPage = () => {
         📜
       </div>
 
-      <div className="w-full text-center z-10 flex flex-col" style={{ maxWidth: 'min(90vw, 800px)', padding: '0 clamp(0.75rem, 2vw, 1.5rem)', maxHeight: '95vh', overflow: 'hidden' }}>
+      <div className="w-full text-center z-10 flex flex-col" style={{ maxWidth: 'min(90vw, 800px)', padding: '0 clamp(0.75rem, 2vw, 1.5rem)', maxHeight: '95vh', overflow: 'auto' }}>
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
+          style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 0 }}
         >
           <SpookyTitle>
             <motion.span
@@ -196,7 +196,7 @@ export const LoadingPage = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
+          style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 0 }}
         >
           <MagicalCauldron progress={generationProgress?.progressPercentage || 0} />
         </motion.div>
@@ -209,7 +209,7 @@ export const LoadingPage = () => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -20 }}
-              style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)' }}
+              style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}
               className="inline-block"
             >
               <div 
@@ -288,9 +288,15 @@ export const LoadingPage = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="mb-8"
+              style={{ marginBottom: 'clamp(0.5rem, 1vh, 1rem)' }}
             >
-              <p className="text-spooky-orange-300 text-base font-fun bg-dark-800/50 backdrop-blur-sm py-3 px-6 rounded-full inline-block border border-spooky-purple-600/30">
+              <p 
+                className="text-spooky-orange-300 font-fun bg-dark-800/50 backdrop-blur-sm rounded-full inline-block border border-spooky-purple-600/30"
+                style={{ 
+                  fontSize: 'clamp(0.875rem, 1.25vw, 1rem)',
+                  padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.5rem)'
+                }}
+              >
                 {generationProgress.message}
               </p>
             </motion.div>
@@ -305,17 +311,20 @@ export const LoadingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            style={{ marginTop: 'clamp(1rem, 2vh, 1.5rem)', flexShrink: 0 }}
+            style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
           >
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center" style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
               <motion.span
-                className="text-4xl"
+                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 2, ease: 'linear', repeat: Infinity }}
               >
                 {loadingMessages[currentMessageIndex].emoji}
               </motion.span>
-              <p className="text-gray-400 text-sm italic font-fun max-w-md">
+              <p 
+                className="text-gray-400 italic font-fun max-w-md"
+                style={{ fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)' }}
+              >
                 "{loadingMessages[currentMessageIndex].text}"
               </p>
             </div>
@@ -331,12 +340,24 @@ export const LoadingPage = () => {
             className="max-w-2xl mx-auto"
             style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 1, minHeight: 0 }}
           >
-            <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-purple-600/30 shadow-lg">
-              <div className="text-4xl mb-3 text-center">📜</div>
-              <p className="text-gray-300 text-base italic leading-relaxed text-center mb-3">
+            <div 
+              className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-purple-600/30 shadow-lg"
+              style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)' }}
+            >
+              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)' }} className="text-center">📜</div>
+              <p 
+                className="text-gray-300 italic leading-relaxed text-center"
+                style={{ 
+                  fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)',
+                  marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                }}
+              >
                 "{quote.content}"
               </p>
-              <p className="text-spooky-purple-400 text-sm text-center font-semibold">
+              <p 
+                className="text-spooky-purple-400 text-center font-semibold"
+                style={{ fontSize: 'clamp(0.625rem, 1vw, 0.75rem)' }}
+              >
                 — {quote.author}
               </p>
             </div>
@@ -352,12 +373,24 @@ export const LoadingPage = () => {
             className="max-w-2xl mx-auto"
             style={{ marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 1, minHeight: 0 }}
           >
-            <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-orange-600/30 shadow-lg">
-              <div className="text-4xl mb-3 text-center">😄</div>
-              <p className="text-gray-300 text-base leading-relaxed text-center">
+            <div 
+              className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-orange-600/30 shadow-lg"
+              style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)' }}
+            >
+              <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)' }} className="text-center">😄</div>
+              <p 
+                className="text-gray-300 leading-relaxed text-center"
+                style={{ fontSize: 'clamp(0.75rem, 1.25vw, 0.875rem)' }}
+              >
                 {formatJoke(joke)}
               </p>
-              <p className="text-spooky-orange-400 text-xs text-center mt-3 font-semibold">
+              <p 
+                className="text-spooky-orange-400 text-center font-semibold"
+                style={{ 
+                  fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+                  marginTop: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                }}
+              >
                 — A little humor while you wait
               </p>
             </div>
@@ -368,7 +401,8 @@ export const LoadingPage = () => {
         <div 
           className="flex justify-center flex-wrap"
           style={{ 
-            marginTop: 'clamp(1rem, 2vh, 1.5rem)',
+            marginTop: 'clamp(0.75rem, 1.5vh, 1rem)',
+            marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)',
             gap: 'clamp(0.5rem, 1.5vw, 0.75rem)',
             flexShrink: 0
           }}

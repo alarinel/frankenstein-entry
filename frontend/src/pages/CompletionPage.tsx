@@ -42,7 +42,7 @@ export const CompletionPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center p-4 overflow-hidden relative">
+    <div className="h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-spooky-purple-950 flex items-center justify-center overflow-hidden relative">
       <ParticleBackground />
       <FloatingBats count={5} />
       <GhostCluster />
@@ -51,8 +51,11 @@ export const CompletionPage = () => {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
-        className="w-full text-center z-10"
-        style={{ maxWidth: 'min(90vw, 900px)', padding: '0 clamp(1rem, 3vw, 2rem)' }}
+        className="w-full h-full flex flex-col items-center justify-center text-center z-10 overflow-y-auto"
+        style={{ 
+          maxWidth: 'min(90vw, 900px)', 
+          padding: 'clamp(1rem, 2vh, 2rem) clamp(1rem, 3vw, 2rem)',
+        }}
       >
         {/* Celebration Effects with Trophy and Books */}
         <CelebrationEffects />
@@ -82,8 +85,8 @@ export const CompletionPage = () => {
           <motion.p
             className="text-gray-300 font-serif italic"
             style={{ 
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)',
-              marginBottom: 'clamp(1.5rem, 3vh, 2rem)'
+              fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+              marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
             }}
             animate={{ opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -95,8 +98,8 @@ export const CompletionPage = () => {
           <div 
             className="flex justify-center flex-wrap"
             style={{ 
-              gap: 'clamp(0.75rem, 1.5vw, 1rem)',
-              marginBottom: 'clamp(1.5rem, 3vh, 2rem)'
+              gap: 'clamp(0.5rem, 1vw, 0.75rem)',
+              marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
             }}
           >
             <motion.div
@@ -104,12 +107,12 @@ export const CompletionPage = () => {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 2.2, type: 'spring' }}
               className="bg-gradient-to-r from-spooky-purple-600 to-spooky-pink-600 rounded-full shadow-lg"
-              style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.25rem)' }}
+              style={{ padding: 'clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.75rem, 1.5vw, 1rem)' }}
             >
-              <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>📚</span>
+              <span style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.375rem)' }}>📚</span>
               <span 
                 className="text-white font-fun font-bold"
-                style={{ fontSize: 'clamp(0.875rem, 1.2vw, 1rem)' }}
+                style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
               >Story Master</span>
             </motion.div>
             <motion.div
@@ -117,28 +120,28 @@ export const CompletionPage = () => {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 2.4, type: 'spring' }}
               className="bg-gradient-to-r from-spooky-orange-600 to-spooky-pink-600 rounded-full shadow-lg"
-              style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.25rem)' }}
+              style={{ padding: 'clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.75rem, 1.5vw, 1rem)' }}
             >
-              <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>⭐</span>
+              <span style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.375rem)' }}>⭐</span>
               <span 
                 className="text-white font-fun font-bold"
-                style={{ fontSize: 'clamp(0.875rem, 1.2vw, 1rem)' }}
+                style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
               >Adventure Complete</span>
             </motion.div>
           </div>
 
           {/* Story Stats Card */}
-          <SpookyCard glowColor="purple" style={{ marginBottom: 'clamp(1.5rem, 3vh, 2rem)', padding: 'clamp(1.5rem, 2.5vw, 2rem)' }}>
+          <SpookyCard glowColor="purple" style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)', padding: 'clamp(1rem, 2vw, 1.5rem)' }}>
             <h3 
               className="font-spooky text-spooky-orange-400"
               style={{ 
-                fontSize: 'clamp(1.125rem, 1.75vw, 1.25rem)',
-                marginBottom: 'clamp(1rem, 2vh, 1.5rem)'
+                fontSize: 'clamp(1rem, 1.5vw, 1.125rem)',
+                marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)'
               }}
             >Story Details</h3>
             <div 
               className="grid grid-cols-2"
-              style={{ gap: 'clamp(1rem, 1.5vw, 1.5rem)' }}
+              style={{ gap: 'clamp(0.75rem, 1.25vw, 1rem)' }}
             >
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -149,13 +152,13 @@ export const CompletionPage = () => {
                 <p 
                   className="text-gray-400 font-fun"
                   style={{ 
-                    fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
-                    marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                    fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+                    marginBottom: 'clamp(0.125rem, 0.25vh, 0.25rem)'
                   }}
                 >📄 Pages</p>
                 <p 
                   className="text-white font-bold"
-                  style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)' }}
+                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}
                 >{currentStory.metadata.pageCount}</p>
               </motion.div>
               <motion.div
@@ -167,13 +170,13 @@ export const CompletionPage = () => {
                 <p 
                   className="text-gray-400 font-fun"
                   style={{ 
-                    fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
-                    marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                    fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+                    marginBottom: 'clamp(0.125rem, 0.25vh, 0.25rem)'
                   }}
                 >⏱️ Duration</p>
                 <p 
                   className="text-white font-bold"
-                  style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)' }}
+                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}
                 >
                   {currentStory.metadata.estimatedReadTime}
                 </p>
@@ -187,13 +190,13 @@ export const CompletionPage = () => {
                 <p 
                   className="text-gray-400 font-fun"
                   style={{ 
-                    fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
-                    marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                    fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+                    marginBottom: 'clamp(0.125rem, 0.25vh, 0.25rem)'
                   }}
                 >👤 Character</p>
                 <p 
                   className="text-white font-semibold"
-                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}
+                  style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}
                 >{currentStory.input.characterName}</p>
               </motion.div>
               <motion.div
@@ -205,13 +208,13 @@ export const CompletionPage = () => {
                 <p 
                   className="text-gray-400 font-fun"
                   style={{ 
-                    fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
-                    marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                    fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+                    marginBottom: 'clamp(0.125rem, 0.25vh, 0.25rem)'
                   }}
                 >🗺️ Setting</p>
                 <p 
                   className="text-white font-semibold"
-                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}
+                  style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}
                 >{currentStory.input.setting}</p>
               </motion.div>
             </div>
@@ -226,14 +229,26 @@ export const CompletionPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 3.2 }}
-              className="mt-8 max-w-2xl mx-auto"
+              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)' }}
             >
-              <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-purple-600/30 shadow-lg">
-                <div className="text-3xl mb-3 text-center">💡</div>
-                <p className="text-gray-300 text-base leading-relaxed text-center italic">
+              <div 
+                className="bg-dark-800/60 backdrop-blur-md rounded-2xl border border-spooky-purple-600/30 shadow-lg"
+                style={{ padding: 'clamp(0.75rem, 1.5vw, 1rem)' }}
+              >
+                <div style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)', textAlign: 'center' }}>💡</div>
+                <p 
+                  className="text-gray-300 leading-relaxed text-center italic"
+                  style={{ fontSize: 'clamp(0.75rem, 1vw, 0.875rem)' }}
+                >
                   "{advice.advice}"
                 </p>
-                <p className="text-spooky-purple-400 text-xs text-center mt-3 font-semibold">
+                <p 
+                  className="text-spooky-purple-400 text-center font-semibold"
+                  style={{ 
+                    fontSize: 'clamp(0.625rem, 0.85vw, 0.75rem)',
+                    marginTop: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                  }}
+                >
                   — Advice for your next adventure
                 </p>
               </div>
@@ -245,7 +260,11 @@ export const CompletionPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 3.4 }}
-            className="mt-6 text-gray-400 font-fun italic"
+            className="text-gray-400 font-fun italic"
+            style={{ 
+              marginTop: 'clamp(0.5rem, 1vh, 0.75rem)',
+              fontSize: 'clamp(0.75rem, 1vw, 0.875rem)'
+            }}
           >
             "Every story is a new adventure waiting to be told..."
           </motion.p>

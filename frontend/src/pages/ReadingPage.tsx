@@ -105,12 +105,16 @@ export const ReadingPage = () => {
 
   return (
     <div className={`h-screen bg-gradient-to-br ${theme.from} ${theme.via} ${theme.to} flex flex-col overflow-hidden relative`}>
-      {/* Background Elements */}
-      <SubtleParticleBackground intensity={theme.intensity as 'light' | 'medium' | 'dark'} />
-      <FloatingBats count={3} />
-      <FloatingSpiders count={4} />
+      {/* Background Elements - Optimized for performance to prevent Chrome crashes */}
+      {/* Set enabled={false} on SubtleParticleBackground to completely disable particles if needed */}
+      <SubtleParticleBackground 
+        intensity={theme.intensity as 'light' | 'medium' | 'dark'} 
+        enabled={true}
+      />
+      <FloatingBats count={2} />
+      <FloatingSpiders count={2} />
       <FloatingCandles />
-      <MagicSparkles isActive={true} />
+      <MagicSparkles isActive={false} />
 
       {/* Decorative Corners */}
       <div 

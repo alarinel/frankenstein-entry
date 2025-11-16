@@ -828,3 +828,84 @@ The refactoring is complete and the codebase is now ready for:
 4. Team onboarding with clear architecture documentation
 
 This refactoring establishes a solid foundation for the project's continued growth and maintenance.
+
+---
+## [2025-11-15 Saturday] - Extracted Book3DDisplay Component from ReadingPage
+
+**Files Changed:**
+- frontend/src/components/reading/Book3DDisplay.tsx (new file)
+- frontend/src/pages/ReadingPage.tsx (refactored to use new component)
+
+**What Was Done:**
+Extracted the 3D book rendering logic from ReadingPage into a dedicated Book3DDisplay component:
+- Created new component with clear interface: `Book3DDisplayProps` (currentPage, story, imageUrl, textPosition, words, highlightedWords)
+- Moved all 3D book structure JSX (150+ lines) from ReadingPage to Book3DDisplay
+- Includes: book shadow layers, left/right pages with images, gradient overlays, spine, and text positioning
+- Integrated TextHighlightDisplay component for text rendering on left/right pages
+- Maintained all 3D transforms, perspective settings, and responsive sizing
+- Preserved the V-shaped depth effect (30deg rotateY on pages, 2000px perspective)
+- Kept all visual styling: amber-50 pages, black borders, gradient overlays, spine shadows
+
+**Why:**
+The ReadingPage component was handling both orchestration (audio, navigation, state) AND complex 3D book rendering, making it difficult to maintain and test. By extracting the book display logic into a dedicated component, we achieve:
+
+1. **Separation of Concerns**: ReadingPage focuses on state management, Book3DDisplay handles presentation
+2. **Reusability**: The 3D book component can be used in other contexts (preview, gallery, etc.)
+3. **Maintainability**: Changes to book styling/structure are isolated to one component
+4. **Testability**: Book rendering can be tested independently with mock props
+5. **Readability**: ReadingPage is now more focused and easier to understand
+6. **Component Size**: Reduced ReadingPage complexity by extracting 150+ lines of JSX
+
+**Key Decisions:**
+- Created clear prop interface with all required data (currentPage, story, imageUrl, textPosition, words, highlightedWords)
+- Maintained the existing 3D transform hierarchy and perspective settings
+- Kept responsive sizing with clamp() functions for mobile/desktop compatibility
+- Integrated TextHighlightDisplay component for text rendering (maintains existing text display logic)
+- Preserved all visual effects: shadows, gradients, spine, borders, rounded corners
+- Used conditional rendering for text position (left/right/hidden) based on prop
+- Added comprehensive JSDoc documentation explaining component purpose and props
+- This follows the component extraction pattern from the refactoring spec (Task 3: Refactor ReadingPage)
+
+**Component Structure:**
+```typescript
+interface Book3DDisplayProps {
+  currentPage: StoryPage;
+  story: Story;
+  imageUrl: string;
+  textPosition: 'left' | 'right' | 'hidden';
+  words: string[];
+  highlightedWords: Set<number>;
+}
+```
+
+**Visual Elements Preserved:**
+- 4-layer shadow system (gradient glow + 3 black shadows with varying blur)
+- Left page: 30deg rotateY rotation, image positioned at 0% center, text at bottom
+- Right page: -30deg rotateY rotation, image positioned at 95% center, text at bottom
+- Spine: centered with translateZ(-10px), black gradient with shadows
+- Gradient overlays: top-to-bottom fade, corner darkening, edge shadows
+- Responsive sizing: perspective, book dimensions, spine width all use clamp()
+
+**Integration:**
+ReadingPage now imports and uses Book3DDisplay:
+```typescript
+<Book3DDisplay
+  currentPage={currentPageData}
+  story={currentStory}
+  imageUrl={imageUrl}
+  textPosition={textPosition}
+  words={words}
+  highlightedWords={highlightedWords}
+/>
+```
+
+**Benefits:**
+- ReadingPage reduced from ~400 lines to ~250 lines
+- Book rendering logic is now isolated and testable
+- Easier to modify book styling without touching page orchestration
+- Component can be reused in story preview, gallery, or other contexts
+- Clear prop interface makes dependencies explicit
+- Follows single responsibility principle
+
+**Next Steps:**
+This component should be added to the barrel export file (`frontend/src/components/reading/index.ts`) for clean imports. The extraction continues the pattern established in the comprehensive refactoring project, further improving code organization and maintainability.
