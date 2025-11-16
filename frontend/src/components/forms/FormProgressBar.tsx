@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion';
 import { UseFormWatch } from 'react-hook-form';
 import { ANIMATION_TIMINGS } from '@/pages/InputPage.constants';
-
-interface FormField {
-  name: string;
-  emoji: string;
-}
+import { FormField } from '@/types/forms';
 
 interface FormProgressBarProps {
   currentStep: number;

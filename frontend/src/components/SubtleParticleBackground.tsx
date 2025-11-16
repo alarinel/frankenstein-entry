@@ -1,7 +1,6 @@
-import { useCallback, useMemo } from 'react';
-import Particles from '@tsparticles/react';
+import { useEffect, useState, useMemo } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
-import type { Engine } from '@tsparticles/engine';
 
 interface SubtleParticleBackgroundProps {
   intensity?: 'light' | 'medium' | 'dark';
@@ -12,8 +11,14 @@ interface SubtleParticleBackgroundProps {
  * Non-distracting ambient effect
  */
 export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleBackgroundProps) => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
   }, []);
 
   const particleCount = useMemo(() => {
@@ -32,10 +37,13 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
     }
   }, [intensity]);
 
+  if (!init) {
+    return null;
+  }
+
   return (
     <Particles
       id="subtle-particles"
-      init={particlesInit}
       options={{
         background: {
           color: {
@@ -64,7 +72,6 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
             value: particleCount,
             density: {
               enable: true,
-              area: 1200,
             },
           },
           opacity: {
@@ -72,7 +79,7 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
             animation: {
               enable: true,
               speed: 0.3,
-              minimumValue: 0.05,
+              sync: false,
             },
           },
           shape: {
@@ -83,7 +90,7 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
             animation: {
               enable: true,
               speed: 1,
-              minimumValue: 0.5,
+              sync: false,
             },
           },
         },

@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { SpookyButton } from './spooky/SpookyButton';
 import { SpookyCard } from './spooky/SpookyCard';
@@ -88,7 +88,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </p>
 
               {/* Error Details (in development) */}
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <div className="mb-6 p-4 bg-dark-800/50 rounded-lg text-left overflow-auto max-h-48">
                   <p className="text-red-400 text-sm font-mono mb-2">
                     <strong>Error:</strong> {this.state.error.message}

@@ -84,24 +84,167 @@ src/
 │   ├── client.ts     # REST API client
 │   └── websocket.ts  # WebSocket client
 ├── components/       # Reusable components
-│   └── ParticleBackground.tsx
+│   ├── forms/            # Form-related components
+│   │   ├── StoryFormField.tsx          # Individual form field with emoji, label, input
+│   │   ├── FormProgressIndicator.tsx   # Progress bar with step indicators
+│   │   ├── SuggestionChips.tsx         # Quick suggestion buttons
+│   │   ├── FormNavigation.tsx          # Back/Next/Randomize buttons
+│   │   └── index.ts                    # Barrel exports
+│   ├── reading/          # Reading page components
+│   │   ├── PlaybackControls.tsx        # Play/pause, previous, next buttons
+│   │   ├── AudioProgressDisplay.tsx    # Progress bar with countdown
+│   │   ├── TextHighlightDisplay.tsx    # Synchronized text highlighting
+│   │   ├── PageNavigationButtons.tsx   # Text position toggle
+│   │   ├── PlayPromptOverlay.tsx       # Start reading prompt
+│   │   └── index.ts                    # Barrel exports
+│   ├── admin/            # Admin dashboard components
+│   │   ├── StatisticsCards.tsx         # API usage statistics grid
+│   │   ├── ConfigurationEditor.tsx     # API pricing configuration
+│   │   ├── LogsTable.tsx               # API call logs table
+│   │   ├── LogsActions.tsx             # Bulk log operations
+│   │   └── index.ts                    # Barrel exports
+│   ├── completion/       # Completion page components
+│   │   ├── CelebrationEffects.tsx      # Fireworks, confetti, trophy
+│   │   ├── CompletionActions.tsx       # Replay/new story buttons
+│   │   └── index.ts                    # Barrel exports
+│   ├── shared/           # Shared component library
+│   │   ├── buttons/          # Button components
+│   │   │   ├── ActionButton.tsx        # Primary action button
+│   │   │   ├── IconButton.tsx          # Icon-only button
+│   │   │   ├── PlayPauseButton.tsx     # Play/pause toggle
+│   │   │   └── index.ts
+│   │   ├── cards/            # Card components
+│   │   │   ├── ContentCard.tsx         # Content container with glow
+│   │   │   ├── InfoCard.tsx            # Info card with title/icon
+│   │   │   ├── StatCard.tsx            # Statistics display card
+│   │   │   └── index.ts
+│   │   ├── indicators/       # Progress/status indicators
+│   │   │   ├── ProgressBar.tsx         # Progress bar component
+│   │   │   ├── StatusIndicator.tsx     # Status display
+│   │   │   ├── StepIndicator.tsx       # Step progress indicator
+│   │   │   └── index.ts
+│   │   ├── overlays/         # Modal/overlay components
+│   │   │   ├── FullScreenOverlay.tsx   # Full-screen backdrop
+│   │   │   ├── PromptOverlay.tsx       # Prompt with action
+│   │   │   └── index.ts
+│   │   └── index.ts              # Main barrel export
+│   ├── spooky/           # Themed UI components
+│   │   ├── SpookyButton.tsx
+│   │   ├── SpookyCard.tsx
+│   │   ├── SpookyEffects.tsx
+│   │   ├── BookPage3D.tsx
+│   │   ├── AudioVisualizer.tsx
+│   │   ├── FloatingBats.tsx
+│   │   ├── FloatingGhost.tsx
+│   │   ├── FloatingCandles.tsx
+│   │   ├── FlyingBooks.tsx
+│   │   ├── LightningEffect.tsx
+│   │   ├── MagicSparkles.tsx
+│   │   ├── MagicalCauldron.tsx
+│   │   ├── CelebrationFireworks.tsx
+│   │   ├── ConfettiRain.tsx
+│   │   └── TrophyReveal.tsx
+│   ├── ParticleBackground.tsx
+│   ├── ErrorBoundary.tsx
+│   └── HighlightedWord.tsx
+├── hooks/            # Custom hooks
+│   ├── forms/            # Form-related hooks
+│   │   ├── useStoryFormState.ts        # Form state management
+│   │   └── index.ts
+│   ├── reading/          # Reading page hooks
+│   │   ├── useCountdownTimer.ts        # Countdown logic
+│   │   ├── useReadingPageHandlers.ts   # Event handlers
+│   │   ├── useReadingPageState.ts      # Page state
+│   │   └── index.ts
+│   ├── admin/            # Admin dashboard hooks
+│   │   ├── useAdminData.ts             # Data fetching
+│   │   └── index.ts
+│   ├── shared/           # Shared utility hooks
+│   │   ├── useKeyboardNavigation.ts    # Keyboard events
+│   │   └── index.ts
+│   ├── useApiWithRetry.ts
+│   ├── useAutoPlay.ts
+│   ├── usePageNavigation.ts
+│   ├── useReducedMotion.ts
+│   ├── useStoryAudio.ts
+│   ├── useStoryForm.ts
+│   └── useTextHighlighting.ts
 ├── pages/           # Page components
-│   ├── InputPage.tsx       # Mad-lib input
+│   ├── InputPage.tsx       # Mad-lib input (~100 lines)
 │   ├── LoadingPage.tsx     # Generation progress
-│   ├── ReadingPage.tsx     # Book reader
-│   └── CompletionPage.tsx  # Story complete
+│   ├── ReadingPage.tsx     # Book reader (~170 lines)
+│   ├── CompletionPage.tsx  # Story complete (~100 lines)
+│   └── AdminPage.tsx       # Admin dashboard (~80 lines)
 ├── store/           # Zustand stores
 │   ├── storyStore.ts
 │   └── audioStore.ts
 ├── types/           # TypeScript types
-│   └── index.ts
+│   ├── forms.ts          # Form-related types
+│   ├── reading.ts        # Reading page types
+│   ├── admin.ts          # Admin dashboard types
+│   └── index.ts          # Shared types
 ├── utils/           # Utilities
 │   ├── cn.ts
-│   └── suggestions.ts
+│   ├── suggestions.ts
+│   ├── accessibility.ts
+│   └── errorHandler.ts
 ├── App.tsx          # Main app component
 ├── main.tsx         # Entry point
 └── index.css        # Global styles
 ```
+
+## Component Architecture
+
+This frontend has been refactored to follow best practices for component organization and maintainability:
+
+### Design Principles
+
+- **Single Responsibility**: Each component has one clear purpose
+- **Component Size**: All components under 200 lines (most under 150)
+- **Reusability**: Shared components used across multiple pages
+- **Composition**: Complex UIs built from simple, focused components
+- **Clean Imports**: Barrel exports (index.ts) for simplified imports
+
+### Component Organization
+
+**Feature-Based Structure**: Components are organized by feature domain (forms, reading, admin, completion) rather than by type. This makes it easier to locate related components and understand feature boundaries.
+
+**Shared Component Library**: Common UI patterns (buttons, cards, indicators, overlays) are extracted into a shared library, ensuring consistency and reducing duplication.
+
+**Custom Hooks**: Complex logic is extracted into custom hooks, making components cleaner and logic more testable and reusable.
+
+### Page Components (Orchestrators)
+
+Page components are kept small (< 200 lines) and focus on:
+- Orchestrating child components
+- Managing page-level state
+- Handling navigation and routing
+- Coordinating data flow
+
+They delegate rendering and logic to specialized components and hooks.
+
+### Example: Reading Page Refactoring
+
+**Before** (361 lines):
+- Mixed audio controls, text display, progress bars, overlays, and navigation
+- Complex state management with multiple useEffect hooks
+- Difficult to test and maintain
+
+**After** (170 lines):
+- `PlaybackControls`: Play/pause, previous, next buttons
+- `AudioProgressDisplay`: Progress bar with countdown
+- `TextHighlightDisplay`: Synchronized text highlighting
+- `PageNavigationButtons`: Text position toggle
+- `PlayPromptOverlay`: Start reading prompt
+- `useCountdownTimer`: Countdown logic hook
+- `useReadingPageHandlers`: Event handlers hook
+- `useReadingPageState`: Page state hook
+
+**Benefits**:
+- Each component is focused and testable
+- Logic is reusable through hooks
+- Easier to understand and modify
+- Better performance with memoization
 
 ## Key Features Breakdown
 
@@ -161,13 +304,15 @@ The audio system is managed through custom hooks:
 </motion.div>
 ```
 
-### Progress Bar with Shimmer
+### Progress Bar with CSS Transitions
 ```typescript
-<motion.div
-  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-  animate={{ x: ['-100%', '100%'] }}
-  transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-/>
+// Optimized with CSS transitions instead of Framer Motion for better performance
+<div
+  className="h-full bg-gradient-to-r from-spooky-purple-600 via-spooky-pink-500 to-spooky-orange-500 transition-all duration-300"
+  style={{ width: `${progress}%` }}
+>
+  <div className="w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent bg-[length:200%_100%]" />
+</div>
 ```
 
 ## Customization
@@ -206,6 +351,8 @@ Use React DevTools and browser console. All API calls and WebSocket messages are
 - Images are lazy-loaded
 - Audio is preloaded only for current/next page
 - Animations use GPU acceleration
+- CSS transitions for simple animations (better performance than Framer Motion)
+- React.memo for frequently re-rendered components (e.g., word highlighting)
 
 ## Deployment
 

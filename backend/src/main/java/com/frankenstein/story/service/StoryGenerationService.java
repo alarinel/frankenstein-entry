@@ -35,8 +35,8 @@ public class StoryGenerationService {
    private final int defaultPages;
    private final SecureRandom random;
 
-   public StoryGenerationService(final AnthropicChatModel chatModel, final ObjectMapper objectMapper, @Value("${generation.default-pages}")
-   final int defaultPages) {
+   public StoryGenerationService(final AnthropicChatModel chatModel, final ObjectMapper objectMapper,
+                                 @Value("${generation.default-pages}") final int defaultPages) {
       this.chatModel = chatModel;
       this.objectMapper = objectMapper;
       this.defaultPages = defaultPages;

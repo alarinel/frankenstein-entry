@@ -155,36 +155,133 @@ src/main/java/com/frankenstein/story/
 │   └── WebSocketConfig  # WebSocket setup
 ├── controller/          # REST controllers
 │   ├── AssetController  # Serves images & audio
-│   └── StoryController  # Story CRUD operations
+│   ├── StoryController  # Story CRUD operations
+│   └── AdminController  # Admin dashboard API
 ├── exception/           # Custom exceptions & handlers
 │   ├── GlobalExceptionHandler        # Centralized error handling
 │   ├── StoryGenerationException      # Story creation failures
 │   ├── ImageGenerationException      # Image generation failures
 │   ├── AudioGenerationException      # Audio generation failures
-│   ├── FileStorageException          # File I/O failures (NEW)
+│   ├── FileStorageException          # File I/O failures
 │   ├── StoryNotFoundException        # Story not found
 │   ├── ResourceNotFoundException     # Generic resource not found
 │   └── ErrorResponse                 # Error response DTO
 ├── model/              # Domain models & DTOs
+│   ├── orchestration/      # Orchestration-specific models
+│   │   ├── AudioSet        # Audio generation results
+│   │   └── GenerationContext # Generation context data
 │   ├── Story
 │   ├── StoryInput
 │   ├── StoryPage
-│   └── StoryStructure
+│   ├── StoryStructure
+│   ├── ApiCallLog          # API tracking log entry
+│   └── ApiConfiguration    # API cost configuration
 └── service/            # Business logic
-    ├── AudioGenerationService     # ElevenLabs integration via RestClient
-    ├── FileStorageService         # File management
-    ├── ImageGenerationService     # Stability AI integration via Spring AI
+    ├── orchestration/      # Story generation orchestration
+    │   ├── ImageOrchestrationService       # Interface
+    │   ├── ImageOrchestrationServiceImpl   # Parallel image generation
+    │   ├── AudioOrchestrationService       # Interface
+    │   ├── AudioOrchestrationServiceImpl   # Batched audio generation
+    │   ├── StoryAssemblyService            # Interface
+    │   ├── StoryAssemblyServiceImpl        # Story assembly from assets
+    │   ├── ProgressCoordinatorService      # Interface
+    │   └── ProgressCoordinatorServiceImpl  # Progress notifications
+    ├── tracking/           # API tracking and cost management
+    │   ├── ApiTrackingFacade               # Unified tracking API
+    │   ├── ApiConfigurationService         # Interface
+    │   ├── ApiConfigurationServiceImpl     # Configuration management
+    │   ├── ApiLogService                   # Interface
+    │   ├── ApiLogServiceImpl               # Log file operations
+    │   ├── ApiStatisticsService            # Interface
+    │   ├── ApiStatisticsServiceImpl        # Usage statistics
+    │   ├── CostCalculationService          # Interface
+    │   └── CostCalculationServiceImpl      # Cost calculations
+    ├── StoryOrchestrationService   # Main workflow coordinator (~80 lines)
+    ├── StoryGenerationService      # Claude integration via Spring AI
+    ├── ImageGenerationService      # Stability AI integration via Spring AI
+    ├── AudioGenerationService      # ElevenLabs integration via RestClient
+    ├── FileStorageService          # File management
     ├── ProgressNotificationService # WebSocket updates
-    ├── StoryGenerationService     # Claude integration via Spring AI
-    └── StoryOrchestrationService  # Workflow coordination
+    └── ApiTrackingService          # Legacy tracking service (deprecated)
 ```
+
+## Service Architecture
+
+This backend has been refactored to follow the Single Responsibility Principle and service-oriented architecture best practices:
+
+### Design Principles
+
+- **Single Responsibility**: Each service has one clear, focused purpose
+- **Service Size**: All services under 150 lines (most under 100)
+- **Interface-Based**: Services use interfaces for better testability and flexibility
+- **Constructor Injection**: All dependencies injected via constructor (using @RequiredArgsConstructor)
+- **Facade Pattern**: Complex subsystems exposed through simplified facades
+
+### Service Organization
+
+**Orchestration Services** (workflow coordination):
+- **ImageOrchestrationService**: Manages parallel image generation for all story pages
+- **AudioOrchestrationService**: Handles batched audio generation with throttling (max 3 concurrent)
+- **StoryAssemblyService**: Combines generated assets into complete story with metadata
+- **ProgressCoordinatorService**: Centralizes all progress notifications via WebSocket
+
+**Tracking Services** (API cost monitoring):
+- **ApiTrackingFacade**: Provides unified API for all tracking operations
+- **ApiConfigurationService**: Manages API pricing configuration persistence
+- **ApiLogService**: Handles log file CRUD operations
+- **ApiStatisticsService**: Calculates aggregated usage statistics
+- **CostCalculationService**: Computes costs for different API providers
+
+### Example: Story Orchestration Refactoring
+
+**Before** (197 lines):
+- Mixed image generation, audio generation, story assembly, and progress notifications
+- Complex async workflow with nested CompletableFutures
+- Difficult to test and maintain
+
+**After** (80 lines):
+- Delegates to specialized orchestration services
+- Maintains async workflow coordination
+- Each service is focused and testable
+- Clear separation of concerns
+
+**Benefits**:
+- Each service is focused and testable
+- Easier to modify individual generation phases
+- Better error handling and logging
+- Improved code readability
+
+### Dependency Injection Best Practices
+
+All services use constructor-based dependency injection with Lombok's `@RequiredArgsConstructor`:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class ImageOrchestrationServiceImpl implements ImageOrchestrationService {
+    private final ImageGenerationService imageGenerationService;
+    private final FileStorageService fileStorageService;
+    private final ProgressCoordinatorService progressCoordinator;
+    
+    // Methods use injected dependencies
+}
+```
+
+**Why Constructor Injection?**
+- Makes dependencies explicit and required
+- Enables immutability (final fields)
+- Better for testing (no reflection needed)
+- Prevents NullPointerException from missing dependencies
+- Recommended by Spring team as best practice
+
+**Never use @Autowired**: Field injection is discouraged in favor of constructor injection.
 
 ## Technology Stack
 
 - **Spring Boot 3.5.0**: Application framework
 - **Spring AI 1.0.0-M4**: AI service integration
-  - Spring AI Anthropic (Claude integration)
-  - Spring AI Stability AI (Stability AI image generation)
+    - Spring AI Anthropic (Claude integration)
+    - Spring AI Stability AI (Stability AI image generation)
 - **java-dotenv**: Environment variable loading from .env files
 - **RestClient**: Spring's HTTP client (with custom timeout configuration)
 - **Jackson**: JSON processing
@@ -306,6 +403,7 @@ All exceptions are handled by `GlobalExceptionHandler` which returns consistent 
 The `AudioGenerationService` has been migrated from OkHttp to Spring's RestClient:
 
 **Benefits**:
+
 - Consistent HTTP client usage across all services
 - Simplified code with Spring's fluent API
 - Better integration with Spring's timeout configuration
@@ -313,12 +411,14 @@ The `AudioGenerationService` has been migrated from OkHttp to Spring's RestClien
 - Improved error handling with `AudioGenerationException`
 
 **Implementation Changes**:
+
 - Uses `RestClient.Builder` for HTTP calls to ElevenLabs API
 - Constructor injection with `@RequiredArgsConstructor` (follows best practices)
 - Proper exception handling with custom `AudioGenerationException`
 - Cleaner code with immutable `Map.of()` for request bodies
 
 **API Compatibility**:
+
 - The service interface remains unchanged
 - `generateNarration(String text)` returns `CompletableFuture<byte[]>`
 - `generateSoundEffect(String effectDescription)` returns `CompletableFuture<byte[]>`
@@ -329,17 +429,20 @@ The `AudioGenerationService` has been migrated from OkHttp to Spring's RestClien
 The `ImageGenerationService` has been migrated from direct OkHttp API calls to Spring AI's Stability AI integration:
 
 **Benefits**:
+
 - Simplified code with Spring AI abstractions
 - Better error handling and retry logic
 - Consistent configuration with other AI services
 - Automatic base64 decoding of image responses
 
 **Configuration Changes**:
+
 - Now uses `spring.ai.stabilityai.*` configuration in `application.yml`
 - Legacy `api.stability.*` configuration is kept for reference but not used
 - Image generation options (width, height, cfg-scale, steps, style-preset) are now configured under `spring.ai.stabilityai.image.options`
 
 **API Compatibility**:
+
 - The service interface remains unchanged
 - `generateImage(String prompt, int seed)` returns `CompletableFuture<byte[]>`
 - `generateImageWithRetry(String prompt, int seed, int maxRetries)` provides retry logic with exponential backoff

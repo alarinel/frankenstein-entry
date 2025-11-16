@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 interface SpookyCardProps {
   children: ReactNode;
   className?: string;
   glowColor?: 'purple' | 'orange' | 'green';
+  style?: CSSProperties;
 }
 
-export const SpookyCard = ({ children, className = '', glowColor = 'purple' }: SpookyCardProps) => {
+export const SpookyCard = ({ children, className = '', glowColor = 'purple', style }: SpookyCardProps) => {
   const glowColors = {
     purple: 'shadow-glow-purple hover:shadow-glow-purple',
     orange: 'shadow-glow-orange hover:shadow-glow-orange',
@@ -26,6 +27,7 @@ export const SpookyCard = ({ children, className = '', glowColor = 'purple' }: S
         transition-all duration-300
         ${className}
       `}
+      style={style}
       whileHover={{ scale: 1.02, y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >

@@ -108,7 +108,11 @@ class StoryOrchestrationServiceTest {
                                                                              .mood("exciting")
                                                                              .build();
 
-      final StoryStructure storyStructure = StoryStructure.builder().title("Luna's Adventure").imageSeed(12345).pages(Arrays.asList(page1, page2)).build();
+      final StoryStructure storyStructure = StoryStructure.builder()
+                                                          .title("Luna's Adventure")
+                                                          .imageSeed(12345)
+                                                          .pages(Arrays.asList(page1, page2))
+                                                          .build();
 
       final byte[] mockImageData = "mock-image-data".getBytes();
       final byte[] mockAudioData = "mock-audio-data".getBytes();
@@ -167,7 +171,11 @@ class StoryOrchestrationServiceTest {
                                                                             .mood("test")
                                                                             .build();
 
-      final StoryStructure storyStructure = StoryStructure.builder().title("Test Story").imageSeed(12345).pages(Collections.singletonList(page)).build();
+      final StoryStructure storyStructure = StoryStructure.builder()
+                                                          .title("Test Story")
+                                                          .imageSeed(12345)
+                                                          .pages(Collections.singletonList(page))
+                                                          .build();
 
       final byte[] mockData = "mock-data".getBytes();
 

@@ -226,3 +226,62 @@ Added new section to `.kiro/steering/guidelines.md`:
 
 **Status**: ✅ Components created, ready to integrate
 **Next**: Refactor ReadingPage.tsx to use new components
+
+
+---
+
+## Performance Optimization (November 15, 2025)
+
+### Animation Refactoring
+
+**Change**: Replaced Framer Motion animations with CSS transitions for simple UI elements in `ReadingPage.tsx`
+
+**Affected Elements**:
+1. **Navigation button container** - Removed `motion.div` wrapper
+2. **Progress bar** - Changed from `motion.div` with spring animation to CSS `transition-all duration-300`
+
+**Rationale**:
+- CSS transitions are more performant for simple animations
+- Reduces JavaScript overhead
+- Maintains smooth visual experience
+- Framer Motion still used for complex page transitions where its power is needed
+
+**Performance Impact**:
+- Lighter component rendering
+- Reduced re-render cost
+- Better frame rates on lower-end devices
+- Smaller bundle size (less Framer Motion usage)
+
+**Code Changes**:
+```typescript
+// Before: Framer Motion
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+>
+  {/* buttons */}
+</motion.div>
+
+// After: Simple div (buttons have their own animations)
+<div>
+  {/* buttons */}
+</div>
+
+// Before: Animated progress bar
+<motion.div
+  animate={{ width: `${progress}%` }}
+  transition={{ duration: 0.5, type: 'spring' }}
+/>
+
+// After: CSS transition
+<div
+  className="transition-all duration-300"
+  style={{ width: `${progress}%` }}
+/>
+```
+
+**Philosophy**: Use the right tool for the job
+- **CSS transitions**: Simple property changes (width, opacity, position)
+- **Framer Motion**: Complex orchestrated animations (page flips, sequences)
+- **GSAP**: Timeline-based animations (loading screens)
+- **Three.js**: 3D transformations (book depth effect)

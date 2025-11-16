@@ -32,7 +32,10 @@
         "ctx7sk-d3185438-d407-4cca-9f5b-0d5d782757e0"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
     }
   }
 }

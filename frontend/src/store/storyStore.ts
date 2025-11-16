@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Story, StoryInput, GenerationProgress, StoryStatus } from '@/types';
+import { Story, StoryInput, GenerationProgress } from '@/types';
 
 interface StoryStore {
   currentStory: Story | null;

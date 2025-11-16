@@ -4,31 +4,7 @@
   "description": "Watches all source files (*.ts, *.js, *.py, *.go, *.java, *.rs, *.cpp, *.c, *.h, etc.) and configuration files in the repository. When changes are detected, triggers documentation updates in README.md or docs/ folder to keep documentation in sync with code changes.",
   "version": "1",
   "when": {
-    "type": "fileEdited",
-    "patterns": [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.py",
-      "**/*.go",
-      "**/*.java",
-      "**/*.rs",
-      "**/*.cpp",
-      "**/*.c",
-      "**/*.h",
-      "**/*.hpp",
-      "**/*.rb",
-      "**/*.php",
-      "**/*.swift",
-      "**/*.kt",
-      "package.json",
-      "pyproject.toml",
-      "Cargo.toml",
-      "go.mod",
-      "pom.xml",
-      "build.gradle"
-    ]
+    "type": "userTriggered"
   },
   "then": {
     "type": "askAgent",

@@ -57,21 +57,21 @@ class StoryGenerationServiceTest {
                                          .build();
 
       final String mockResponse = """
-                            ```json
-                            {
-                              "title": "Luna's Magical Adventure",
-                              "pages": [
-                                {
-                                  "pageNumber": 1,
-                                  "text": "Luna lived in an enchanted forest.",
-                                  "imagePrompt": "A brave young girl in a magical forest",
-                                  "soundEffects": ["forest_ambience"],
-                                  "mood": "peaceful"
-                                }
-                              ]
-                            }
-                            ```
-                            """;
+                                  ```json
+                                  {
+                                    "title": "Luna's Magical Adventure",
+                                    "pages": [
+                                      {
+                                        "pageNumber": 1,
+                                        "text": "Luna lived in an enchanted forest.",
+                                        "imagePrompt": "A brave young girl in a magical forest",
+                                        "soundEffects": ["forest_ambience"],
+                                        "mood": "peaceful"
+                                      }
+                                    ]
+                                  }
+                                  ```
+                                  """;
 
       when(chatModel.call(any(Prompt.class))).thenReturn(chatResponse);
       when(chatResponse.getResult()).thenReturn(generation);
@@ -150,11 +150,11 @@ class StoryGenerationServiceTest {
                                          .build();
 
       final String mockResponse = """
-                            {
-                              "title": "Test Story",
-                              "pages": []
-                            }
-                            """;
+                                  {
+                                    "title": "Test Story",
+                                    "pages": []
+                                  }
+                                  """;
 
       when(chatModel.call(any(Prompt.class))).thenReturn(chatResponse);
       when(chatResponse.getResult()).thenReturn(generation);

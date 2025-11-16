@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
   characterNameSuggestions,
   settingSuggestions,
@@ -8,6 +9,17 @@ import {
   timePeriodSuggestions,
   moodSuggestions,
 } from '@/utils/suggestions';
+
+export const STORY_SCHEMA = z.object({
+  characterName: z.string().min(1, 'Character name is required').max(50),
+  setting: z.string().min(1, 'Setting is required').max(100),
+  villain: z.string().min(1, 'Villain is required').max(50),
+  specialItem: z.string().min(1, 'Special item is required').max(50),
+  characterTrait: z.string().min(1, 'Character trait is required').max(50),
+  goal: z.string().min(1, 'Goal is required').max(100),
+  timePeriod: z.string().min(1, 'Time period is required').max(50),
+  mood: z.string().min(1, 'Mood is required').max(50),
+});
 
 export const FORM_FIELDS = [
   {

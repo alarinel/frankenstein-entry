@@ -56,12 +56,12 @@ public class FrankensteinApplication {
 
       SpringApplication.run(FrankensteinApplication.class, args);
    }
-   
+
    private static void initializeApiTracking() {
       try {
          java.nio.file.Files.createDirectories(java.nio.file.Paths.get("storage/api-tracking"));
          System.out.println("✓ API tracking initialized");
-      } catch (Exception e) {
+      } catch (final Exception e) {
          System.out.println("⚠ Failed to initialize API tracking: " + e.getMessage());
       }
    }

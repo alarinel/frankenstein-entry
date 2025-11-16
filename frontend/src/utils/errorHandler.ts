@@ -135,7 +135,7 @@ export class ErrorHandler {
   }
 
   static logError(error: any, context?: string) {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.group(`Error ${context ? `in ${context}` : ''}`);
       console.error(error);
       console.groupEnd();

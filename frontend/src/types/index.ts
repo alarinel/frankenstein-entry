@@ -83,3 +83,8 @@ export interface AudioPlaybackState {
   currentTime: number;
   duration: number;
 }
+
+// Re-export specialized type modules
+export * from './forms';
+export * from './reading';
+export * from './admin';

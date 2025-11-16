@@ -50,7 +50,10 @@ public class AudioGenerationService {
                   "voice_settings",
                   Map.of("stability", stability, "similarity_boost", similarityBoost));
 
-            final RestClient client = restClientBuilder.baseUrl(apiUrl).defaultHeader("xi-api-key", apiKey).defaultHeader("Accept", "audio/mpeg").build();
+            final RestClient client = restClientBuilder.baseUrl(apiUrl)
+                                                       .defaultHeader("xi-api-key", apiKey)
+                                                       .defaultHeader("Accept", "audio/mpeg")
+                                                       .build();
 
             final byte[] audioData = client.post()
                                            .uri("/text-to-speech/{voiceId}", voiceId)
@@ -88,7 +91,10 @@ public class AudioGenerationService {
                   "voice_settings",
                   Map.of("stability", 0.3, "similarity_boost", 0.5));
 
-            final RestClient client = restClientBuilder.baseUrl(apiUrl).defaultHeader("xi-api-key", apiKey).defaultHeader("Accept", "audio/mpeg").build();
+            final RestClient client = restClientBuilder.baseUrl(apiUrl)
+                                                       .defaultHeader("xi-api-key", apiKey)
+                                                       .defaultHeader("Accept", "audio/mpeg")
+                                                       .build();
 
             final byte[] audioData = client.post()
                                            .uri("/text-to-speech/{voiceId}", voiceId)

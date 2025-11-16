@@ -500,7 +500,9 @@ npm run build
   - Audio streaming
   - Asset lazy loading
   - GPU-accelerated animations
+  - CSS transitions for simple animations (progress bars, buttons)
   - Memoized components for text highlighting
+  - Selective use of Framer Motion for complex transitions only
 
 ## 🔒 Security
 
@@ -579,7 +581,25 @@ frankenstein/
 │   ├── src/main/java/         # Java source code
 │   │   ├── controller/       # REST endpoints (Story, Asset, Admin)
 │   │   ├── service/          # Business logic & API tracking
+│   │   │   ├── orchestration/    # Story generation orchestration services
+│   │   │   │   ├── ImageOrchestrationService       # Parallel image generation
+│   │   │   │   ├── AudioOrchestrationService       # Batched audio generation
+│   │   │   │   ├── StoryAssemblyService            # Story assembly from assets
+│   │   │   │   └── ProgressCoordinatorService      # Progress notifications
+│   │   │   ├── tracking/         # API tracking and cost management
+│   │   │   │   ├── ApiTrackingFacade               # Unified tracking API
+│   │   │   │   ├── ApiConfigurationService         # Configuration management
+│   │   │   │   ├── ApiLogService                   # Log file operations
+│   │   │   │   ├── ApiStatisticsService            # Usage statistics
+│   │   │   │   └── CostCalculationService          # Cost calculations
+│   │   │   ├── StoryOrchestrationService   # Main workflow coordinator
+│   │   │   ├── StoryGenerationService      # Claude integration
+│   │   │   ├── ImageGenerationService      # Stability AI integration
+│   │   │   ├── AudioGenerationService      # ElevenLabs integration
+│   │   │   ├── FileStorageService          # File I/O operations
+│   │   │   └── ProgressNotificationService # WebSocket updates
 │   │   ├── model/            # Data models & DTOs
+│   │   │   └── orchestration/    # Orchestration-specific models
 │   │   ├── config/           # Spring configuration
 │   │   └── exception/        # Error handling
 │   ├── src/main/resources/    # Configuration files
@@ -587,8 +607,41 @@ frankenstein/
 ├── frontend/                   # React TypeScript application
 │   ├── src/                   # Source code
 │   │   ├── pages/            # Route components (Input, Loading, Reading, Completion, Admin)
-│   │   ├── components/       # Reusable components (including HighlightedWord)
+│   │   ├── components/       # Reusable components
+│   │   │   ├── forms/            # Form-related components
+│   │   │   │   ├── StoryFormField          # Individual form field
+│   │   │   │   ├── FormProgressIndicator   # Progress visualization
+│   │   │   │   ├── SuggestionChips         # Quick suggestions
+│   │   │   │   └── FormNavigation          # Step navigation
+│   │   │   ├── reading/          # Reading page components
+│   │   │   │   ├── PlaybackControls        # Play/pause controls
+│   │   │   │   ├── AudioProgressDisplay    # Progress bar
+│   │   │   │   ├── TextHighlightDisplay    # Synchronized text
+│   │   │   │   ├── PageNavigationButtons   # Page controls
+│   │   │   │   └── PlayPromptOverlay       # Start prompt
+│   │   │   ├── admin/            # Admin dashboard components
+│   │   │   │   ├── StatisticsCards         # API statistics
+│   │   │   │   ├── ConfigurationEditor     # Config management
+│   │   │   │   ├── LogsTable               # API logs table
+│   │   │   │   └── LogsActions             # Bulk operations
+│   │   │   ├── completion/       # Completion page components
+│   │   │   │   ├── CelebrationEffects      # Animations
+│   │   │   │   └── CompletionActions       # Action buttons
+│   │   │   ├── shared/           # Shared component library
+│   │   │   │   ├── buttons/          # Button components
+│   │   │   │   ├── cards/            # Card components
+│   │   │   │   ├── indicators/       # Progress/status indicators
+│   │   │   │   └── overlays/         # Modal/overlay components
+│   │   │   └── spooky/           # Themed UI components
 │   │   ├── hooks/            # Custom hooks
+│   │   │   ├── forms/            # Form-related hooks
+│   │   │   ├── reading/          # Reading page hooks
+│   │   │   ├── admin/            # Admin dashboard hooks
+│   │   │   └── shared/           # Shared utility hooks
+│   │   ├── types/            # TypeScript type definitions
+│   │   │   ├── forms.ts          # Form types
+│   │   │   ├── reading.ts        # Reading types
+│   │   │   └── admin.ts          # Admin types
 │   │   ├── store/            # State management
 │   │   ├── api/              # Backend communication
 │   │   └── utils/            # Helper functions
@@ -599,9 +652,72 @@ frankenstein/
 │   └── api-config.json       # API pricing configuration
 ├── .kiro/                     # Kiro AI configuration
 │   ├── hooks/                # Agent hooks
+│   ├── specs/                # Feature specifications
+│   │   └── code-refactoring/ # Refactoring documentation
 │   └── steering/             # Development guidelines
 └── README.md                  # This file
 ```
+
+## 🏗️ Code Refactoring & Architecture
+
+This project underwent a comprehensive refactoring to improve maintainability, testability, and code organization. The refactoring followed the Single Responsibility Principle and component size guidelines (maximum 200 lines per component).
+
+### Frontend Refactoring
+
+**Before**: Monolithic page components (300-400+ lines)
+**After**: Focused components (< 200 lines each)
+
+#### Component Organization
+
+- **Forms**: Extracted form fields, progress indicators, suggestions, and navigation into separate components
+- **Reading**: Split audio controls, text display, progress bars, and overlays into focused components
+- **Admin**: Separated statistics, configuration, logs table, and actions into individual components
+- **Shared Library**: Created reusable button, card, indicator, and overlay components used across pages
+
+#### Custom Hooks
+
+- **useStoryFormState**: Form state management and step navigation
+- **useCountdownTimer**: Countdown logic for auto-advance
+- **useAdminData**: Admin dashboard data fetching
+- **useKeyboardNavigation**: Configurable keyboard event handling
+
+### Backend Refactoring
+
+**Before**: Large orchestration and tracking services (200+ lines)
+**After**: Focused services with clear responsibilities (< 150 lines each)
+
+#### Service Organization
+
+**Orchestration Services** (parallel processing and workflow coordination):
+- **ImageOrchestrationService**: Manages parallel image generation
+- **AudioOrchestrationService**: Handles batched audio generation with throttling
+- **StoryAssemblyService**: Combines generated assets into complete story
+- **ProgressCoordinatorService**: Centralizes progress notifications
+
+**Tracking Services** (API cost monitoring and configuration):
+- **ApiTrackingFacade**: Provides unified API for tracking operations
+- **ApiConfigurationService**: Manages configuration persistence
+- **ApiLogService**: Handles log file operations
+- **ApiStatisticsService**: Calculates usage statistics
+- **CostCalculationService**: Computes API costs
+
+### Benefits
+
+- **Maintainability**: Smaller, focused components are easier to understand and modify
+- **Testability**: Isolated components and services are easier to unit test
+- **Reusability**: Shared components reduce code duplication
+- **Performance**: Optimized components with memoization and efficient rendering
+- **Developer Experience**: Clear file organization and barrel exports for clean imports
+
+### Documentation
+
+All refactored components and services include:
+- JSDoc/JavaDoc comments explaining purpose and usage
+- Parameter documentation with types
+- Usage examples where appropriate
+- @author attribution for all Java classes
+
+For detailed refactoring documentation, see `.kiro/specs/code-refactoring/`.
 
 ## 🔄 Development Journey: How This Project Came Together
 

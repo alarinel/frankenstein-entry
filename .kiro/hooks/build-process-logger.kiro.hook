@@ -4,16 +4,7 @@
   "description": "Logs each interaction and change to BUILD_PROCESS.md to document the development journey",
   "version": "1",
   "when": {
-    "type": "fileEdited",
-    "patterns": [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.java",
-      "**/*.yml",
-      "**/*.yaml",
-      "**/*.json",
-      "**/*.md"
-    ]
+    "type": "userTriggered"
   },
   "then": {
     "type": "askAgent",

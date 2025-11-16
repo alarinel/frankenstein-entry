@@ -126,16 +126,46 @@ export const LoadingPage = () => {
       <LightningEffect />
 
       {/* Decorative corners */}
-      <div className="absolute top-4 left-4 text-5xl animate-float-slow">🕯️</div>
-      <div className="absolute top-4 right-4 text-5xl animate-float" style={{ animationDelay: '0.5s' }}>
+      <div 
+        className="absolute animate-float-slow"
+        style={{ 
+          top: 'clamp(0.75rem, 2vh, 1.25rem)',
+          left: 'clamp(0.75rem, 2vw, 1.25rem)',
+          fontSize: 'clamp(2rem, 4vw, 2.5rem)'
+        }}
+      >🕯️</div>
+      <div 
+        className="absolute animate-float" 
+        style={{ 
+          animationDelay: '0.5s',
+          top: 'clamp(0.75rem, 2vh, 1.25rem)',
+          right: 'clamp(0.75rem, 2vw, 1.25rem)',
+          fontSize: 'clamp(2rem, 4vw, 2.5rem)'
+        }}
+      >
         🔮
       </div>
-      <div className="absolute bottom-4 left-4 text-5xl animate-bounce-subtle">⚗️</div>
-      <div className="absolute bottom-4 right-4 text-5xl animate-bounce-subtle" style={{ animationDelay: '0.7s' }}>
+      <div 
+        className="absolute animate-bounce-subtle"
+        style={{ 
+          bottom: 'clamp(0.75rem, 2vh, 1.25rem)',
+          left: 'clamp(0.75rem, 2vw, 1.25rem)',
+          fontSize: 'clamp(2rem, 4vw, 2.5rem)'
+        }}
+      >⚗️</div>
+      <div 
+        className="absolute animate-bounce-subtle" 
+        style={{ 
+          animationDelay: '0.7s',
+          bottom: 'clamp(0.75rem, 2vh, 1.25rem)',
+          right: 'clamp(0.75rem, 2vw, 1.25rem)',
+          fontSize: 'clamp(2rem, 4vw, 2.5rem)'
+        }}
+      >
         📜
       </div>
 
-      <div className="max-w-3xl w-full text-center z-10">
+      <div className="w-full text-center z-10" style={{ maxWidth: 'min(90vw, 900px)', padding: '0 clamp(1rem, 3vw, 2rem)' }}>
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -179,11 +209,22 @@ export const LoadingPage = () => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -20 }}
-              className="mb-6 inline-block"
+              style={{ marginBottom: 'clamp(1rem, 2vh, 1.5rem)' }}
+              className="inline-block"
             >
-              <div className={`px-6 py-3 bg-gradient-to-r ${getStageColor(generationProgress.status)} rounded-full shadow-lg shadow-spooky-purple-500/50 backdrop-blur-sm`}>
-                <span className="text-3xl mr-3">{getStageEmoji(generationProgress.status)}</span>
-                <span className="text-white font-fun font-bold text-lg">
+              <div 
+                className={`bg-gradient-to-r ${getStageColor(generationProgress.status)} rounded-full shadow-lg shadow-spooky-purple-500/50 backdrop-blur-sm`}
+                style={{ 
+                  padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.25rem)'
+                }}
+              >
+                <span style={{ fontSize: 'clamp(1.5rem, 2.5vw, 1.75rem)', marginRight: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
+                  {getStageEmoji(generationProgress.status)}
+                </span>
+                <span 
+                  className="text-white font-fun font-bold"
+                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)' }}
+                >
                   {generationProgress.stage}
                 </span>
               </div>
@@ -192,8 +233,11 @@ export const LoadingPage = () => {
         </AnimatePresence>
 
         {/* Progress Bar */}
-        <div className="mb-6 max-w-xl mx-auto">
-          <div className="h-4 bg-dark-800/80 rounded-full overflow-hidden border-2 border-spooky-purple-600/30 relative shadow-inner">
+        <div className="mx-auto" style={{ marginBottom: 'clamp(1rem, 2vh, 1.5rem)', maxWidth: 'min(95%, 600px)' }}>
+          <div 
+            className="bg-dark-800/80 rounded-full overflow-hidden border-2 border-spooky-purple-600/30 relative shadow-inner"
+            style={{ height: 'clamp(10px, 1.2vh, 14px)' }}
+          >
             <motion.div
               className={`h-full bg-gradient-to-r ${getStageColor(generationProgress?.status || StoryStatus.PENDING)}`}
               initial={{ width: 0 }}
@@ -208,8 +252,11 @@ export const LoadingPage = () => {
             {/* Sparkles on progress bar */}
             {generationProgress && generationProgress.progressPercentage > 0 && (
               <motion.div
-                className="absolute top-1/2 transform -translate-y-1/2 text-xl"
-                style={{ left: `${generationProgress.progressPercentage}%` }}
+                className="absolute top-1/2 transform -translate-y-1/2"
+                style={{ 
+                  left: `${generationProgress.progressPercentage}%`,
+                  fontSize: 'clamp(1rem, 2vw, 1.25rem)'
+                }}
                 animate={{
                   scale: [1, 1.5, 1],
                   rotate: [0, 180, 360],
@@ -221,7 +268,11 @@ export const LoadingPage = () => {
             )}
           </div>
           <motion.p
-            className="text-spooky-purple-300 text-lg font-fun font-semibold mt-3"
+            className="text-spooky-purple-300 font-fun font-semibold"
+            style={{ 
+              marginTop: 'clamp(0.5rem, 1.5vh, 0.75rem)',
+              fontSize: 'clamp(1rem, 2vw, 1.125rem)'
+            }}
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -312,7 +363,13 @@ export const LoadingPage = () => {
         )}
 
         {/* Stage Steps Indicator */}
-        <div className="mt-12 flex justify-center gap-3">
+        <div 
+          className="flex justify-center flex-wrap"
+          style={{ 
+            marginTop: 'clamp(2rem, 4vh, 2.5rem)',
+            gap: 'clamp(0.75rem, 2vw, 1rem)'
+          }}
+        >
           {[
             { status: StoryStatus.GENERATING_STORY, emoji: '📝', label: 'Story' },
             { status: StoryStatus.GENERATING_IMAGES, emoji: '🎨', label: 'Images' },
@@ -328,24 +385,35 @@ export const LoadingPage = () => {
             return (
               <motion.div
                 key={stage.status}
-                className={`flex flex-col items-center gap-2 transition-all ${
+                className={`flex flex-col items-center transition-all ${
                   isActive || isPast ? 'opacity-100' : 'opacity-30'
                 }`}
+                style={{ gap: 'clamp(0.25rem, 0.75vh, 0.5rem)' }}
                 animate={isActive ? { scale: [1, 1.1, 1] } : {}}
                 transition={{ duration: 1, repeat: isActive ? Infinity : 0 }}
               >
                 <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl border-2 ${
+                  className={`rounded-full flex items-center justify-center border-2 ${
                     isPast
                       ? 'bg-spooky-green-600 border-spooky-green-400'
                       : isActive
                       ? 'bg-spooky-purple-600 border-spooky-purple-400 shadow-lg shadow-spooky-purple-500/50'
                       : 'bg-dark-800 border-dark-700'
                   }`}
+                  style={{ 
+                    width: 'clamp(3rem, 6vw, 3.5rem)',
+                    height: 'clamp(3rem, 6vw, 3.5rem)',
+                    fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)'
+                  }}
                 >
                   {isPast ? '✅' : stage.emoji}
                 </div>
-                <span className="text-xs text-gray-400 font-fun">{stage.label}</span>
+                <span 
+                  className="text-gray-400 font-fun"
+                  style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}
+                >
+                  {stage.label}
+                </span>
               </motion.div>
             );
           })}

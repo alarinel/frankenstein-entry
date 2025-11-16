@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -104,7 +105,7 @@ public class FileStorageService {
                log.warn("Failed to load story from: {}", dir, e);
                return null;
             }
-         }).filter(story -> story != null).collect(Collectors.toList());
+         }).filter(Objects::nonNull).collect(Collectors.toList());
       } catch (final IOException e) {
          log.error("Failed to list stories", e);
          return new ArrayList<>();
