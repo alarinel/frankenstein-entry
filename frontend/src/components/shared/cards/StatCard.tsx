@@ -21,16 +21,14 @@ export const StatCard = ({
   className = '',
 }: StatCardProps) => {
   return (
-    <motion.div
-      className={`bg-dark-800/80 rounded-lg p-6 ${className}`}
-      whileHover={{ scale: 1.02, y: -2 }}
-      transition={{ type: 'spring', stiffness: 300 }}
+    <div
+      className={`bg-dark-800/80 rounded-lg p-6 transition-transform duration-200 hover:scale-[1.01] ${className}`}
     >
       <div className="text-gray-400 text-sm mb-2 flex items-center gap-2">
         {icon && <span>{icon}</span>}
         <span>{label}</span>
       </div>
       <div className={`text-3xl font-bold ${valueColor}`}>{value}</div>
-    </motion.div>
+    </div>
   );
 };

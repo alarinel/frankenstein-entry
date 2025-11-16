@@ -115,7 +115,7 @@ public class StoryGenerationService {
    }
 
    private static final String PROMPT_TEMPLATE = """
-                                                 You are a creative children's story writer. Generate an engaging, age-appropriate children's story with the following elements:
+                                                 You are a master children's story writer in the tradition of classic fairy tales. Create a rich, engaging story with the following elements:
                                                  
                                                  Story Elements:
                                                  - Main Character: %s
@@ -127,25 +127,43 @@ public class StoryGenerationService {
                                                  - Time Period: %s
                                                  - Overall Mood: %s
                                                  
-                                                 Requirements:
-                                                 1. Create exactly %d pages
-                                                 2. Each page should have 2-3 sentences of story text (child-friendly, engaging)
-                                                 3. For each page, provide a detailed image prompt optimized for Stability AI's SDXL model
-                                                 4. For each page, list 1-3 sound effects that would enhance that scene
-                                                 5. Specify the mood/atmosphere for each page
-                                                 6. Make the story have a clear beginning, middle, and satisfying ending
-                                                 7. Keep language appropriate for children ages 5-10
+                                                 Story Structure (Classic Fairy Tale Format):
+                                                 Follow this proven narrative arc across exactly %d pages:
+                                                 
+                                                 1. INTRODUCTION (Pages 1-2): Establish the character, their world, and what makes them special. Use phrases like "Once upon a time" or "Long ago." Show their ordinary life and relationships. Introduce the special item naturally.
+                                                 
+                                                 2. CALL TO ADVENTURE (Page 3): Present the goal/quest and why it matters. Show what's at stake. The character decides to embark on their journey.
+                                                 
+                                                 3. JOURNEY & CHALLENGES (Pages 4-5): The character travels through the setting, encounters obstacles, and meets the villain. Show how their special trait helps them. Build tension and suspense.
+                                                 
+                                                 4. CLIMAX (Page 6): The confrontation with the villain. The character uses their trait and special item cleverly. The most exciting moment of the story.
+                                                 
+                                                 5. RESOLUTION (Page 7): The immediate aftermath. The villain is defeated, the goal is achieved. Show the character's growth.
+                                                 
+                                                 6. HAPPY ENDING (Page 8): Return home or new beginning. Lessons learned. End with "happily ever after" or similar closure. Show how the character has changed.
+                                                 
+                                                 Writing Guidelines:
+                                                 - Use rich, descriptive language with sensory details (sights, sounds, feelings)
+                                                 - Include dialogue to bring characters to life
+                                                 - Each page should have 3-5 sentences (not just 2-3) to allow proper storytelling
+                                                 - Use varied sentence structure and pacing
+                                                 - Show emotions and reactions, not just actions
+                                                 - Create memorable, quotable moments
+                                                 - Build atmosphere and mood through description
+                                                 - Make the villain interesting and the hero relatable
+                                                 - Age-appropriate for children 5-10, but don't talk down to them
                                                  
                                                  Image Prompt Guidelines:
-                                                 - Be very specific and detailed
-                                                 - Include art style (e.g., "fantasy art", "watercolor", "digital painting")
-                                                 - Describe lighting, colors, composition
-                                                 - Mention the character by name and appearance
-                                                 - Keep prompts focused and coherent
+                                                 - Highly detailed and specific for Stability AI SDXL
+                                                 - Include: art style (storybook illustration, watercolor, digital painting), lighting (warm sunset, moonlight, bright morning), colors, composition, character appearance and expression
+                                                 - Describe the scene's emotional tone visually
+                                                 - Maintain visual consistency across pages (same character appearance, art style)
+                                                 - Example: "Storybook watercolor illustration of [character name], a brave young [description], standing in [setting] with [lighting]. [Character] wears [clothing] and holds [item]. [Mood] atmosphere with [colors]. Fantasy art style, detailed, child-friendly."
                                                  
                                                  Sound Effect Guidelines:
-                                                 - Use simple, descriptive names (e.g., "thunder_rumble", "door_creak", "magic_sparkle")
-                                                 - Choose effects that match the scene's action
+                                                 - 1-3 effects per page that enhance immersion
+                                                 - Use descriptive names: "thunder_rumble", "door_creak", "magic_sparkle", "footsteps_forest", "wind_howling"
+                                                 - Match the scene's action and mood
                                                  
                                                  Return your response as a JSON object with this EXACT structure:
                                                  {
@@ -154,8 +172,8 @@ public class StoryGenerationService {
                                                    "pages": [
                                                      {
                                                        "pageNumber": 1,
-                                                       "text": "The story text for this page...",
-                                                       "imagePrompt": "Detailed prompt for Stability AI...",
+                                                       "text": "The story text for this page (3-5 sentences with rich detail)...",
+                                                       "imagePrompt": "Highly detailed prompt for Stability AI SDXL...",
                                                        "soundEffects": ["effect1", "effect2"],
                                                        "mood": "mysterious"
                                                      }

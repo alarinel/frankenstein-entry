@@ -23,8 +23,6 @@ export const FormProgressIndicator = ({
   watch,
   onStepClick,
 }: FormProgressIndicatorProps) => {
-  const progressPercentage = Math.round(((currentStep + 1) / totalSteps) * 100);
-
   // Map fields to steps for StepIndicator
   const steps = fields.map((field) => {
     const fieldValue = watch(field.name);
@@ -34,6 +32,10 @@ export const FormProgressIndicator = ({
       completed: !!(fieldValue && fieldValue.trim()),
     };
   });
+
+  // Calculate progress based on completed fields, not current step
+  const completedFields = steps.filter(step => step.completed).length;
+  const progressPercentage = Math.round((completedFields / totalSteps) * 100);
 
   return (
     <motion.div

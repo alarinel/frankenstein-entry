@@ -37,8 +37,7 @@ export const ContentCard = ({
         ${glowColors[glowColor]}
         ${className}
       `}
-      whileHover={hoverable ? { scale: 1.02, y: -5 } : {}}
-      transition={{ type: 'spring', stiffness: 300 }}
+      className={hoverable ? 'hover:scale-[1.01] transition-transform duration-200' : ''}
     >
       {children}
     </motion.div>

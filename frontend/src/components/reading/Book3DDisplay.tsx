@@ -21,7 +21,7 @@ export const Book3DDisplay = ({
 }: Book3DDisplayProps) => {
   return (
     <motion.div
-      className="relative"
+      className="relative z-20"
       style={{
         perspective: '3000px',
         perspectiveOrigin: 'center bottom',

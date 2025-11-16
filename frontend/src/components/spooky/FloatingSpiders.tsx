@@ -13,16 +13,11 @@ export const FloatingSpiders = ({ count = 4 }: FloatingSpidersProps) => {
   const spiders = useMemo(() => {
     return Array.from({ length: count }, (_, i) => ({
       id: i,
-      // Alternate between top-to-bottom and bottom-to-top
       startY: i % 2 === 0 ? -10 : 110,
       endY: i % 2 === 0 ? 110 : -10,
-      // Random horizontal position
       x: Math.random() * 100,
-      // Stagger delays
-      delay: i * 3,
-      // Random duration between 15-25 seconds
-      duration: 15 + Math.random() * 10,
-      // Random size
+      delay: i * 4, // Increased stagger
+      duration: 20 + Math.random() * 10, // Slower: 20-30s instead of 15-25s
       size: 0.8 + Math.random() * 0.6,
     }));
   }, [count]);
@@ -32,7 +27,7 @@ export const FloatingSpiders = ({ count = 4 }: FloatingSpidersProps) => {
       {spiders.map((spider) => (
         <motion.div
           key={spider.id}
-          className="absolute"
+          className="absolute will-change-transform"
           style={{
             left: `${spider.x}%`,
             fontSize: `${spider.size}rem`,
@@ -44,7 +39,6 @@ export const FloatingSpiders = ({ count = 4 }: FloatingSpidersProps) => {
           animate={{
             y: `${spider.endY}vh`,
             opacity: [0, 0.7, 0.7, 0],
-            rotate: [0, 10, -10, 0],
           }}
           transition={{
             duration: spider.duration,
@@ -56,30 +50,7 @@ export const FloatingSpiders = ({ count = 4 }: FloatingSpidersProps) => {
             },
           }}
         >
-          <motion.div
-            animate={{
-              // Slight swinging motion
-              x: [0, 5, -5, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            🕷️
-          </motion.div>
-          
-          {/* Spider web thread */}
-          <motion.div
-            className="absolute left-1/2 transform -translate-x-1/2"
-            style={{
-              width: '1px',
-              height: spider.startY < 50 ? '100px' : '0px',
-              background: 'linear-gradient(to bottom, rgba(200, 200, 200, 0.3), transparent)',
-              top: spider.startY < 50 ? '-100px' : 'auto',
-            }}
-          />
+          🕷️
         </motion.div>
       ))}
     </div>

@@ -23,12 +23,10 @@ export const SuggestionChips = ({ suggestions, onSelect }: SuggestionChipsProps)
             key={suggestion.value}
             type="button"
             onClick={() => onSelect(suggestion.value)}
-            className="px-4 py-2 bg-gradient-to-r from-spooky-purple-800/60 to-spooky-purple-700/60 hover:from-spooky-purple-700 hover:to-spooky-purple-600 border-2 border-spooky-purple-600/40 hover:border-spooky-purple-500 rounded-full text-sm text-spooky-purple-200 transition-all font-fun font-medium backdrop-blur-sm"
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="px-4 py-2 bg-spooky-purple-800/60 hover:bg-spooky-purple-700 border-2 border-spooky-purple-600/40 hover:border-spooky-purple-500 rounded-full text-sm text-spooky-purple-200 transition-all duration-100 font-fun font-medium backdrop-blur-sm hover:scale-105 active:scale-95"
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.05 }}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+            transition={{ delay: index * 0.03, duration: 0.2 }}
           >
             {suggestion.label}
           </motion.button>

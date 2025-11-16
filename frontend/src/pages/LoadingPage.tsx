@@ -165,12 +165,12 @@ export const LoadingPage = () => {
         📜
       </div>
 
-      <div className="w-full text-center z-10" style={{ maxWidth: 'min(90vw, 900px)', padding: '0 clamp(1rem, 3vw, 2rem)' }}>
+      <div className="w-full text-center z-10 flex flex-col" style={{ maxWidth: 'min(90vw, 800px)', padding: '0 clamp(0.75rem, 2vw, 1.5rem)', maxHeight: '95vh', overflow: 'hidden' }}>
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
         >
           <SpookyTitle>
             <motion.span
@@ -196,7 +196,7 @@ export const LoadingPage = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 0 }}
         >
           <MagicalCauldron progress={generationProgress?.progressPercentage || 0} />
         </motion.div>
@@ -209,21 +209,21 @@ export const LoadingPage = () => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -20 }}
-              style={{ marginBottom: 'clamp(1rem, 2vh, 1.5rem)' }}
+              style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)' }}
               className="inline-block"
             >
               <div 
                 className={`bg-gradient-to-r ${getStageColor(generationProgress.status)} rounded-full shadow-lg shadow-spooky-purple-500/50 backdrop-blur-sm`}
                 style={{ 
-                  padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.25rem)'
+                  padding: 'clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.625rem, 1.25vw, 0.875rem)'
                 }}
               >
-                <span style={{ fontSize: 'clamp(1.5rem, 2.5vw, 1.75rem)', marginRight: 'clamp(0.5rem, 1vw, 0.75rem)' }}>
+                <span style={{ fontSize: 'clamp(1.25rem, 2vw, 1.5rem)', marginRight: 'clamp(0.375rem, 0.75vw, 0.5rem)' }}>
                   {getStageEmoji(generationProgress.status)}
                 </span>
                 <span 
                   className="text-white font-fun font-bold"
-                  style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)' }}
+                  style={{ fontSize: 'clamp(0.875rem, 1.25vw, 1rem)' }}
                 >
                   {generationProgress.stage}
                 </span>
@@ -233,10 +233,10 @@ export const LoadingPage = () => {
         </AnimatePresence>
 
         {/* Progress Bar */}
-        <div className="mx-auto" style={{ marginBottom: 'clamp(1rem, 2vh, 1.5rem)', maxWidth: 'min(95%, 600px)' }}>
+        <div className="mx-auto" style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)', maxWidth: 'min(95%, 550px)', flexShrink: 0 }}>
           <div 
             className="bg-dark-800/80 rounded-full overflow-hidden border-2 border-spooky-purple-600/30 relative shadow-inner"
-            style={{ height: 'clamp(10px, 1.2vh, 14px)' }}
+            style={{ height: 'clamp(8px, 1vh, 12px)' }}
           >
             <motion.div
               className={`h-full bg-gradient-to-r ${getStageColor(generationProgress?.status || StoryStatus.PENDING)}`}
@@ -255,7 +255,7 @@ export const LoadingPage = () => {
                 className="absolute top-1/2 transform -translate-y-1/2"
                 style={{ 
                   left: `${generationProgress.progressPercentage}%`,
-                  fontSize: 'clamp(1rem, 2vw, 1.25rem)'
+                  fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'
                 }}
                 animate={{
                   scale: [1, 1.5, 1],
@@ -270,8 +270,8 @@ export const LoadingPage = () => {
           <motion.p
             className="text-spooky-purple-300 font-fun font-semibold"
             style={{ 
-              marginTop: 'clamp(0.5rem, 1.5vh, 0.75rem)',
-              fontSize: 'clamp(1rem, 2vw, 1.125rem)'
+              marginTop: 'clamp(0.375rem, 1vh, 0.5rem)',
+              fontSize: 'clamp(0.875rem, 1.5vw, 1rem)'
             }}
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -305,7 +305,7 @@ export const LoadingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="mt-12"
+            style={{ marginTop: 'clamp(1rem, 2vh, 1.5rem)', flexShrink: 0 }}
           >
             <div className="flex items-center justify-center gap-3">
               <motion.span
@@ -328,7 +328,8 @@ export const LoadingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-8 max-w-2xl mx-auto"
+            className="max-w-2xl mx-auto"
+            style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', flexShrink: 1, minHeight: 0 }}
           >
             <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-purple-600/30 shadow-lg">
               <div className="text-4xl mb-3 text-center">📜</div>
@@ -348,7 +349,8 @@ export const LoadingPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="mt-6 max-w-2xl mx-auto"
+            className="max-w-2xl mx-auto"
+            style={{ marginTop: 'clamp(0.5rem, 1vh, 0.75rem)', flexShrink: 1, minHeight: 0 }}
           >
             <div className="bg-dark-800/60 backdrop-blur-md rounded-2xl p-6 border border-spooky-orange-600/30 shadow-lg">
               <div className="text-4xl mb-3 text-center">😄</div>
@@ -366,8 +368,9 @@ export const LoadingPage = () => {
         <div 
           className="flex justify-center flex-wrap"
           style={{ 
-            marginTop: 'clamp(2rem, 4vh, 2.5rem)',
-            gap: 'clamp(0.75rem, 2vw, 1rem)'
+            marginTop: 'clamp(1rem, 2vh, 1.5rem)',
+            gap: 'clamp(0.5rem, 1.5vw, 0.75rem)',
+            flexShrink: 0
           }}
         >
           {[
@@ -388,7 +391,7 @@ export const LoadingPage = () => {
                 className={`flex flex-col items-center transition-all ${
                   isActive || isPast ? 'opacity-100' : 'opacity-30'
                 }`}
-                style={{ gap: 'clamp(0.25rem, 0.75vh, 0.5rem)' }}
+                style={{ gap: 'clamp(0.25rem, 0.5vh, 0.375rem)' }}
                 animate={isActive ? { scale: [1, 1.1, 1] } : {}}
                 transition={{ duration: 1, repeat: isActive ? Infinity : 0 }}
               >
@@ -401,16 +404,16 @@ export const LoadingPage = () => {
                       : 'bg-dark-800 border-dark-700'
                   }`}
                   style={{ 
-                    width: 'clamp(3rem, 6vw, 3.5rem)',
-                    height: 'clamp(3rem, 6vw, 3.5rem)',
-                    fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)'
+                    width: 'clamp(2.5rem, 5vw, 3rem)',
+                    height: 'clamp(2.5rem, 5vw, 3rem)',
+                    fontSize: 'clamp(1rem, 2vw, 1.25rem)'
                   }}
                 >
                   {isPast ? '✅' : stage.emoji}
                 </div>
                 <span 
                   className="text-gray-400 font-fun"
-                  style={{ fontSize: 'clamp(0.625rem, 1.2vw, 0.75rem)' }}
+                  style={{ fontSize: 'clamp(0.5rem, 1vw, 0.625rem)' }}
                 >
                   {stage.label}
                 </span>

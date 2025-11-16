@@ -23,17 +23,17 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
 
   const particleCount = useMemo(() => {
     switch (intensity) {
-      case 'light': return 20;
-      case 'medium': return 30;
-      case 'dark': return 40;
+      case 'light': return 15;
+      case 'medium': return 20;
+      case 'dark': return 25;
     }
   }, [intensity]);
 
   const particleOpacity = useMemo(() => {
     switch (intensity) {
-      case 'light': return { min: 0.1, max: 0.3 };
-      case 'medium': return { min: 0.15, max: 0.4 };
-      case 'dark': return { min: 0.2, max: 0.5 };
+      case 'light': return { min: 0.1, max: 0.25 };
+      case 'medium': return { min: 0.15, max: 0.35 };
+      case 'dark': return { min: 0.2, max: 0.4 };
     }
   }, [intensity]);
 
@@ -50,17 +50,17 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
             value: 'transparent',
           },
         },
-        fpsLimit: 30, // Lower FPS for better performance
+        fpsLimit: 24, // Reduced from 30 to 24 FPS
         particles: {
           color: {
             value: ['#a855f7', '#ec4899', '#f97316'],
           },
           links: {
-            enable: false, // No links for cleaner look
+            enable: false,
           },
           move: {
             enable: true,
-            speed: 0.3, // Very slow movement
+            speed: 0.2, // Reduced from 0.3 to 0.2
             direction: 'none',
             random: true,
             straight: false,
@@ -78,7 +78,7 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
             value: particleOpacity,
             animation: {
               enable: true,
-              speed: 0.3,
+              speed: 0.2, // Reduced from 0.3 to 0.2
               sync: false,
             },
           },
@@ -88,16 +88,14 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
           size: {
             value: { min: 1, max: 2 },
             animation: {
-              enable: true,
-              speed: 1,
-              sync: false,
+              enable: false, // Disabled size animation
             },
           },
         },
         interactivity: {
           events: {
             onHover: {
-              enable: false, // Disable interaction to prevent distraction
+              enable: false,
             },
             onClick: {
               enable: false,
@@ -105,6 +103,8 @@ export const SubtleParticleBackground = ({ intensity = 'dark' }: SubtleParticleB
           },
         },
         detectRetina: true,
+        smooth: true, // Enable smooth rendering
+        reduceDuplicates: true, // Optimize particle rendering
       }}
       className="absolute inset-0 pointer-events-none"
       style={{ zIndex: 1 }}

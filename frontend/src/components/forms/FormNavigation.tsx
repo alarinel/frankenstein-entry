@@ -31,7 +31,7 @@ export const FormNavigation = ({
         className="mt-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.2, duration: 0.3 }}
       >
         <SpookyButton
           onClick={onRandomize}
@@ -50,7 +50,7 @@ export const FormNavigation = ({
         className="flex justify-between mt-4 gap-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.25, duration: 0.3 }}
       >
         <SpookyButton
           onClick={onBack}

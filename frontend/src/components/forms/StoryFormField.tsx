@@ -36,8 +36,8 @@ export const StoryFormField = ({
       >
         <motion.span
           style={{ fontSize: 'clamp(2.5rem, 5vw, 3rem)' }}
-          animate={{ rotate: [0, 10, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ rotate: [0, 8, -8, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
         >
           {field.emoji}
         </motion.span>
@@ -50,11 +50,11 @@ export const StoryFormField = ({
       </div>
 
       {/* Input Field */}
-      <motion.input
+      <input
         {...register(field.name)}
         type="text"
         placeholder={field.placeholder}
-        className="w-full bg-dark-800/50 border-2 border-spooky-purple-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-spooky-purple-500/50 focus:border-spooky-purple-400 transition-all font-fun backdrop-blur-sm"
+        className="w-full bg-dark-800/50 border-2 border-spooky-purple-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-spooky-purple-500/50 focus:border-spooky-purple-400 transition-colors font-fun backdrop-blur-sm"
         style={{ 
           padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.25rem)',
           fontSize: 'clamp(1rem, 1.5vw, 1.125rem)'
@@ -66,7 +66,6 @@ export const StoryFormField = ({
           }
         }}
         autoFocus
-        whileFocus={{ scale: 1.02 }}
       />
 
       {/* Error Display */}

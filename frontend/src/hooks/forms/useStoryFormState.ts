@@ -82,7 +82,7 @@ export const useStoryFormState = ({
       } else {
         setCurrentStep((prev) => prev + 1);
       }
-    }, 300);
+    }, 150);
   };
 
   // Randomize all fields
@@ -103,7 +103,7 @@ export const useStoryFormState = ({
           }
           return prev + 1;
         });
-      }, 100);
+      }, 60);
     }
     
     toast.success('🎲 Random story created! Ready to generate!');

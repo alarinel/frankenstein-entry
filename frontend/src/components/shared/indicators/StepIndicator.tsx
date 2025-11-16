@@ -43,8 +43,7 @@ export const StepIndicator = ({
               scale: isCurrent ? [1, 1.2, 1] : 1,
             }}
             transition={{ duration: 0.5, repeat: isCurrent ? Infinity : 0 }}
-            whileHover={isClickable ? { scale: 1.3 } : {}}
-            whileTap={isClickable ? { scale: 0.9 } : {}}
+            className={isClickable ? 'hover:scale-125 active:scale-90 transition-transform duration-150' : ''}
           >
             {step.emoji}
             {/* Completion Checkmark */}

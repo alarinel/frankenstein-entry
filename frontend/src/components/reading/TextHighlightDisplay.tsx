@@ -57,18 +57,15 @@ export const TextHighlightDisplay = ({
               {words.map((word, index) => (
                 <span
                   key={`word-${currentPage.pageNumber}-${index}`}
-                  className={`inline-block transition-all duration-200 ${
+                  className={`inline-block transition-colors duration-150 ${
                     highlightedWords.has(index)
-                      ? 'text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text font-bold'
-                      : 'text-amber-50'
+                      ? 'text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text'
+                      : 'text-gray-600'
                   }`}
                   style={{
                     marginRight: 'clamp(0.25rem, 0.4vw, 0.375rem)',
                     marginBottom: 'clamp(0.125rem, 0.3vh, 0.25rem)',
-                    textShadow: highlightedWords.has(index)
-                      ? '0 0 20px rgba(168, 85, 247, 0.7), 0 0 12px rgba(236, 72, 153, 0.5)'
-                      : 'none',
-                    transform: highlightedWords.has(index) ? 'scale(1.03)' : 'scale(1)',
+                    fontWeight: highlightedWords.has(index) ? 600 : 400,
                   }}
                 >
                   {word}

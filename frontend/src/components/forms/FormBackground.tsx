@@ -12,8 +12,8 @@ export const FormBackground = () => {
   return (
     <>
       <ParticleBackground />
-      <FloatingBats count={12} />
-      <FloatingSpiders count={5} />
+      <FloatingBats count={6} />
+      <FloatingSpiders count={3} />
       <FloatingCandles />
       <GhostCluster />
     </>
