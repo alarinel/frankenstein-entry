@@ -31,5 +31,6 @@ public class ApiCallLog {
    private LocalDateTime timestamp;
 
    private long durationMs;
+   private long charactersUsed;
    private String metadata; // JSON string for additional info
 }

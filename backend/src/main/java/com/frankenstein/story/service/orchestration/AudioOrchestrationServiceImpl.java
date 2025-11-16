@@ -67,7 +67,7 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
 
    private AudioSet generateAudioForPage(final String storyId, final int pageNumber, final StoryStructure.PageStructure page, final int totalPages, final String voiceType) {
       final long startTime = System.currentTimeMillis();
-      
+
       try {
          // Generate narration with selected voice type
          final byte[] narration = audioGenerationService.generateNarration(page.getText(), voiceType).join();
@@ -106,23 +106,22 @@ public class AudioOrchestrationServiceImpl implements AudioOrchestrationService 
    /**
     * Log audio API call to tracking system
     */
-   private void logAudioApiCall(final String storyId, final String operation, final int characterCount,
-                                final long startTime, final String status, final String errorMessage) {
+   private void logAudioApiCall(final String storyId, final String operation, final int characterCount, final long startTime, final String status, final String errorMessage) {
       try {
          final long duration = System.currentTimeMillis() - startTime;
          final double cost = apiTrackingFacade.calculateAudioGenerationCost(characterCount);
-         
+
          final ApiCallLog log = ApiCallLog.builder()
-               .storyId(storyId)
-               .apiProvider("ELEVENLABS")
-               .operation(operation)
-               .charactersUsed(characterCount)
-               .costUsd(cost)
-               .durationMs(duration)
-               .status(status)
-               .errorMessage(errorMessage)
-               .build();
-         
+                                          .storyId(storyId)
+                                          .apiProvider("ELEVENLABS")
+                                          .operation(operation)
+                                          .charactersUsed(characterCount)
+                                          .costUsd(cost)
+                                          .durationMs(duration)
+                                          .status(status)
+                                          .errorMessage(errorMessage)
+                                          .build();
+
          apiTrackingFacade.logApiCall(log);
       } catch (final Exception e) {
          log.error("Failed to log audio API call", e);

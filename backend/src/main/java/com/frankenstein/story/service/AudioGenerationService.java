@@ -47,7 +47,7 @@ public class AudioGenerationService {
       try {
          final var config = apiTrackingFacade.getConfiguration();
          final String voiceId;
-         
+
          if ("male".equalsIgnoreCase(voiceType)) {
             voiceId = config.getMaleVoiceId();
             log.debug("Selected male voice ID: {}", voiceId);
@@ -58,16 +58,16 @@ public class AudioGenerationService {
             log.warn("Unknown voice type '{}', defaulting to male voice", voiceType);
             voiceId = config.getMaleVoiceId();
          }
-         
+
          // Fallback to default if configuration is missing
          if (voiceId == null || voiceId.trim().isEmpty()) {
-            final String defaultVoiceId = "male".equalsIgnoreCase(voiceType) 
-                  ? "21m00Tcm4TlvDq8ikWAM" 
-                  : "EXAVITQu4vr4xnSDxMaL";
+            final String defaultVoiceId = "male".equalsIgnoreCase(voiceType)
+                                          ? "21m00Tcm4TlvDq8ikWAM"
+                                          : "EXAVITQu4vr4xnSDxMaL";
             log.warn("Voice ID not configured for type '{}', using default: {}", voiceType, defaultVoiceId);
             return defaultVoiceId;
          }
-         
+
          return voiceId;
       } catch (final Exception e) {
          log.error("Error retrieving voice configuration, using default male voice", e);

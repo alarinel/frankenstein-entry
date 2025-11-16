@@ -180,14 +180,13 @@ class ImageGenerationServiceTest {
 
       // Then
       assertThat(result.get()).isNotNull();
-      
+
       // Verify that the prompt was enhanced with composition guidance
       verify(imageModel).call(argThat(imagePrompt -> {
          final String actualPrompt = imagePrompt.getInstructions().get(0).getText();
-         return actualPrompt.contains("focal point positioned in the left 35% of the frame") &&
-                actualPrompt.contains("subject on the left side of the image") &&
-                actualPrompt.contains("main character or object left of center") &&
-                actualPrompt.contains(originalPrompt);
+         return actualPrompt.contains("focal point positioned in the left 35% of the frame") && actualPrompt.contains(
+               "subject on the left side of the image") && actualPrompt.contains("main character or object left of center") && actualPrompt.contains(
+               originalPrompt);
       }));
    }
 }

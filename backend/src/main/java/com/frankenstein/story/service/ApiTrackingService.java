@@ -51,15 +51,15 @@ public class ApiTrackingService {
       // Validate voice ID format (alphanumeric)
       validateVoiceId(newConfig.getMaleVoiceId(), "Male");
       validateVoiceId(newConfig.getFemaleVoiceId(), "Female");
-      
+
       this.configuration = newConfig;
       saveConfiguration();
    }
-   
+
    /**
     * Validates that a voice ID contains only alphanumeric characters
-    * 
-    * @param voiceId the voice ID to validate
+    *
+    * @param voiceId   the voice ID to validate
     * @param voiceType the type of voice (for error messages)
     * @throws IllegalArgumentException if voice ID is invalid
     */
@@ -67,7 +67,7 @@ public class ApiTrackingService {
       if (voiceId == null || voiceId.isEmpty()) {
          throw new IllegalArgumentException(voiceType + " voice ID cannot be null or empty");
       }
-      
+
       if (!voiceId.matches("^[a-zA-Z0-9]+$")) {
          throw new IllegalArgumentException(voiceType + " voice ID must contain only alphanumeric characters");
       }
@@ -77,7 +77,7 @@ public class ApiTrackingService {
       try {
          if (Files.exists(configPath)) {
             configuration = objectMapper.readValue(configPath.toFile(), ApiConfiguration.class);
-            
+
             // Handle missing voice fields with defaults
             final ApiConfiguration defaults = ApiConfiguration.getDefaults();
             if (configuration.getMaleVoiceId() == null || configuration.getMaleVoiceId().isEmpty()) {
@@ -88,10 +88,10 @@ public class ApiTrackingService {
                log.warn("Female voice ID missing in configuration, using default");
                configuration.setFemaleVoiceId(defaults.getFemaleVoiceId());
             }
-            
+
             // Save configuration if defaults were applied
-            if (configuration.getMaleVoiceId().equals(defaults.getMaleVoiceId()) || 
-                configuration.getFemaleVoiceId().equals(defaults.getFemaleVoiceId())) {
+            if (configuration.getMaleVoiceId().equals(defaults.getMaleVoiceId()) || configuration.getFemaleVoiceId()
+                                                                                                 .equals(defaults.getFemaleVoiceId())) {
                saveConfiguration();
             }
          } else {
@@ -181,7 +181,7 @@ public class ApiTrackingService {
 
       final Map<String, Double> costByProvider = logs.stream()
                                                      .collect(Collectors.groupingBy(ApiCallLog::getApiProvider,
-                                                     Collectors.summingDouble(ApiCallLog::getCostUsd)));
+                                                           Collectors.summingDouble(ApiCallLog::getCostUsd)));
 
       final long successCount = logs.stream().filter(log -> "SUCCESS".equals(log.getStatus())).count();
 
