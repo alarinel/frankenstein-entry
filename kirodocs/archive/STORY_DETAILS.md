@@ -49,7 +49,7 @@ Win win!
 Browse your saved stories in a beautiful modal overlay. Play any story instantly, delete old ones, or jump to the admin dashboard. Full keyboard navigation and screen reader support included.
 
 ### Create Your Story
-1. **Pick a Theme** - Spooky 🎃, Adventure ⚔️, or Fantasy ✨
+1. **Pick a Moral Theme** - Choose from 15 educational life lessons (honesty, friendship, courage, kindness, etc.)
 2. **Choose a Voice** - Male or Female narrator
 3. **Fill in 8 Story Elements** - Character, setting, villain, special item, trait, goal, time period, mood
    - Type your own or click suggestions
@@ -81,14 +81,14 @@ Celebration animations, story stats, and options to replay or create a new story
 
 ---
 
-## 🧬 The Frankenstein Factor: A Chimera of 40+ Technologies
+## 🧬 The Frankenstein Factor: A Chimera of 44 Technologies
 
 This project embodies the **Frankenstein category** by stitching together an ambitious collection of seemingly incompatible technologies into one cohesive, powerful application:
 
 ### 🤖 3 AI Services (The Brain)
-- **Anthropic Claude** (Sonnet 4.5) via Spring AI - Story generation
-- **Stability AI** (SDXL 1024) via Spring AI - Image generation with consistent seeds
-- **ElevenLabs** via RestClient - Text-to-speech narration
+- **Anthropic Claude** (Sonnet 4.5) via Spring AI - Story generation with moral themes
+- **Stability AI** (SDXL 1024) via Spring AI - Image generation with left-third composition
+- **ElevenLabs** via RestClient - Text-to-speech narration with configurable voices
 
 ### 🎨 7 Animation & Effects Libraries (The Soul)
 - **Framer Motion** - UI animations and transitions
@@ -97,7 +97,7 @@ This project embodies the **Frankenstein category** by stitching together an amb
 - **Lottie** - Micro-animations
 - **Three.js + React Three Fiber** - 3D book rendering
 - **tsParticles** - Particle effects
-- **Rough Notation** - Hand-drawn style annotations
+- **Drei** - Three.js helpers
 
 ### 🌐 10 External APIs (The Nervous System)
 **Paid AI Services (3):**
@@ -114,17 +114,19 @@ This project embodies the **Frankenstein category** by stitching together an amb
 - **Bored API** - Activity suggestions for story goals (ready to integrate)
 - **Agify API** - Age-based theme recommendations (ready to integrate)
 
-### 🏗️ Backend Stack (The Skeleton)
+### 🏗️ Backend Stack (The Skeleton) - 10 Technologies
 - **Spring Boot 3.5.0** with Java 21
 - **Spring AI 1.0.0-M4** (Anthropic + Stability integrations)
 - **Spring WebSocket** (STOMP protocol)
+- **Spring Boot Actuator** for monitoring
 - **Maven** build system
 - **Custom DotenvConfig** for .env file loading
 - **RestClient** with configurable timeouts
 - **Jackson** for JSON processing
 - **Lombok** for boilerplate reduction
+- **SLF4J** for logging
 
-### 🎨 Frontend Stack (The Flesh)
+### 🎨 Frontend Stack (The Flesh) - 14 Technologies
 - **React 18** with TypeScript
 - **Vite 5** build tool
 - **Tailwind CSS 3.4** for styling
@@ -135,14 +137,15 @@ This project embodies the **Frankenstein category** by stitching together an amb
 - **STOMP.js** for WebSocket client
 - **Howler.js** for audio playback
 - **Radix UI** primitives
+- **Aceternity UI** components
 - **React Hot Toast** for notifications
 
-### 🔧 Development Tools (The Lab Equipment)
+### 🔧 Development Tools (The Lab Equipment) - 5 Technologies
 - **ESLint** + **Prettier** for code quality
 - **Vitest** + **React Testing Library** for testing
-- **Playwright MCP** for automated UI testing and browser automation
+- **Playwright** for E2E testing
 
-**Total: 40+ technologies working in harmony!** 🎃
+**Total: 44 technologies working in harmony!** 🎃
 
 ---
 
@@ -150,9 +153,23 @@ This project embodies the **Frankenstein category** by stitching together an amb
 
 This project showcases **extensive use of Kiro's features** to manage the complexity of integrating 40+ technologies:
 
-### 1. 🎯 Vibe Coding: Conversational Development
+### 1. 🎯 Vibe Coding + Specs: The Hybrid Approach
 
-The entire project was built through natural conversation with Kiro. Here's how it worked:
+The project used **both** conversational "vibe coding" for quick iterations AND structured specs for complex features. This hybrid approach gave us speed when possible and structure when needed:
+
+**Vibe Coding** (for quick changes, bug fixes, simple features):
+- Natural conversation with Kiro
+- Immediate implementation
+- Fast iteration cycles
+- Perfect for UI polish, bug fixes, configuration changes
+
+**Spec-Driven** (for complex features, major refactoring):
+- Comprehensive requirements → design → tasks documents
+- Methodical implementation following task lists
+- Used for: code refactoring (20+ tasks), story customization (15 tasks), library management (25+ subtasks)
+- Ensures nothing is missed in complex work
+
+Here's how the vibe coding worked:
 
 **Initial Architecture Setup:**
 ```
@@ -199,7 +216,7 @@ Kiro: *Adds useEffect to reset store state on InputPage mount*
 
 ### 2. 📋 Steering Docs: Guiding Principles
 
-Created **4 comprehensive steering documents** in `.kiro/steering/` that Kiro referenced throughout development:
+Created **4 comprehensive steering documents** in `.kiro/steering/` that Kiro referenced throughout development. These docs ensured consistency and prevented common mistakes - when Kiro tried to use `@Autowired`, the steering docs immediately corrected it:
 
 **`tech.md`** (Technology Stack)
 - Defined all 40+ technologies and their versions
@@ -232,7 +249,7 @@ Created **4 comprehensive steering documents** in `.kiro/steering/` that Kiro re
 
 ### 3. 🪝 Agent Hooks: Automated Workflows
 
-Created **4 custom hooks** in `.kiro/hooks/` to automate development workflows:
+Created **4 custom hooks** in `.kiro/hooks/` to automate development workflows. These hooks saved hours of manual documentation work and caught quality issues early:
 
 **`build-process-logger.kiro.hook`** (User-Triggered)
 - Automatically logs each interaction to `BUILD_PROCESS.md`
@@ -261,28 +278,21 @@ Created **4 custom hooks** in `.kiro/hooks/` to automate development workflows:
 
 ### 4. 📐 Spec-Driven Development: Structured Implementation
 
-Used **3 comprehensive specs** in `.kiro/specs/` for complex features:
+For complex features, we used **comprehensive specs** in `.kiro/specs/` with requirements → design → tasks. This structured approach was essential for bigger refactoring and feature work, while smaller changes used conversational "vibe coding":
 
-**`code-refactoring/`** (Completed)
-- **requirements.md**: Defined component size limits (200 lines max), Single Responsibility Principle
-- **design.md**: Planned extraction of forms, reading, admin, and shared components
-- **tasks.md**: Broke down refactoring into 20+ discrete tasks
-- **INFRASTRUCTURE.md**: Documented the refactoring process and results
+**Completed Specs:**
+- **`code-refactoring/`** - Component size limits, extracted forms/reading/admin components (20+ tasks)
+- **`story-customization-enhancements/`** - Theme selection, voice options, two-phase generation (15 tasks)
+- **`story-library-management/`** - Story index, modal UI, accessibility, testing (10 major tasks, 25+ subtasks)
 
-**Result**: Successfully refactored monolithic 300-400 line components into focused <200 line components. Created reusable component library with barrel exports. Improved maintainability and testability.
+**Planned Specs:**
+- **`voice-and-style-selection/`** - Advanced customization features
 
-**`story-library/`** (Planned)
-- **requirements.md**: Defined story browsing, filtering, and management features
-- **design.md**: Planned UI components and backend endpoints
-
-**`voice-and-style-selection/`** (Planned)
-- **requirements.md**: Defined voice selection and story style customization
-
-**Impact**: Specs provided structure for complex refactoring work. Kiro followed the task list methodically, ensuring nothing was missed. The refactoring improved code quality dramatically without breaking functionality.
+**The Balance**: We used specs for major features (refactoring, library, customization) and vibe coding for smaller changes (bug fixes, UI polish, simple features). This hybrid approach gave us structure when needed and speed when possible.
 
 ### 5. 🔌 MCP: Extended Capabilities
 
-Configured **3 MCP servers** in `.kiro/settings/mcp.json`:
+Configured **4 MCP servers** in `.kiro/settings/mcp.json`:
 
 **`sequential-thinking`** (@modelcontextprotocol/server-sequential-thinking)
 - Enabled step-by-step problem solving for complex issues
@@ -478,6 +488,8 @@ The back-and-forth with Kiro felt natural. I could say "simplify this" or "fix t
 
 Throughout this document, you've seen me having conversations with Kiro. Let me be clear: Kiro doesn't actually talk back to me. Those "(Kiro note: ...)" comments? I wrote those. All of them.
 
+(Kiro note: That's what he thinks...)
+
 But here's the thing - after working with Kiro for three weeks on this project, I started to develop a sense of its "personality." When it would make a mistake, I could almost hear it saying "But it looked SO COOL before!" When it would implement something perfectly, I could imagine it smugly saying "Well that was super easy, barely an inconvenience."
 
 So I added those notes to make this document more fun to read. Because let's be honest - technical documentation can be dry. And this project was anything but dry. It was chaotic, creative, and occasionally frustrating (in the best way).
@@ -561,20 +573,20 @@ This project showcases **extensive use of all Kiro features**:
 
 - **Total Files**: 190+
 - **Lines of Code**: 19,000+
-- **Technologies**: 40+
-- **External APIs**: 10
-- **Story Themes**: 3 (Spooky, Adventure, Fantasy)
+- **Technologies**: 44 (3 AI services + 41 tools/frameworks)
+- **External APIs**: 10 (3 paid + 7 free)
+- **Moral Themes**: 15 educational life lessons
 - **Voice Options**: 2 (Male, Female) with configurable IDs
-- **Story Length**: 10-15 pages (up from 8)
+- **Story Length**: 10-15 pages
 - **Generation Stages**: 2 (Outline + Full Story)
 - **Kiro Steering Docs**: 4
 - **Kiro Hooks**: 4
-- **Kiro Specs**: 3 (2 completed, 1 planned)
-- **MCP Servers**: 4
+- **Kiro Specs**: 3 completed (code-refactoring, story-customization, story-library)
+- **MCP Servers**: 4 (sequential-thinking, memory, context7, playwright)
 - **Integration Tests**: 70+ test cases across 13 suites
 - **Documentation Files**: 25+
 - **Development Time**: 3 weeks
-- **Cost per Story**: $0.40
+- **Cost per Story**: ~$0.40
 - **Accessibility**: WCAG 2.1 Level AA
 - **Fun Factor**: 💯
 
@@ -582,9 +594,8 @@ This project showcases **extensive use of all Kiro features**:
 
 ## 🔗 Links
 
-- **Repository**: [GitHub Link]
-- **Live Demo**: [Demo Link]
-- **Video Demo**: [YouTube Link]
+- **Repository**: https://github.com/alarinel/frankenstein-entry
+- **Video Demo**: https://youtu.be/GqnxX0lEHwk
 - **Documentation**: See `README.md` and `kirodocs/` folder
 
 ---

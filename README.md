@@ -112,11 +112,11 @@ Frankenstein brings together seemingly incompatible elements to build something 
 
 **All Technologies & Frameworks (Comma-Separated):**
 
-Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
+Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, ZenQuotes API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
 
 **By Category:**
 
-- **Backend Core:** Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp
+- **Backend Core:** Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient
 - **Frontend Core:** React 18, TypeScript, Vite 5, Tailwind CSS 3.4
 - **Animation & Effects:** Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, tsParticles
 - **Audio:** Howler.js
@@ -127,14 +127,126 @@ Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, 
 - **Enhancement APIs (Free):** ZenQuotes API, Sunrise-Sunset API, Advice Slip API, JokeAPI
 - **Development Tools:** ESLint, Prettier, Vitest, React Testing Library, Playwright
 
-**Total Count:** 45 technologies working together to create an immersive storytelling experience!
+**Total Count:** 44 technologies working together to create an immersive storytelling experience!
 
 ---
 
-**Easy Copy List (All 45 Technologies):**
+**Easy Copy List (All 44 Technologies):**
 
 ```
-Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, OkHttp, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, Quotable API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
+Spring Boot, Spring AI, Spring WebSocket, Spring Boot Actuator, Maven, Java 21, Lombok, Jackson, SLF4J, RestClient, React 18, TypeScript, Vite 5, Tailwind CSS 3.4, Framer Motion, GSAP, React Spring, Lottie, Three.js, React Three Fiber, Drei, Howler.js, tsParticles, Zustand, React Router DOM, React Hook Form, Zod, Axios, STOMP.js, Radix UI, Aceternity UI, React Hot Toast, Anthropic Claude API, Stability AI API, ElevenLabs API, ZenQuotes API, Sunrise-Sunset API, Advice Slip API, JokeAPI, ESLint, Prettier, Vitest, React Testing Library, Playwright
+```
+
+---
+
+## 🐦 Share on Social Media
+
+**Twitter/X Post (Contest Entry):**
+
+```
+My favorite thing about @kirodotdev? Steering docs that actually work.
+
+I created 4 markdown files defining my coding standards, tech stack, and architecture. Kiro referenced them throughout development - preventing mistakes before they happened.
+
+When Kiro tried to use @Autowired, the steering docs immediately corrected it to constructor injection. When components grew too large, the guidelines prompted refactoring.
+
+It's like having a senior dev who actually reads the team wiki.
+
+Built a full-stack AI story generator (44 technologies!) with consistent code quality across 190+ files. No more "why did I do it differently in this file?" moments.
+
+Game changer for solo devs and teams alike.
+
+#hookedonkiro
+
+[Link to your project]
+```
+
+**Alternative Twitter/X Post (Contest Entry):**
+
+```
+@kirodotdev changed how I build complex features.
+
+Before: "I'll just start coding and figure it out"
+After: Specs with requirements → design → tasks
+
+Used this for 3 major features:
+• Code refactoring (20+ tasks)
+• Story customization (15 tasks)  
+• Library management (25+ subtasks)
+
+Kiro followed each task list methodically. Nothing was missed. No scope creep. No "wait, did I implement that?" moments.
+
+For quick changes? Vibe coding.
+For complex work? Specs.
+
+This hybrid approach let me build a production-ready app with 44 technologies in 3 weeks.
+
+Structure when you need it. Speed when you don't.
+
+#hookedonkiro
+
+[Link to your project]
+```
+
+**LinkedIn Post:**
+
+```
+How Kiro's Steering Docs Changed My Development Approach
+
+After 3 weeks building an AI-powered story generator with 44 technologies, I've discovered my favorite Kiro feature: steering documents.
+
+What are they?
+Markdown files in .kiro/steering/ that define your coding standards, tech stack, architecture, and guidelines. Kiro references them automatically throughout development.
+
+Why they're game-changing:
+• Consistency across 190+ files without thinking about it
+• Prevents common mistakes before they happen
+• No more "why did I do it differently here?" moments
+• Like having a senior dev who actually reads documentation
+
+Real example:
+When Kiro tried to use @Autowired (a common but discouraged pattern), my steering doc immediately corrected it to constructor injection with @RequiredArgsConstructor. Every. Single. Time.
+
+The result:
+Clean, consistent code across:
+- 19,000+ lines of code
+- Backend (Spring Boot + Java 21)
+- Frontend (React + TypeScript)
+- 3 AI service integrations
+- 40+ third-party libraries
+
+For solo developers:
+Steering docs are your consistency safety net. Define your standards once, enforce them automatically.
+
+For teams:
+This could revolutionize onboarding. New devs get real-time guidance from the team's actual standards, not outdated wiki pages.
+
+The hybrid approach:
+I combined steering docs with spec-driven development for complex features and vibe coding for quick changes. Best of both worlds.
+
+If you're building anything complex, try steering docs. They're the feature I didn't know I needed.
+
+#AI #SoftwareEngineering #DeveloperTools #Productivity
+```
+
+**BlueSky Post:**
+
+```
+My favorite @kirodotdev feature? Steering docs that prevent mistakes before they happen.
+
+I wrote 4 markdown files defining coding standards, tech stack, and architecture. Kiro referenced them throughout development.
+
+Result: Consistent code across 190+ files, 44 technologies, 19k+ lines. No more "why did I do it differently here?" moments.
+
+When Kiro tried @Autowired, steering docs corrected it to constructor injection. When components grew large, guidelines prompted refactoring.
+
+It's like having a senior dev who actually reads the wiki.
+
+Game changer for building complex apps.
+
+#hookedonkiro
+
+[Link to your project]
 ```
 
 ## 🚀 Quick Start
