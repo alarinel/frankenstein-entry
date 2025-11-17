@@ -1,0 +1,22 @@
+{
+  "id" : "b8137624-f8ed-4f56-a890-af41bc27bdb3",
+  "title" : "Mira and the Whispering Flute",
+  "input" : {
+    "theme" : "the importance of telling the truth",
+    "voiceType" : "male",
+    "characterName" : "Mira",
+    "setting" : "a magical desert oasis",
+    "villain" : "the eerie Bone Collector",
+    "specialItem" : "a wind-controlling flute",
+    "characterTrait" : "patient and observant",
+    "goal" : "heal the poisoned land",
+    "timePeriod" : "mystical feudal Japan",
+    "mood" : "heartwarming and cozy"
+  },
+  "pages" : null,
+  "metadata" : null,
+  "status" : "FAILED",
+  "createdAt" : [ 2025, 11, 17, 8, 56, 7, 523653700 ],
+  "completedAt" : null,
+  "errorMessage" : "com.frankenstein.story.exception.AudioGenerationException: Narration generation failed: 400 Bad Request: \"{\"detail\":{\"status\":\"voice_limit_reached\",\"message\":\"You have reached your maximum amount of custom voices (46 / 10). You can upgrade your subscription to increase your custom voice limit.\"}}\""
+}

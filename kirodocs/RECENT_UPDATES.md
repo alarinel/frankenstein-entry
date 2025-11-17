@@ -1,6 +1,69 @@
 # Recent Updates
 
-> **Last Updated**: November 16, 2025
+> **Last Updated**: November 17, 2025
+
+## November 17, 2025 - Story Library Management
+
+### 📚 Story Library Feature
+**Status**: ✅ Complete
+
+Implemented comprehensive story library management system with full accessibility support:
+
+**Backend Components**:
+- `StoryIndexService` - Thread-safe story index management
+- `StoryIndexEntry` model - Index entry with id, title, createdAt
+- `DeleteStoryResponse` model - Delete operation response
+- `GET /api/stories/list` - Retrieve all stories (sorted by date desc)
+- `DELETE /api/stories/{storyId}` - Delete story and assets
+- Automatic index initialization and migration from existing stories
+- Persistent JSON storage at `storage/story-index.json`
+
+**Frontend Components**:
+- `LibraryModal` - Beautiful modal overlay with spooky theme
+- Story list with play and delete actions
+- Delete confirmation dialog
+- Quick access to admin dashboard
+- Library button on InputPage (top-left corner)
+
+**Accessibility Features** (WCAG 2.1 Level AA):
+- Full keyboard navigation (Tab, Enter, Escape)
+- Screen reader support with ARIA labels
+- Focus trap and focus management
+- Dynamic announcements via aria-live regions
+- Visual focus indicators on all interactive elements
+
+**Testing Coverage**:
+- 60+ test cases across backend and frontend
+- Unit tests for StoryIndexService and StoryController
+- Component tests for LibraryModal
+- E2E tests with Playwright MCP
+- Concurrent operation testing
+
+**Files Changed**:
+- Backend: `StoryIndexService.java`, `StoryIndexEntry.java`, `DeleteStoryResponse.java`, `StoryController.java`, `StoryOrchestrationService.java`
+- Frontend: `LibraryModal.tsx`, `InputPage.tsx`, `types/index.ts`, `api/client.ts`, `index.css`
+- Tests: `StoryIndexServiceTest.java`, `StoryControllerTest.java`, `LibraryModal.test.tsx`, `story-library.spec.ts`
+
+**Documentation**:
+- [Story Library Management](features/story-library-management.md) - Complete feature overview
+- [Library Modal Accessibility](features/library-modal-accessibility.md) - Accessibility implementation
+- Updated steering docs (product.md, structure.md)
+- Updated STORY_DETAILS.md with fun back-and-forth narrative
+
+**Spec-Driven Development**:
+- Comprehensive spec in `.kiro/specs/story-library-management/`
+- Requirements → Design → Tasks approach
+- 10 major tasks broken into 25+ subtasks
+- Methodical implementation following task list
+
+**Key Learnings**:
+- Modal design superior to full-page alternative
+- Accessibility requires proper ARIA labels, not just tabindex
+- Context7 MCP invaluable for WCAG documentation
+- Playwright MCP made E2E testing enjoyable
+- Comprehensive testing catches edge cases early
+
+---
 
 ## November 16, 2025 - Documentation Reorganization
 
@@ -282,4 +345,4 @@ See individual documentation files for detailed information on earlier updates.
 
 ---
 
-**Last Updated**: November 16, 2025
+**Last Updated**: November 17, 2025

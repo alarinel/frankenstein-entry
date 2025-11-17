@@ -34,6 +34,7 @@ backend/src/main/java/com/frankenstein/story/
 │   ├── FileStorageService.java           # File I/O operations
 │   ├── ProgressNotificationService.java  # WebSocket updates (outline + story stages)
 │   ├── ApiTrackingService.java           # API cost tracking & configuration
+│   ├── StoryIndexService.java            # Story index management (thread-safe operations)
 │   └── orchestration/                    # Orchestration services
 │       ├── AudioOrchestrationService.java
 │       ├── AudioOrchestrationServiceImpl.java
@@ -54,6 +55,8 @@ backend/src/main/java/com/frankenstein/story/
 │   ├── GenerationProgress.java           # Progress updates (GENERATING_OUTLINE stage)
 │   ├── ApiCallLog.java                   # API call tracking record
 │   ├── ApiConfiguration.java             # API cost & rate limit config (voice IDs)
+│   ├── StoryIndexEntry.java              # Story index entry (id, title, createdAt)
+│   ├── DeleteStoryResponse.java          # Delete operation response
 │   └── orchestration/                    # Orchestration models
 │       ├── AudioSet.java
 │       └── ImageSet.java
@@ -95,6 +98,7 @@ frontend/src/
 │   ├── ThemeSelector.tsx       # Theme selection component
 │   ├── VoiceSelector.tsx       # Voice selection component
 │   ├── VoiceConfiguration.tsx  # Admin voice ID configuration
+│   ├── LibraryModal.tsx        # Story library modal with play/delete functionality
 │   └── spooky/                 # Themed UI components
 │       ├── SpookyButton.tsx
 │       ├── SpookyCard.tsx
@@ -193,7 +197,8 @@ storage/
 │           └── ...
 ├── api-tracking/               # API call logs
 │   └── {timestamp}_{logId}.json
-└── api-config.json             # API cost & rate limit configuration
+├── api-config.json             # API cost & rate limit configuration
+└── story-index.json            # Story index (id, title, createdAt)
 ```
 
 ## Data Models
@@ -261,7 +266,15 @@ interface Story {
 
 #### GET /api/stories
 - **Response**: Story[]
-- **Description**: Lists all saved stories
+- **Description**: Lists all saved stories (deprecated - use /api/stories/list)
+
+#### GET /api/stories/list
+- **Response**: StoryIndexEntry[]
+- **Description**: Retrieves all stories from the index (sorted by date desc)
+
+#### DELETE /api/stories/{storyId}
+- **Response**: DeleteStoryResponse
+- **Description**: Deletes story from index and filesystem
 
 ### Admin Endpoints
 

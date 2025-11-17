@@ -4,15 +4,24 @@ Frankenstein is an AI-powered children's story generator that creates immersive,
 
 ## Core Experience
 
-1. **Moral Theme Selection**: Choose from 15 educational themes (honesty, friendship, courage, etc.) that teach important life lessons
-2. **Voice Selection**: Select male or female narrator with configurable voice IDs
-3. **Flexible Story Input**: Non-linear form where users provide 8 story elements in any order (character name, setting, villain, special item, trait, goal, time period, mood)
-4. **Two-Phase Generation**: Live progress updates showing outline generation followed by full story creation
-5. **Cinematic Playback**: 3D book interface with synchronized narration, word-level text highlighting, and dynamic atmospheric effects
-6. **Completion**: Story summary with options to replay or create new stories
-7. **Admin Dashboard**: Monitor API usage, costs, and configure voice IDs and pricing (accessible at /admin)
+1. **Story Library**: Browse and manage your saved stories with a beautiful modal interface (accessible from input page)
+2. **Moral Theme Selection**: Choose from 15 educational themes (honesty, friendship, courage, etc.) that teach important life lessons
+3. **Voice Selection**: Select male or female narrator with configurable voice IDs
+4. **Flexible Story Input**: Non-linear form where users provide 8 story elements in any order (character name, setting, villain, special item, trait, goal, time period, mood)
+5. **Two-Phase Generation**: Live progress updates showing outline generation followed by full story creation
+6. **Cinematic Playback**: 3D book interface with synchronized narration, word-level text highlighting, and dynamic atmospheric effects
+7. **Completion**: Story summary with options to replay or create new stories
+8. **Admin Dashboard**: Monitor API usage, costs, and configure voice IDs and pricing (accessible at /admin)
 
 ## Key Features
+
+### Story Library
+- **Persistent Index**: All stories automatically saved to `storage/story-index.json`
+- **Modal Interface**: Beautiful overlay with spooky theme matching the app aesthetic
+- **Quick Actions**: Play any story instantly or delete with confirmation
+- **Admin Access**: Quick link to admin dashboard from library
+- **Full Accessibility**: WCAG 2.1 Level AA compliant with keyboard navigation and screen reader support
+- **Thread-Safe**: Concurrent story generation doesn't corrupt the index
 
 ### Story Creation
 - **Educational Moral Themes**: 15 pre-defined life lessons naturally woven into stories

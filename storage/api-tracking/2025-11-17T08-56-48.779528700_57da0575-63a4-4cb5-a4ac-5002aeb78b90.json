@@ -1,0 +1,14 @@
+{
+  "id" : "57da0575-63a4-4cb5-a4ac-5002aeb78b90",
+  "storyId" : "b8137624-f8ed-4f56-a890-af41bc27bdb3",
+  "apiProvider" : "ANTHROPIC",
+  "operation" : "OUTLINE_GENERATION",
+  "tokensUsed" : 2323,
+  "costUsd" : 0.026996999999999997,
+  "status" : "SUCCESS",
+  "errorMessage" : null,
+  "timestamp" : "2025-11-17T08:56:48",
+  "durationMs" : 41241,
+  "charactersUsed" : 0,
+  "metadata" : null
+}
