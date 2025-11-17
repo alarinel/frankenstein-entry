@@ -37,6 +37,7 @@ public class StoryOrchestrationService {
    private final StoryAssemblyService storyAssemblyService;
    private final FileStorageService fileStorageService;
    private final ProgressCoordinatorService progressCoordinator;
+   private final StoryIndexService storyIndexService;
 
    // In-memory storage for story status
    private final ConcurrentHashMap<String, Story> activeStories = new ConcurrentHashMap<>();
@@ -115,6 +116,15 @@ public class StoryOrchestrationService {
          fileStorageService.saveStoryMetadata(story);
          progressCoordinator.notifyComplete(storyId);
 
+         // Update story index
+         try {
+            storyIndexService.addStoryToIndex(story.getId(), story.getTitle(), story.getCreatedAt());
+            log.info("Added story to index: {}", storyId);
+         } catch (final Exception e) {
+            log.error("Failed to update story index for: {}", storyId, e);
+            // Don't fail story generation if index update fails
+         }
+
          log.info("Story generation completed: {}", storyId);
          return CompletableFuture.completedFuture(story);
 
@@ -143,5 +153,30 @@ public class StoryOrchestrationService {
 
    public List<Story> getAllStories() {
       return fileStorageService.loadAllStories();
+   }
+
+   public void deleteStoryWithAssets(final String storyId) {
+      log.info("Deleting story with assets: {}", storyId);
+
+      try {
+         // Remove from story index
+         storyIndexService.removeStoryFromIndex(storyId);
+         log.debug("Removed story from index: {}", storyId);
+      } catch (final Exception e) {
+         log.error("Failed to remove story from index: {}", storyId, e);
+         // Continue with file deletion even if index update fails
+      }
+
+      try {
+         // Delete story files and directories
+         fileStorageService.deleteStory(storyId);
+         log.info("Deleted story files: {}", storyId);
+      } catch (final Exception e) {
+         log.error("Failed to delete story files: {}", storyId, e);
+         throw new StoryGenerationException("Failed to delete story files: " + e.getMessage(), e);
+      }
+
+      // Remove from active stories if present
+      activeStories.remove(storyId);
    }
 }

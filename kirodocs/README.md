@@ -4,7 +4,7 @@
 
 Comprehensive documentation for the Frankenstein AI-powered children's story generator. This project creates immersive, multimedia stories with educational moral themes, AI-generated text, images, and narration.
 
-> **Last Updated**: November 16, 2025
+> **Last Updated**: November 17, 2025
 
 ## Quick Navigation
 
@@ -12,6 +12,7 @@ Comprehensive documentation for the Frankenstein AI-powered children's story gen
 - **Backend Setup**: [../backend/README.md](../backend/README.md)
 - **Frontend Setup**: [../frontend/README.md](../frontend/README.md)
 - **Recent Changes**: [RECENT_UPDATES.md](RECENT_UPDATES.md)
+- **Documentation Status**: [DOCUMENTATION_STATUS.md](DOCUMENTATION_STATUS.md)
 - **Steering Docs**: [../.kiro/steering/](../.kiro/steering/)
 
 ## Documentation Structure
@@ -53,6 +54,8 @@ Testing documentation and guides:
 
 ### ✨ Features
 New feature documentation:
+- [Story Library Management](features/story-library-management.md) - Browse, replay, and delete saved stories
+- [Library Modal Accessibility](features/library-modal-accessibility.md) - WCAG 2.1 Level AA compliance
 - [Form Improvements](features/FORM_IMPROVEMENTS.md) - Non-linear navigation, smart randomization
 - [Moral Themes](features/MORAL_THEMES.md) - Educational story themes (15 life lessons)
 - [Expansion: Suggestion Variety](features/EXPANSION_SUGGESTION_VARIETY.md) - 20 suggestions per field
@@ -110,6 +113,12 @@ Performance optimization documentation:
 
 ## Recent Major Updates
 
+### November 17, 2025
+- ✅ **Story Library**: Browse, replay, and delete saved stories with modal interface
+- ✅ **Accessibility**: WCAG 2.1 Level AA compliance with keyboard navigation and screen readers
+- ✅ **Persistent Index**: Thread-safe story index with automatic migration
+- ✅ **Comprehensive Testing**: 70+ test cases including E2E with Playwright
+
 ### November 16, 2025
 - ✅ **Moral Themes**: 15 educational life lessons integrated into stories
 - ✅ **Form Enhancements**: Non-linear navigation, smart randomization, validation
@@ -151,4 +160,4 @@ For questions about documentation:
 
 ---
 
-**Last Updated**: November 16, 2025
+**Last Updated**: November 17, 2025

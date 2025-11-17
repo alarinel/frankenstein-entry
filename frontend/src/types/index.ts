@@ -72,6 +72,13 @@ export interface StoryStatusResponse {
   progress: number;
 }
 
+// Story index entry for library management
+export interface StoryIndexEntry {
+  id: string;
+  title: string;
+  createdAt: string;
+}
+
 // Story outline types (two-phase generation)
 export interface CharacterProfile {
   name: string;

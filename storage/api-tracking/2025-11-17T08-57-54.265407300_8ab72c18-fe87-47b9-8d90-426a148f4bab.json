@@ -1,0 +1,14 @@
+{
+  "id" : "8ab72c18-fe87-47b9-8d90-426a148f4bab",
+  "storyId" : "b8137624-f8ed-4f56-a890-af41bc27bdb3",
+  "apiProvider" : "ELEVENLABS",
+  "operation" : "NARRATION_GENERATION",
+  "tokensUsed" : 0,
+  "costUsd" : 0.00759,
+  "status" : "FAILED",
+  "errorMessage" : "com.frankenstein.story.exception.AudioGenerationException: Narration generation failed: 400 Bad Request: \"{\"detail\":{\"status\":\"voice_limit_reached\",\"message\":\"You have reached your maximum amount of custom voices (46 / 10). You can upgrade your subscription to increase your custom voice limit.\"}}\"",
+  "timestamp" : "2025-11-17T08:57:54",
+  "durationMs" : 437,
+  "charactersUsed" : 253,
+  "metadata" : null
+}

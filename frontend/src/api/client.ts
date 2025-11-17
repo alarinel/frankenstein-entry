@@ -4,6 +4,7 @@ import {
   StoryInput,
   GenerateStoryResponse,
   StoryStatusResponse,
+  StoryIndexEntry,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
@@ -34,6 +35,25 @@ export const storyApi = {
   getAllStories: async (): Promise<Story[]> => {
     const response = await client.get<Story[]>('/stories');
     return response.data;
+  },
+
+  getStoryList: async (): Promise<StoryIndexEntry[]> => {
+    try {
+      const response = await client.get<StoryIndexEntry[]>('/stories/list');
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch story list:', error);
+      throw error;
+    }
+  },
+
+  deleteStory: async (storyId: string): Promise<void> => {
+    try {
+      await client.delete(`/stories/${storyId}`);
+    } catch (error) {
+      console.error(`Failed to delete story ${storyId}:`, error);
+      throw error;
+    }
   },
 
   getAssetUrl: (url: string): string => {

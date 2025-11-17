@@ -2,8 +2,10 @@ package com.frankenstein.story.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frankenstein.story.model.Story;
+import com.frankenstein.story.model.StoryIndexEntry;
 import com.frankenstein.story.model.StoryInput;
 import com.frankenstein.story.model.StoryStatus;
+import com.frankenstein.story.service.StoryIndexService;
 import com.frankenstein.story.service.StoryOrchestrationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,6 +38,9 @@ class StoryControllerTest {
 
    @MockBean
    private StoryOrchestrationService orchestrationService;
+
+   @MockBean
+   private StoryIndexService storyIndexService;
 
    @Test
    void generateStory_WithValidInput_ReturnsAccepted() throws Exception {
@@ -176,6 +182,110 @@ class StoryControllerTest {
       // When/Then
       mockMvc.perform(post("/api/stories/generate").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(input)))
              .andExpect(status().isBadRequest());
+   }
+
+   @Test
+   void getStoryList_ReturnsAllStories() throws Exception {
+      // Given
+      final LocalDateTime now = LocalDateTime.now();
+      final List<StoryIndexEntry> mockStories = Arrays.asList(
+         StoryIndexEntry.builder()
+            .id("story-1")
+            .title("First Story")
+            .createdAt(now.minusDays(1))
+            .build(),
+         StoryIndexEntry.builder()
+            .id("story-2")
+            .title("Second Story")
+            .createdAt(now)
+            .build()
+      );
+
+      when(storyIndexService.getAllStories()).thenReturn(mockStories);
+
+      // When/Then
+      mockMvc.perform(get("/api/stories/list"))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$").isArray())
+             .andExpect(jsonPath("$.length()").value(2))
+             .andExpect(jsonPath("$[0].id").value("story-1"))
+             .andExpect(jsonPath("$[0].title").value("First Story"))
+             .andExpect(jsonPath("$[1].id").value("story-2"))
+             .andExpect(jsonPath("$[1].title").value("Second Story"));
+
+      verify(storyIndexService).getAllStories();
+   }
+
+   @Test
+   void getStoryList_ReturnsEmptyList_WhenNoStories() throws Exception {
+      // Given
+      when(storyIndexService.getAllStories()).thenReturn(Collections.emptyList());
+
+      // When/Then
+      mockMvc.perform(get("/api/stories/list"))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$").isArray())
+             .andExpect(jsonPath("$.length()").value(0));
+   }
+
+   @Test
+   void getStoryList_ReturnsInternalServerError_OnException() throws Exception {
+      // Given
+      when(storyIndexService.getAllStories()).thenThrow(new RuntimeException("Index read failed"));
+
+      // When/Then
+      mockMvc.perform(get("/api/stories/list"))
+             .andExpect(status().isInternalServerError());
+   }
+
+   @Test
+   void deleteStory_RemovesStoryAndFiles() throws Exception {
+      // Given
+      final String storyId = "story-to-delete";
+      when(storyIndexService.storyExists(storyId)).thenReturn(true);
+      doNothing().when(orchestrationService).deleteStoryWithAssets(storyId);
+
+      // When/Then
+      mockMvc.perform(delete("/api/stories/{storyId}", storyId))
+             .andExpect(status().isOk())
+             .andExpect(jsonPath("$.success").value(true))
+             .andExpect(jsonPath("$.message").value("Story deleted successfully"))
+             .andExpect(jsonPath("$.storyId").value(storyId));
+
+      verify(storyIndexService).storyExists(storyId);
+      verify(orchestrationService).deleteStoryWithAssets(storyId);
+   }
+
+   @Test
+   void deleteStory_Returns404_WhenStoryNotFound() throws Exception {
+      // Given
+      final String nonExistentId = "non-existent-story";
+      when(storyIndexService.storyExists(nonExistentId)).thenReturn(false);
+
+      // When/Then
+      mockMvc.perform(delete("/api/stories/{storyId}", nonExistentId))
+             .andExpect(status().isNotFound())
+             .andExpect(jsonPath("$.success").value(false))
+             .andExpect(jsonPath("$.message").value("Story not found"))
+             .andExpect(jsonPath("$.storyId").value(nonExistentId));
+
+      verify(storyIndexService).storyExists(nonExistentId);
+      verify(orchestrationService, never()).deleteStoryWithAssets(anyString());
+   }
+
+   @Test
+   void deleteStory_ReturnsInternalServerError_OnException() throws Exception {
+      // Given
+      final String storyId = "failing-story";
+      when(storyIndexService.storyExists(storyId)).thenReturn(true);
+      doThrow(new RuntimeException("Deletion failed")).when(orchestrationService).deleteStoryWithAssets(storyId);
+
+      // When/Then
+      mockMvc.perform(delete("/api/stories/{storyId}", storyId))
+             .andExpect(status().isInternalServerError())
+             .andExpect(jsonPath("$.success").value(false))
+             .andExpect(jsonPath("$.message").value("Failed to delete story: Deletion failed"))
+             .andExpect(jsonPath("$.storyId").value(storyId));
    }
 
    private Story createMockStory(final String id, final StoryStatus status) {
