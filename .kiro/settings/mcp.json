@@ -29,7 +29,7 @@
         "-y",
         "@upstash/context7-mcp",
         "--api-key",
-        "ctx7sk-d3185438-d407-4cca-9f5b-0d5d782757e0"
+        "KEY"
       ],
       "disabled": false,
       "autoApprove": [
