@@ -121,9 +121,9 @@ These keys are in **local .env files** that are **NOT tracked by git**:
 
 ### Backend .env (NOT IN GIT)
 ```
-ANTHROPIC_API_KEY=sk-ant-api03-B6DJzvBPt9tCIXWo2-z8Ja5Eydw-...
-STABILITY_API_KEY=sk-fgvcv1GwoiC4rjvR9Xhw8PL5JbM5YSXfSNqENsbDd6JyXArA
-ELEVENLABS_API_KEY=98ab888e5b4b20b21be434acf43c2bec
+ANTHROPIC_API_KEY=
+STABILITY_API_KEY=
+ELEVENLABS_API_KEY=
 ```
 
 **Status**: These are in your local development environment only and will NOT be committed to GitHub.
